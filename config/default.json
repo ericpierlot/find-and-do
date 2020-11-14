@@ -1,0 +1,4 @@
+{ 
+  "MongoURI": "mongodb+srv://Eric:CR34dgVZyaKjLvUR@findanddo.nm2am.mongodb.net/FindAndDo?retryWrites=true&w=majority",
+  "jwtSecret" : "2e05a4ca9272ce3be885b35de1bd820f56149971cb11632a6a952e132f3d611509f12758e6ddb9dc36bf29001c7948a00272b23bc487d1a6812f3bbed0260acbcd"
+}

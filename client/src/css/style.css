@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+
+:root {
+  color-scheme: light dark;
+}
+
+* {
+  font-family: Montserrat;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Montserrat;
+  letter-spacing: -0.025em;
+  background: url('../images/panorama-1993645_1920.jpg');
+  background-attachment: fixed;
+  color: #1a202c;
+}
+
+.svg {
+  display: block;
+  height: 40px;
+  width: 40px;
+}
+
+.search {
+  display: block;
+  fill: none;
+  height: 80%;
+  width: 40px;
+  stroke: black;
+  stroke-width: 4;
+  overflow: visible;
+}
+.svg:hover {
+  fill: #e53e3e;
+  stroke: #e53e3e;
+}
