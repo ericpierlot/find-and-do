@@ -231,7 +231,6 @@ const Subscribe = (props) => {
                 name='email'
                 value={email}
                 onChange={onChange}
-                autoFocus
               />
             </Flex>
             <Label onClick={deleteall}>Delete</Label>

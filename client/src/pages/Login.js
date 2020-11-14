@@ -83,7 +83,6 @@ const Login = (props) => {
             value={email}
             onChange={onChange}
             required
-            autoFocus
           />
 
           <Label>Password :</Label>
