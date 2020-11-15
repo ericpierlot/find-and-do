@@ -35,14 +35,11 @@ const Subscribe = (props) => {
     password2: '',
     firstName: '',
     city: '',
-    birthDate: {
-      years: '',
-      months: '',
-      days: '',
-    },
+    birthdate: { days: '', months: '', years: '' },
   });
 
-  const { email, password, password2, firstName, city, birthDate } = user;
+  const { email, password, password2, firstName, city, birthdate } = user;
+  const { days, months, years } = user.birthdate;
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -59,8 +56,8 @@ const Subscribe = (props) => {
     setUser({
       ...user,
       [e.target.name]: e.target.value,
-      birthDate: {
-        ...user.birthDate,
+      birthdate: {
+        ...user.birthdate,
         [e.target.name]: e.target.value,
       },
     });
@@ -94,15 +91,15 @@ const Subscribe = (props) => {
         'danger'
       );
     if (city === '') return setAlert('City cannot be empty', 'danger');
-    if (birthDate.months === 'Month' || birthDate.months === '')
+    if (birthdate.months === 'Month' || birthdate.months === '')
       return setAlert('You have to choose a month', 'danger');
-    if (birthDate.days > 31)
+    if (birthdate.days > 31)
       return setAlert('Day cannot be bigger than 31', 'danger');
-    if (birthDate.days < 1)
+    if (birthdate.days < 1)
       return setAlert('Day cannot be less than 1', 'danger');
-    if (birthDate.years > 2021)
+    if (birthdate.years > 2021)
       return setAlert('You cannot be born in the future', 'danger');
-    if (birthDate.years < 1900)
+    if (birthdate.years < 1900)
       return setAlert(
         'Mmmmh you should go to the World books for older Human',
         'danger'
@@ -114,7 +111,7 @@ const Subscribe = (props) => {
       password,
       firstName,
       city,
-      birthDate,
+      birthdate: { days, months, years },
     });
   };
 
@@ -180,7 +177,7 @@ const Subscribe = (props) => {
                 <SelectMonths
                   id='months'
                   name='months'
-                  value={birthDate.months}
+                  value={birthdate.months}
                   onChange={onChange}
                 >
                   <option>Month</option>
@@ -200,14 +197,14 @@ const Subscribe = (props) => {
                 <InputDays
                   id='days'
                   name='days'
-                  value={birthDate.days}
+                  value={birthdate.days}
                   placeholder='DD'
                   onChange={onChange}
                 />
                 <InputYears
                   id='years'
                   name='years'
-                  value={birthDate.years}
+                  value={birthdate.years}
                   placeholder='YYYY'
                   onChange={onChange}
                 />

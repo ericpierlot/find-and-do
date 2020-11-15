@@ -7,6 +7,7 @@ import subIcon from '../images/register.svg';
 
 const Head = styled.header`
   position: fixed;
+  height: 90px;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -41,7 +42,6 @@ const Ul = styled.ul`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 45vw;
   margin-right: 3rem;
   @media (max-width: 920px) {
     justify-content: space-evenly;
@@ -59,6 +59,11 @@ const Ul = styled.ul`
     transition: border 900ms ease;
   }
   a:hover {
+    color: #b62c2c;
+    padding: 1rem;
+    border-bottom: 2px #b62c2c solid;
+  }
+  a:focus {
     color: #b62c2c;
     padding: 1rem;
     border-bottom: 2px #b62c2c solid;
@@ -92,8 +97,13 @@ const Header = () => {
 
   const authLinks = (
     <React.Fragment>
-      <Li>Welcome back {user && user.firstName}.</Li>
+      <Li>Welcome back {user && user.firstName}</Li>
       <Ul>
+        {user && user.isAdmin && (
+          <Link to='/admin'>
+            <Li style={{ color: '#b62c2c' }}>Admin Panel</Li>
+          </Link>
+        )}
         <Link to='/'>
           <Li>Home</Li>
         </Link>
@@ -103,9 +113,9 @@ const Header = () => {
         <Link to='/experience-create'>
           <Li>Create an experience</Li>
         </Link>
-        <Li style={{ cursor: 'pointer' }} onClick={onLogout}>
+        <Link to='/' onClick={onLogout}>
           Logout
-        </Li>
+        </Link>
       </Ul>
     </React.Fragment>
   );
@@ -141,9 +151,14 @@ const Header = () => {
         <Link to='/experience-create'>
           <Li>Add experience</Li>
         </Link>
-        <Li style={{ cursor: 'pointer' }} onClick={onLogout}>
+        <Link to='/' onClick={onLogout}>
           Logout
-        </Li>
+        </Link>
+        {user && user.isAdmin && (
+          <Link to='/admin'>
+            <Li style={{ color: '#b62c2c' }}>Admin</Li>
+          </Link>
+        )}
       </MobileDiv>
     </React.Fragment>
   );

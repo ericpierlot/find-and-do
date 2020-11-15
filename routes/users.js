@@ -28,8 +28,8 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { email, password, firstName } = req.body;
-
+    const { email, password, firstName, lastName, city, birthdate } = req.body;
+    const { days, months, years } = req.body.birthdate;
     try {
       const emailAlreadyExist = await User.findOne({ email });
 
@@ -41,6 +41,13 @@ router.post(
         email,
         password,
         firstName,
+        lastName,
+        city,
+        birthdate: {
+          days,
+          months,
+          years,
+        },
       });
 
       const salt = await bcrypt.genSalt(10);
@@ -103,27 +110,27 @@ router.get('/:id', async (req, res) => {
 // @desc      User will be able to see his profile
 // @access    Private
 
-router.get('/profile', auth, async (req, res) => {
-  try {
-    const profile = await User.find({ _id: req.user.id });
-    const {
-      email,
-      firstName,
-      lastName,
-      birthdate,
-      experienceCreated,
-    } = profile[0];
-    res.json({
-      email,
-      firstName,
-      lastName,
-      birthdate,
-      experienceCreated,
-    });
-  } catch (error) {
-    console.error(error.message);
-  }
-});
+// router.get('/profile', auth, async (req, res) => {
+//   try {
+//     const profile = await User.find({ _id: req.user.id });
+//     const {
+//       email,
+//       firstName,
+//       lastName,
+//       birthdate,
+//       experienceCreated,
+//     } = profile[0];
+//     res.json({
+//       email,
+//       firstName,
+//       lastName,
+//       birthdate,
+//       experienceCreated,
+//     });
+//   } catch (error) {
+//     console.error(error.message);
+//   }
+// });
 
 // @route     PUT api/users/:id
 // @desc      Update an user

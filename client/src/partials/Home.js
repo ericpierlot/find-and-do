@@ -6,6 +6,9 @@ import MainHome from '../pages/MainHome';
 import Login from '../pages/Login';
 import Subscribe from '../pages/Subscribe';
 import Profil from '../pages/Profil';
+import Personal from '../pages/profil/Personal';
+import LoginAndSecurity from '../pages/profil/LoginAndSecurity';
+import Preferences from '../pages/profil/Preferences';
 
 import PrivateRoute from '../utils/PrivateRoute';
 
@@ -29,6 +32,17 @@ const Home = () => {
         <Route exact path='/login' component={Login} />
         <Route exact path='/subscribe' component={Subscribe} />
         <PrivateRoute exact path='/profil' component={Profil} />
+        <PrivateRoute exact path='/profil/personal-info' component={Personal} />
+        <PrivateRoute
+          exact
+          path='/profil/login-and-security'
+          component={LoginAndSecurity}
+        />
+        <PrivateRoute
+          exact
+          path='/profil/preferences'
+          component={Preferences}
+        />
       </Switch>
     </Section1>
   );

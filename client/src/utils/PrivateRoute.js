@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import AuthContext from '../context/auth/authContext';
-import Spinner from '../utils/Spinner';
+import Spinner from './components/Spinner';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const authContext = useContext(AuthContext);
