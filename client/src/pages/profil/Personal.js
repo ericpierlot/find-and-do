@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AuthContext from '../../context/auth/authContext';
+import axios from 'axios';
 
 const Section = styled.section`
   margin: auto;
@@ -66,13 +67,12 @@ const Article = styled.article`
   }
 `;
 
-const Flexbox = styled.div`
+const Flexbox = styled.form`
   width: 100%;
-  height: 50px;
+  height: 100px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-between;
-  align-content: space-between;
   flex-wrap: wrap;
   border-bottom: 2px lightgrey solid;
   padding-bottom: 80px;
@@ -80,9 +80,53 @@ const Flexbox = styled.div`
 `;
 const Personal = () => {
   const authContext = useContext(AuthContext);
-  const { user } = authContext;
+  const { user, loadUser } = authContext;
+  const [isClicked, setClicked] = useState(false);
+  const [newLegalName, setNewLegalName] = useState(false);
+  const [newUser, setNewUser] = useState({
+    firstName: user.firstName,
+    lastName: user.lastName,
+  });
+  useEffect(() => {
+    if (newLegalName) {
+      const updateUser = async () => {
+        const config = {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        };
 
-  console.log(user);
+        await axios.put(`/api/users/${user._id}`, newUser, config);
+        // Refresh the user in my Context
+        await loadUser();
+        // Update my hooks User with new value
+        setNewUser({
+          firstName: newUser.firstName,
+          lastName: newUser.lastName,
+        });
+      };
+      // newLegalName value is true, (form sended) then I call my function updateUser
+      updateUser();
+      // Change display Modify to normal back
+      setNewLegalName(!newLegalName);
+      // Change "cancel" to "modify"
+      setClicked(!isClicked);
+    }
+    // eslint-disable-next-line
+  }, [newLegalName]);
+
+  const onChange = (e) => {
+    setNewUser({
+      ...newUser,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const LegalNameSubmit = (e) => {
+    setNewLegalName(!newLegalName);
+    e.preventDefault();
+    // maybe checking if lastName not empty, but maybe it's too much struggle ? because force user to fill it.
+  };
   return (
     <Section>
       <Wrapper>
@@ -94,19 +138,60 @@ const Personal = () => {
           <h2>Personal Information</h2>
         </Top>
         <Article>
-          <Flexbox>
-            <p>
-              <strong>Legal Name</strong>
-              <br />
-              <br />
-              {user.firstName}
-              {user.lastName ? (
-                user.lastName
-              ) : (
-                <strong> Last name not define, please let us know</strong>
-              )}
-            </p>
-            <p>Modify</p>
+          <Flexbox onSubmit={LegalNameSubmit}>
+            {isClicked ? (
+              <>
+                <p>
+                  <strong>Legal Name</strong>
+                  <br />
+                  <br />
+                  This is the name that you have on your passport or ID card or
+                  License driving for example.
+                  <br />
+                  <input
+                    placeholder={user.firstName}
+                    value={newUser.firstName}
+                    onChange={onChange}
+                    name='firstName'
+                  />
+                  <input
+                    placeholder={user.lastName}
+                    value={newUser.lastName}
+                    onChange={onChange}
+                    name='lastName'
+                  />
+                  <button>Save</button>
+                </p>
+                <span
+                  onClick={() => {
+                    setClicked(!isClicked);
+                  }}
+                >
+                  Cancel
+                </span>
+              </>
+            ) : (
+              <>
+                <p>
+                  <strong>Legal Name</strong>
+                  <br />
+                  <br />
+                  {newUser.firstName}{' '}
+                  {newUser.lastName ? (
+                    newUser.lastName
+                  ) : (
+                    <strong> Last name not define, please let us know</strong>
+                  )}
+                </p>
+                <span
+                  onClick={() => {
+                    setClicked(!isClicked);
+                  }}
+                >
+                  Modify
+                </span>
+              </>
+            )}
           </Flexbox>
           <Flexbox>
             <p>

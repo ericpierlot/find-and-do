@@ -86,7 +86,7 @@ router.post(
 router.get('/:id', async (req, res) => {
   try {
     const profile = await User.find({ _id: req.params.id });
-    console.log(req.params.id);
+    // console.log(req.params.id);
     const {
       email,
       firstName,
@@ -136,8 +136,25 @@ router.get('/:id', async (req, res) => {
 // @desc      Update an user
 // @access    Private
 
-router.put('/:id', (req, res) => {
-  res.send('Update an user');
+router.put('/:id', async (req, res) => {
+  // res.send('Update an user');
+  console.log(req.body);
+  try {
+    const profile = await User.findByIdAndUpdate(
+      { _id: req.params.id },
+      { $set: { firstName: req.body.firstName, lastName: req.body.lastName } }
+    );
+    const { email, firstName, lastName, birthdate } = profile;
+    res.send({
+      email,
+      firstName,
+      lastName,
+      birthdate,
+    });
+  } catch (error) {
+    res.status(500).send('Error to reach the server');
+    console.error(error.message);
+  }
 });
 
 // @route     DELETE api/users/:id
