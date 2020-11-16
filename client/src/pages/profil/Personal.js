@@ -63,32 +63,123 @@ const Article = styled.article`
   }
   @media (max-width: 920px) {
     width: 100%;
-    margin: 0;
   }
 `;
 
 const Flexbox = styled.form`
   width: 100%;
-  height: 100px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
-  border-bottom: 2px lightgrey solid;
+  border-bottom: 2px white solid;
   padding-bottom: 80px;
   margin-top: 10px;
+  @media (max-width: 920px) {
+    width: 100%;
+    border-bottom: 1px white solid;
+  }
 `;
+
+const Modify = styled.button`
+  background-color: transparent;
+  height: 0;
+  border: none;
+  font-size: 1rem;
+  color: seagreen;
+  font-weight: bold;
+  cursor: pointer;
+  :hover {
+    text-decoration: underline;
+  }
+`;
+
+const Input = styled.input`
+  font-size: 1.2rem;
+  width: 50%;
+  height: 2rem;
+  outline: none;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 1rem;
+
+  border: none;
+  border-bottom: 2px black solid;
+  margin-bottom: 2.5rem;
+  transition: all 330ms ease-in-out;
+
+  :focus {
+    border-bottom: 2px #eb3941 solid;
+  }
+`;
+
+const Button = styled.button`
+  width: 50%;
+  text-align: center;
+  padding: 0.3rem 1rem 0.3rem 1rem;
+  font-size: 1.2rem;
+  color: #fff;
+  cursor: pointer;
+  height: 3rem;
+  text-align: center;
+  border: none;
+  background-size: 300% 100%;
+  border-radius: 50px;
+  transition: all 0.3s ease-in-out;
+  background-image: linear-gradient(
+    to right,
+    #eb3941,
+    #f15e64,
+    #e14e53,
+    #e2373f
+  );
+  font-weight: 600;
+  box-shadow: 0 5px 15px rgba(242, 97, 103, 0.4);
+  line-height: 0;
+  :hover {
+    background-position: 100% 0;
+    transition: all 0.3s ease-in-out;
+  }
+  :focus {
+    outline: none;
+  }
+  margin: auto;
+  margin-bottom: 1rem;
+  border: 3px rgba(255, 255, 255, 0.3) solid;
+`;
+
 const Personal = () => {
   const authContext = useContext(AuthContext);
   const { user, loadUser } = authContext;
-  const [isClicked, setClicked] = useState(false);
-  const [newLegalName, setNewLegalName] = useState(false);
-  const [newUser, setNewUser] = useState({
-    firstName: user.firstName,
-    lastName: user.lastName,
+  const [isClicked, setIsClicked] = useState({
+    legalName: false,
+    birthate: false,
+    email: false,
   });
+  const [newSelected, setNewSelected] = useState({
+    legalName: false,
+    birthate: false,
+    email: false,
+  });
+  const { firstName, lastName, birthdate, email } = user;
+  const { days, months, years } = user.birthdate;
+  const [newUser, setNewUser] = useState({
+    email,
+    firstName,
+    lastName,
+    birthdate: {
+      days,
+      months,
+      years,
+    },
+  });
+  console.log('from database USER :', user);
+  console.log('NewUser object : ', newUser);
+
   useEffect(() => {
-    if (newLegalName) {
+    // In case it's Legal name asking to modify
+    if (newSelected.legalName) {
       const updateUser = async () => {
         const config = {
           headers: {
@@ -99,34 +190,120 @@ const Personal = () => {
         await axios.put(`/api/users/${user._id}`, newUser, config);
         // Refresh the user in my Context
         await loadUser();
-        // Update my hooks User with new value
-        setNewUser({
-          firstName: newUser.firstName,
-          lastName: newUser.lastName,
-        });
       };
-      // newLegalName value is true, (form sended) then I call my function updateUser
+      // newSelected value is true, (form sended) then I call my function updateUser
       updateUser();
-      // Change display Modify to normal back
-      setNewLegalName(!newLegalName);
-      // Change "cancel" to "modify"
-      setClicked(!isClicked);
-    }
-    // eslint-disable-next-line
-  }, [newLegalName]);
 
+      // Change display Modify to normal back
+      setNewSelected({ legalName: false });
+      // Change "cancel" to "modify"
+      setIsClicked(false);
+    }
+
+    // In case it's Birthdate choose to modify
+    if (newSelected.birthdate) {
+      const updateUser = async () => {
+        const config = {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        };
+
+        await axios.put(`/api/users/${user._id}`, newUser, config);
+        // Refresh the user in my Context
+        await loadUser();
+      };
+      // newSelected value is true, (form sended) then I call my function updateUser
+      updateUser();
+
+      // Change display Modify to normal back
+      setNewSelected({ birthdate: false });
+      // Change "cancel" to "modify"
+      setIsClicked(false);
+    }
+
+    // In case it's Email choose to modify
+    if (newSelected.email) {
+      const updateUser = async () => {
+        const config = {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        };
+
+        await axios.put(`/api/users/${user._id}`, newUser, config);
+        // Refresh the user in my Context
+        await loadUser();
+      };
+      // newSelected value is true, (form sended) then I call my function updateUser
+      updateUser();
+
+      // Change display Modify to normal back
+      setNewSelected({ email: false });
+      // Change "cancel" to "modify"
+      setIsClicked(false);
+    }
+
+    // eslint-disable-next-line
+  }, [newSelected]);
+  console.log('ONFLY NEWUSER : ', newUser);
   const onChange = (e) => {
     setNewUser({
       ...newUser,
       [e.target.name]: e.target.value,
+      birthdate: {
+        ...newUser.birthdate,
+      },
+    });
+  };
+
+  const onChangeBirthdate = (e) => {
+    setNewUser({
+      ...newUser,
+      birthdate: {
+        ...newUser.birthdate,
+        [e.target.name]: e.target.value,
+      },
+    });
+  };
+
+  const onChangeEmail = (e) => {
+    setNewUser({
+      ...newUser,
+      [e.target.name]: e.target.value,
+      birthdate: {
+        ...newUser.birthdate,
+      },
     });
   };
 
   const LegalNameSubmit = (e) => {
-    setNewLegalName(!newLegalName);
     e.preventDefault();
-    // maybe checking if lastName not empty, but maybe it's too much struggle ? because force user to fill it.
+    // Have to set my alerts to throw to the user What's wrong
+    if (newUser.firstName === '') return;
+    if (newUser.lastName === '') return;
+
+    setNewSelected({ legalName: true });
   };
+
+  const BirthdateSubmit = (e) => {
+    e.preventDefault();
+    if (newUser.birthdate.days === '') return;
+    if (newUser.birthdate.months === '') return;
+    if (newUser.birthdate.years === '') return;
+
+    // Everything looks fine, then let's send :
+    setNewSelected({ birthdate: true });
+  };
+
+  const EmailSubmit = (e) => {
+    e.preventDefault();
+    if (newUser.email === '') return;
+
+    // Everything looks fine, then let's send :
+    setNewSelected({ email: true });
+  };
+
   return (
     <Section>
       <Wrapper>
@@ -139,36 +316,61 @@ const Personal = () => {
         </Top>
         <Article>
           <Flexbox onSubmit={LegalNameSubmit}>
-            {isClicked ? (
+            {isClicked.legalName ? (
               <>
-                <p>
-                  <strong>Legal Name</strong>
-                  <br />
-                  <br />
-                  This is the name that you have on your passport or ID card or
-                  License driving for example.
-                  <br />
-                  <input
-                    placeholder={user.firstName}
-                    value={newUser.firstName}
-                    onChange={onChange}
-                    name='firstName'
-                  />
-                  <input
-                    placeholder={user.lastName}
-                    value={newUser.lastName}
-                    onChange={onChange}
-                    name='lastName'
-                  />
-                  <button>Save</button>
-                </p>
-                <span
-                  onClick={() => {
-                    setClicked(!isClicked);
+                <div
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
                   }}
                 >
-                  Cancel
-                </span>
+                  <strong>Legal Name</strong>
+
+                  <div
+                    style={{
+                      cursor: 'pointer',
+                      color: '#b62c2c',
+                      textDecoration: 'underline',
+                    }}
+                    onClick={() => {
+                      setIsClicked(false);
+                    }}
+                  >
+                    Cancel
+                  </div>
+                </div>
+                <br />
+                <br />
+                <div style={{ width: '100%' }}>
+                  This is the name that you have on your passport or ID card or
+                  License driving for example.
+                </div>
+                <br />
+                <br />
+                <div>
+                  <div>
+                    <label>First name : </label>
+                    <Input
+                      placeholder={user.firstName}
+                      value={newUser.firstName}
+                      onChange={onChange}
+                      name='firstName'
+                      style={{ height: '2rem' }}
+                    />
+                    <br />
+                    <label>Last name : </label>
+                    <Input
+                      placeholder={user.lastName}
+                      value={newUser.lastName}
+                      onChange={onChange}
+                      style={{ height: '2rem' }}
+                      name='lastName'
+                    />
+                  </div>
+                  <Button>Save</Button>
+                </div>
               </>
             ) : (
               <>
@@ -183,34 +385,157 @@ const Personal = () => {
                     <strong> Last name not define, please let us know</strong>
                   )}
                 </p>
-                <span
+                <Modify
                   onClick={() => {
-                    setClicked(!isClicked);
+                    setIsClicked({ legalName: true });
                   }}
                 >
                   Modify
-                </span>
+                </Modify>
               </>
             )}
           </Flexbox>
-          <Flexbox>
-            <p>
-              <strong>Birthdate</strong>
-              <br />
-              <br />
-              Born on {user.birthdate.days} {user.birthdate.months}{' '}
-              {user.birthdate.years}.
-            </p>
-            <p>Modify</p>
+          {/* FOR BIRTHDATE */}
+          <Flexbox onSubmit={BirthdateSubmit}>
+            {isClicked.birthate ? (
+              <>
+                <div
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <strong>Birthdate</strong>
+
+                  <div
+                    style={{
+                      cursor: 'pointer',
+                      color: '#b62c2c',
+                      textDecoration: 'underline',
+                    }}
+                    onClick={() => {
+                      setIsClicked({ birthate: false });
+                    }}
+                  >
+                    Cancel
+                  </div>
+                </div>
+                <br />
+                <br />
+                <div style={{}}>
+                  <div>
+                    <label>Months: </label>
+                    <Input
+                      placeholder={birthdate.months}
+                      value={newUser.birthdate.months}
+                      onChange={onChangeBirthdate}
+                      name='months'
+                      style={{ height: '2rem' }}
+                    />
+                    <br />
+                    <label>Days: </label>
+                    <Input
+                      placeholder={birthdate.days}
+                      value={newUser.birthdate.days}
+                      onChange={onChangeBirthdate}
+                      style={{ height: '2rem' }}
+                      name='days'
+                    />
+                    <br />
+                    <label>Years: </label>
+                    <Input
+                      placeholder={birthdate.years}
+                      value={birthdate.years}
+                      onChange={onChangeBirthdate}
+                      style={{ height: '2rem' }}
+                      name='years'
+                    />
+                  </div>
+                  <Button>Save</Button>
+                </div>
+              </>
+            ) : (
+              <>
+                <p>
+                  <strong>Birthdate</strong>
+                  <br />
+                  <br />
+                  Born on {newUser.birthdate.days} {newUser.birthdate.months}{' '}
+                  {newUser.birthdate.years}.
+                </p>
+                <Modify
+                  onClick={() => {
+                    setIsClicked({ birthate: true });
+                  }}
+                >
+                  Modify
+                </Modify>
+              </>
+            )}
           </Flexbox>
-          <Flexbox>
-            <p>
-              <strong>Email address</strong>
-              <br />
-              <br />
-              {user.email}
-            </p>
-            <p>Modify</p>
+          <Flexbox onSubmit={EmailSubmit}>
+            {/* FOR EMAIL */}
+            {isClicked.email ? (
+              <>
+                <div
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <strong>Email</strong>
+
+                  <div
+                    style={{
+                      cursor: 'pointer',
+                      color: '#b62c2c',
+                      textDecoration: 'underline',
+                    }}
+                    onClick={() => {
+                      setIsClicked({ birthate: false });
+                    }}
+                  >
+                    Cancel
+                  </div>
+                </div>
+                <br />
+                <br />
+                <div style={{}}>
+                  <div>
+                    <label>Your address email : </label>
+                    <Input
+                      placeholder={user.email}
+                      value={newUser.email}
+                      onChange={onChangeEmail}
+                      name='email'
+                      style={{ height: '2rem' }}
+                    />
+                    <br />
+                  </div>
+                  <Button>Save</Button>
+                </div>
+              </>
+            ) : (
+              <>
+                <p>
+                  <strong>Email</strong>
+                  <br />
+                  <br />
+                  Your address E-mail is {newUser.email}
+                </p>
+                <Modify
+                  onClick={() => {
+                    setIsClicked({ email: true });
+                  }}
+                >
+                  Modify
+                </Modify>
+              </>
+            )}
           </Flexbox>
         </Article>
       </Wrapper>

@@ -83,54 +83,14 @@ router.post(
 // @desc      Get profile by id
 // @access    Private
 
-router.get('/:id', async (req, res) => {
+router.get('/allDB', async (req, res) => {
   try {
-    const profile = await User.find({ _id: req.params.id });
-    // console.log(req.params.id);
-    const {
-      email,
-      firstName,
-      lastName,
-      birthdate,
-      experienceCreated,
-    } = profile[0];
-    res.json({
-      email,
-      firstName,
-      lastName,
-      birthdate,
-      experienceCreated,
-    });
+    // maybe for admin purpose ?
+    res.send('get all users from my DB collection users');
   } catch (error) {
     console.error(error.message);
   }
 });
-
-// @route     GET api/users/profile
-// @desc      User will be able to see his profile
-// @access    Private
-
-// router.get('/profile', auth, async (req, res) => {
-//   try {
-//     const profile = await User.find({ _id: req.user.id });
-//     const {
-//       email,
-//       firstName,
-//       lastName,
-//       birthdate,
-//       experienceCreated,
-//     } = profile[0];
-//     res.json({
-//       email,
-//       firstName,
-//       lastName,
-//       birthdate,
-//       experienceCreated,
-//     });
-//   } catch (error) {
-//     console.error(error.message);
-//   }
-// });
 
 // @route     PUT api/users/:id
 // @desc      Update an user
@@ -138,19 +98,24 @@ router.get('/:id', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   // res.send('Update an user');
-  console.log(req.body);
+  // console.log(req.body);
   try {
-    const profile = await User.findByIdAndUpdate(
+    const profil = await User.findByIdAndUpdate(
       { _id: req.params.id },
-      { $set: { firstName: req.body.firstName, lastName: req.body.lastName } }
+      {
+        $set: {
+          email: req.body.email,
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          birthdate: {
+            days: req.body.birthdate.days,
+            months: req.body.birthdate.months,
+            years: req.body.birthdate.years,
+          },
+        },
+      }
     );
-    const { email, firstName, lastName, birthdate } = profile;
-    res.send({
-      email,
-      firstName,
-      lastName,
-      birthdate,
-    });
+    res.json({ profil });
   } catch (error) {
     res.status(500).send('Error to reach the server');
     console.error(error.message);
