@@ -122,6 +122,37 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+// @route     PUT api/users/:id
+// @desc      Modify Password only
+// @access    Private
+
+router.put('/:id/updatePassword', async (req, res) => {
+  const salt = await bcrypt.genSalt(10);
+  req.body.password = await bcrypt.hash(req.body.password, salt);
+
+  try {
+    const user = await User.findById(req.params.id);
+
+    const isMatch = await bcrypt.compare(req.body.actual, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Actual password is wrong' });
+    }
+
+    const profil = await User.findByIdAndUpdate(
+      { _id: req.params.id },
+      {
+        $set: {
+          password: req.body.password,
+        },
+      }
+    );
+
+    res.json({ profil });
+  } catch (error) {
+    res.status(500).send('Error to reach the server');
+  }
+});
+
 // @route     DELETE api/users/:id
 // @desc      Delete an user
 // @access    Private

@@ -59,7 +59,7 @@ const Card = ({ Image, ImageAlt, Title, Description }) => {
           style={{ height: '20px', width: '20px' }}
         />
       </div>
-      <h4 style={{ paddingTop: '1rem' }}>{Title} -></h4>
+      <h4 style={{ paddingTop: '1rem' }}>{Title}</h4>
       <h5 style={{ paddingTop: '1rem', fontWeight: 'normal' }}>
         {Description}
       </h5>

@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
+
 import axios from 'axios';
 import styled from 'styled-components';
+import ExperienceContext from '../context/experience/experienceContext';
 
 const Form = styled.form`
   display: flex;
@@ -41,12 +44,15 @@ const Button = styled.button`
 `;
 
 const SearchExperience = (props) => {
+  const experienceContext = useContext(ExperienceContext);
+  const { saveExperiences } = experienceContext;
+  const { push } = useHistory();
   const [value, setValue] = useState('');
-  const [results, setResults] = useState('');
   const [formSend, setFormSend] = useState(false);
   const [inputKm, setInputKm] = useState(5);
   const [cities, setCities] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     if (formSend) {
       const getCity = async () => {
@@ -74,56 +80,40 @@ const SearchExperience = (props) => {
         );
 
         //Me retourne en tableau la liste des villes autour
-        setCities(
+        await setCities(
           data.elements.map((element) => {
             return element.tags.name;
           })
         );
+        const arrayCities = await cities.join('&city=');
+        const request = `http://localhost:5000/api/experiences/${value}?${arrayCities}`;
+
+        //Send to my context
+        saveExperiences(request);
+
+        autoClickButton();
+        push('/experiences');
       }; // Fin getCity()
 
-      const getExperience = async () => {
-        // console.log(cities.join('&city='));
-        const arrayCities = cities.join('&city=');
-        const { data } = await axios.get(
-          `http://localhost:5000/api/experiences/${value}?${arrayCities}`
-        );
-
-        //Map to show as a list the Data
-        const allExperienceFetched = data.map((experience, index) => {
-          return (
-            <div key={index}>
-              <h1>{experience.title}</h1>
-              <h3>{experience.city}</h3>
-              <h5>{experience.createdBy}</h5>
-            </div>
-          );
-        });
-        setResults(allExperienceFetched);
-        setIsLoading(false);
-        const timeID = setTimeout(() => {
-          if (inputKm < 20) {
-            setInputKm((prevValue) => prevValue + 5);
-            autoClickButton();
-          } else {
-            return clearTimeout(timeID);
-          }
-        }, 4000);
-      }; //Fin getExperience()
-
-      getExperience();
+      // Let's fetch in our db
       getCity();
-
       setFormSend(!setFormSend);
     } // end formSend
-  }, [formSend, value, inputKm, cities, results]);
+
+    return () => {
+      return setFormSend(false);
+    };
+  }, [formSend, value, inputKm, cities, saveExperiences, push]);
 
   const autoClickButton = () => {
     const mybutton = document.querySelector('#send');
     mybutton.click();
   };
   function onSubmit(e) {
-    setFormSend(!formSend);
     e.preventDefault();
+    // NEED TO SET ALERT LATER
+    if (value.length < 2) return <h1>City cannot be empty</h1>;
+    setFormSend(!formSend);
   }
 
   // DEBUG
@@ -134,14 +124,7 @@ const SearchExperience = (props) => {
   const onChangeKm = (e) => {
     setInputKm(e.target.value);
   };
-  // Render all experiences saved in results
-  const renderAff = () => {
-    return (
-      <div>
-        <ul>{results}</ul>
-      </div>
-    );
-  };
+
   // J'affiche mon JSX
   return (
     <>
@@ -175,7 +158,7 @@ const SearchExperience = (props) => {
           </svg>
         </Button>
       </Form>
-      {isLoading ? 'Loading ...' : renderAff()}
+      {isLoading ? 'Loading ...' : ''}
     </>
   );
 };

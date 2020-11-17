@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import AuthState from './context/auth/AuthState';
 import AlertState from './context/alert/AlertState';
+import ExperienceState from './context/experience/ExperienceState';
 
 import Header from './partials/Header';
 import Home from './partials/Home';
@@ -13,15 +14,17 @@ const App = () => {
   return (
     <AuthState>
       <AlertState>
-        <BrowserRouter>
-          {/*  Header */}
-          <Header />
-          {/* ----------- */}
-          <Home />
-          {/* -------------- */}
-          <Footer />
-          {/* Footer */}
-        </BrowserRouter>
+        <ExperienceState>
+          <BrowserRouter>
+            {/*  Header */}
+            <Header />
+            {/* ----------- */}
+            <Home />
+            {/* -------------- */}
+            <Footer />
+            {/* Footer */}
+          </BrowserRouter>
+        </ExperienceState>
       </AlertState>
     </AuthState>
   );

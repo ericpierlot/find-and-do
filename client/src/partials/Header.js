@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import LogoImg from '../images/Find&Do.png';
 import AuthContext from '../context/auth/authContext';
+import ExperienceContext from '../context/experience/experienceContext';
 import subIcon from '../images/register.svg';
 
 const Head = styled.header`
@@ -82,6 +83,8 @@ const MobileDiv = styled.div`
 `;
 const Header = () => {
   const authContext = useContext(AuthContext);
+  const experienceContext = useContext(ExperienceContext);
+  const { experience } = experienceContext;
   const { isAuthenticated, logout, user, loadUser } = authContext;
   const [top, setTop] = useState(true);
   const [bottom, setBottom] = useState(false);
@@ -104,15 +107,27 @@ const Header = () => {
             <Li style={{ color: '#b62c2c' }}>Admin Panel</Li>
           </Link>
         )}
+        {experience.length === 0 ? null : (
+          <Link to='/experiences'>
+            <Li>Your last Research</Li>
+          </Link>
+        )}
         <Link to='/'>
           <Li>Home</Li>
         </Link>
         <Link to='/profil'>
           <Li>My account</Li>
         </Link>
-        <Link to='/experience-create'>
-          <Li>Create an experience</Li>
-        </Link>
+        {user && user.experienceCreated.length > 0 ? (
+          <Link to='/experience-manage'>
+            <Li>Manage my Experience</Li>
+          </Link>
+        ) : (
+          <Link to='/experience-create'>
+            <Li>Create an Experience</Li>
+          </Link>
+        )}
+
         <Link to='/' onClick={onLogout}>
           Logout
         </Link>
@@ -214,6 +229,11 @@ const Header = () => {
   const guestLinks = (
     <React.Fragment>
       <Ul>
+        {experience.length === 0 ? null : (
+          <Link to='/experiences'>
+            <Li>Your last Research</Li>
+          </Link>
+        )}
         <Link to='/'>
           <Li>Home</Li>
         </Link>
@@ -246,8 +266,6 @@ const Header = () => {
     window.addEventListener('scroll', ScrollBottom);
     return () => window.removeEventListener('scroll', ScrollBottom);
   });
-
-  // isMobile or not
 
   return (
     <Head

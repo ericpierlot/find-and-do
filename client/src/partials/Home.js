@@ -9,8 +9,10 @@ import Profil from '../pages/Profil';
 import Personal from '../pages/profil/Personal';
 import LoginAndSecurity from '../pages/profil/LoginAndSecurity';
 import Preferences from '../pages/profil/Preferences';
+import Experiences from '../pages/Experiences';
 
 import PrivateRoute from '../utils/PrivateRoute';
+import ExperienceCreate from '../pages/experience/ExperienceCreate';
 
 // const Flex = styled.article`
 //   display: flex;
@@ -42,6 +44,12 @@ const Home = () => {
           exact
           path='/profil/preferences'
           component={Preferences}
+        />
+        <Route exact path='/experiences' component={Experiences} />
+        <PrivateRoute
+          exact
+          path='/experience-create'
+          component={ExperienceCreate}
         />
       </Switch>
     </Section1>

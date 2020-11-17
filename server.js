@@ -9,6 +9,20 @@ connectDB();
 // Middlewares
 app.use(express.json());
 
+// Authorize headers
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Content-Type, Authorization, x-auth-token'
+  );
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 // Routes
 app.use('/api/users', require('./routes/users'));
 app.use('/api/experiences', require('./routes/experiences'));

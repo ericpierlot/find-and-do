@@ -2,7 +2,15 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AuthContext from '../../context/auth/authContext';
+import AlertContext from '../../context/alert/alertContext';
+import Alerts from '../../utils/Alerts';
 import axios from 'axios';
+import {
+  Button,
+  InputDays,
+  InputYears,
+  SelectMonths,
+} from '../../css/styled/Subscribe/styled';
 
 const Section = styled.section`
   margin: auto;
@@ -114,43 +122,10 @@ const Input = styled.input`
   }
 `;
 
-const Button = styled.button`
-  width: 50%;
-  text-align: center;
-  padding: 0.3rem 1rem 0.3rem 1rem;
-  font-size: 1.2rem;
-  color: #fff;
-  cursor: pointer;
-  height: 3rem;
-  text-align: center;
-  border: none;
-  background-size: 300% 100%;
-  border-radius: 50px;
-  transition: all 0.3s ease-in-out;
-  background-image: linear-gradient(
-    to right,
-    #eb3941,
-    #f15e64,
-    #e14e53,
-    #e2373f
-  );
-  font-weight: 600;
-  box-shadow: 0 5px 15px rgba(242, 97, 103, 0.4);
-  line-height: 0;
-  :hover {
-    background-position: 100% 0;
-    transition: all 0.3s ease-in-out;
-  }
-  :focus {
-    outline: none;
-  }
-  margin: auto;
-  margin-bottom: 1rem;
-  border: 3px rgba(255, 255, 255, 0.3) solid;
-`;
-
 const Personal = () => {
   const authContext = useContext(AuthContext);
+  const alertContext = useContext(AlertContext);
+  const { setAlert } = alertContext;
   const { user, loadUser } = authContext;
   const [isClicked, setIsClicked] = useState({
     legalName: false,
@@ -163,7 +138,7 @@ const Personal = () => {
     email: false,
   });
   const { firstName, lastName, birthdate, email } = user;
-  const { days, months, years } = user.birthdate;
+  const { days, months, years } = birthdate;
   const [newUser, setNewUser] = useState({
     email,
     firstName,
@@ -174,8 +149,6 @@ const Personal = () => {
       years,
     },
   });
-  console.log('from database USER :', user);
-  console.log('NewUser object : ', newUser);
 
   useEffect(() => {
     // In case it's Legal name asking to modify
@@ -246,6 +219,7 @@ const Personal = () => {
 
     // eslint-disable-next-line
   }, [newSelected]);
+  // When one category become true, this useEffect will be rendered then doing fetch for the properly case
   console.log('ONFLY NEWUSER : ', newUser);
   const onChange = (e) => {
     setNewUser({
@@ -280,25 +254,42 @@ const Personal = () => {
   const LegalNameSubmit = (e) => {
     e.preventDefault();
     // Have to set my alerts to throw to the user What's wrong
-    if (newUser.firstName === '') return;
-    if (newUser.lastName === '') return;
+    if (newUser.firstName === '')
+      return setAlert('Your firstname cannot be empty', 'danger');
+
+    if (newUser.lastName === '')
+      return setAlert('Your lastname cannot be empty', 'danger');
 
     setNewSelected({ legalName: true });
   };
 
   const BirthdateSubmit = (e) => {
     e.preventDefault();
-    if (newUser.birthdate.days === '') return;
-    if (newUser.birthdate.months === '') return;
-    if (newUser.birthdate.years === '') return;
+    if (newUser.birthdate.months === 'Month' || newUser.birthdate.months === '')
+      return setAlert('You have to choose a month', 'danger');
+    if (newUser.birthdate.days > 31)
+      return setAlert('Day cannot be bigger than 31', 'danger');
+    if (newUser.birthdate.days < 1)
+      return setAlert('Day cannot be less than 1', 'danger');
+    if (newUser.birthdate.years > 2021)
+      return setAlert('You cannot be born in the future', 'danger');
+    if (newUser.birthdate.years < 1900)
+      return setAlert(
+        'Mmmmh you should go to the World books for older Human',
+        'danger'
+      );
 
     // Everything looks fine, then let's send :
     setNewSelected({ birthdate: true });
   };
 
+  const emailIsValid = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
   const EmailSubmit = (e) => {
     e.preventDefault();
-    if (newUser.email === '') return;
+    if (!emailIsValid(email)) return setAlert('Email invalid', 'danger');
 
     // Everything looks fine, then let's send :
     setNewSelected({ email: true });
@@ -309,7 +300,7 @@ const Personal = () => {
       <Wrapper>
         <Top>
           <h4>
-            <Link to='/profil'>Profil</Link> > Personal Info
+            <Link to='/profil'>Profil</Link> → Personal Info
           </h4>
           <br />
           <h2>Personal Information</h2>
@@ -370,6 +361,7 @@ const Personal = () => {
                     />
                   </div>
                   <Button>Save</Button>
+                  <Alerts />
                 </div>
               </>
             ) : (
@@ -426,34 +418,43 @@ const Personal = () => {
                 <br />
                 <div style={{}}>
                   <div>
-                    <label>Months: </label>
-                    <Input
-                      placeholder={birthdate.months}
+                    <SelectMonths
+                      id='months'
+                      name='months'
                       value={newUser.birthdate.months}
                       onChange={onChangeBirthdate}
-                      name='months'
-                      style={{ height: '2rem' }}
-                    />
-                    <br />
-                    <label>Days: </label>
-                    <Input
-                      placeholder={birthdate.days}
-                      value={newUser.birthdate.days}
-                      onChange={onChangeBirthdate}
-                      style={{ height: '2rem' }}
+                    >
+                      <option>Month</option>
+                      <option>January</option>
+                      <option>February</option>
+                      <option>March</option>
+                      <option>April</option>
+                      <option>May</option>
+                      <option>June</option>
+                      <option>July</option>
+                      <option>August</option>
+                      <option>September</option>
+                      <option>October</option>
+                      <option>November</option>
+                      <option>December</option>
+                    </SelectMonths>
+                    <InputDays
+                      id='days'
                       name='days'
-                    />
-                    <br />
-                    <label>Years: </label>
-                    <Input
-                      placeholder={birthdate.years}
-                      value={birthdate.years}
+                      value={newUser.birthdate.days}
+                      placeholder='DD'
                       onChange={onChangeBirthdate}
-                      style={{ height: '2rem' }}
+                    />
+                    <InputYears
+                      id='years'
                       name='years'
+                      value={newUser.birthdate.years}
+                      placeholder='YYYY'
+                      onChange={onChangeBirthdate}
                     />
                   </div>
-                  <Button>Save</Button>
+                  <Button style={{ width: '30%' }}>Save</Button>
+                  <Alerts />
                 </div>
               </>
             ) : (
@@ -506,17 +507,20 @@ const Personal = () => {
                 <br />
                 <div style={{}}>
                   <div>
-                    <label>Your address email : </label>
+                    <label>New E-mail : </label>
                     <Input
+                      type='email'
                       placeholder={user.email}
                       value={newUser.email}
                       onChange={onChangeEmail}
                       name='email'
-                      style={{ height: '2rem' }}
+                      style={{ height: '2rem', width: '300px' }}
+                      required
                     />
                     <br />
                   </div>
                   <Button>Save</Button>
+                  <Alerts />
                 </div>
               </>
             ) : (
@@ -525,7 +529,7 @@ const Personal = () => {
                   <strong>Email</strong>
                   <br />
                   <br />
-                  Your address E-mail is {newUser.email}
+                  {newUser.email}
                 </p>
                 <Modify
                   onClick={() => {

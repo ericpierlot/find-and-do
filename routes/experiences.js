@@ -59,8 +59,8 @@ router.post(
         'Title must have minimum 2 and max 150 caracters'
       ).isLength({ min: 2, max: 150 }),
       body('description', 'Description can not be empty').not().isEmpty(),
-      body('imagesURL', 'Must have 3 pictures').isLength({ min: 3 }),
       body('city', 'A city is required').not().isEmpty(),
+      body('address', 'An address is required').not().isEmpty(),
       body('category', 'At least one category must be define').not().isEmpty(),
     ],
   ],
@@ -71,13 +71,13 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { title, description, imagesURL, city, category } = req.body;
+    const { title, description, pictures, city, category } = req.body;
     try {
       //Create experience in DB
       const experience = new Experience({
         title,
         description,
-        imagesURL,
+        pictures,
         city,
         category,
         createdBy: req.user.id,
