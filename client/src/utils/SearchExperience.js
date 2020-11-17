@@ -86,7 +86,7 @@ const SearchExperience = (props) => {
           })
         );
         const arrayCities = await cities.join('&city=');
-        const request = `http://localhost:5000/api/experiences/${value}?${arrayCities}`;
+        const request = `/api/experiences/${value}?${arrayCities}`;
 
         //Send to my context
         saveExperiences(request);

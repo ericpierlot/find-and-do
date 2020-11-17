@@ -17,7 +17,7 @@ module.exports = async (req, res, next) => {
 
     // check if he is admin
     const user = await User.findById(req.user.id);
-    if (!user.adminAccess)
+    if (!user.isAdmin)
       return res.status(400).json({ message: 'Access declined' });
     next();
 
