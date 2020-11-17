@@ -11,7 +11,12 @@ const ExperienceState = (props) => {
 
   // Set Alert
   const saveExperiences = async (data) => {
-    const res = await axios.get(data);
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    const res = await axios.get(data, config);
     dispatch({
       type: SEARCH_EXPERIENCE,
       payload: res.data,
