@@ -123,7 +123,7 @@ const ExperienceCreate = () => {
   const authContext = useContext(AuthContext);
   const { user } = authContext;
   // Modifier à 0 pour un fonctionnement normal
-  const [numberOfPage, setNumberOfPage] = useState(1);
+  const [numberOfPage, setNumberOfPage] = useState(0);
 
   const [liSelected, setLiSelected] = useState(0);
   const [experience, setExperience] = useState({
