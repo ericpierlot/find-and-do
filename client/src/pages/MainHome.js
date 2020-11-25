@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import SearchExperience from '../utils/SearchExperience';
 
@@ -14,7 +14,6 @@ const Section = styled.section`
 const Title = styled.h1`
   width: 100%;
   text-align: center;
-  font-family: Poppins;
   color: #ffffff;
   text-shadow: 0 1px 0 #cccccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9,
     0 5px 0 #aaa, 0 6px 1px rgba(0, 0, 0, 0.1), 0 0 5px rgba(0, 0, 0, 0.1),
@@ -63,16 +62,6 @@ const Contenu = styled.div`
 `;
 
 const MainHome = () => {
-  const [top, setTop] = useState(true);
-
-  useEffect(() => {
-    const scrollHandler = () => {
-      window.pageYOffset > 10 ? setTop(false) : setTop(true);
-    };
-    window.addEventListener('scroll', scrollHandler);
-    return () => window.removeEventListener('scroll', scrollHandler);
-  }, [top]);
-
   return (
     <Section>
       <Title>Find & Do</Title>
@@ -81,7 +70,7 @@ const MainHome = () => {
         <SearchExperience
           type='search'
           name='ville'
-          placeholder='Search in a city...'
+          placeholder='Chercher dans une ville...'
         />
       </Contenu>
     </Section>

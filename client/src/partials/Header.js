@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import LogoImg from '../images/Find&Do.png';
+import LogoImgWhite from '../images/Find&Do-white.png';
 import AuthContext from '../context/auth/authContext';
 import ExperienceContext from '../context/experience/experienceContext';
 import subIcon from '../images/register.svg';
@@ -26,6 +27,7 @@ const Head = styled.header`
     border-top: 2px lightgrey solid;
     transition: none !important;
     transform: none !important;
+    z-index: 999;
   }
 `;
 
@@ -37,6 +39,16 @@ const LogoDiv = styled.div`
   width: 120px;
   height: 80px;
   background: url(${LogoImg});
+`;
+
+const LogoDivWhite = styled.div`
+  margin-left: 3rem;
+  @media (max-width: 920px) {
+    display: none;
+  }
+  width: 120px;
+  height: 80px;
+  background: url(${LogoImgWhite});
 `;
 
 const Ul = styled.ul`
@@ -100,36 +112,36 @@ const Header = () => {
 
   const authLinks = (
     <React.Fragment>
-      <Li>Welcome back {user && user.firstName}</Li>
+      <h4>Bienvenue {user && user.firstName} !</h4>
       <Ul>
         {user && user.isAdmin && (
           <Link to='/admin'>
-            <Li style={{ color: '#b62c2c' }}>Admin Panel</Li>
+            <Li style={{ color: '#b62c2c' }}>Panel Admin</Li>
           </Link>
         )}
         {experience.length === 0 ? null : (
           <Link to='/experiences'>
-            <Li>Your last Research</Li>
+            <Li>Votre dernière recherche</Li>
           </Link>
         )}
         <Link to='/'>
-          <Li>Home</Li>
+          <Li>Accueil</Li>
         </Link>
         <Link to='/profil'>
-          <Li>My account</Li>
+          <Li>Mon compte</Li>
         </Link>
         {user && user.experienceCreated.length > 0 ? (
           <Link to='/experience-manage'>
-            <Li>Manage my Experience</Li>
+            <Li>Gérer votre expérience</Li>
           </Link>
         ) : (
           <Link to='/experience-create'>
-            <Li>Create an Experience</Li>
+            <Li>Créer une Expérience</Li>
           </Link>
         )}
 
         <Link to='/' onClick={onLogout}>
-          Logout
+          Se déconnecter
         </Link>
       </Ul>
     </React.Fragment>
@@ -164,10 +176,10 @@ const Header = () => {
           </svg>
         </Link>
         <Link to='/experience-create'>
-          <Li>Add experience</Li>
+          <Li>Ajouter une Expérience</Li>
         </Link>
         <Link to='/' onClick={onLogout}>
-          Logout
+          Quitter
         </Link>
         {user && user.isAdmin && (
           <Link to='/admin'>
@@ -231,17 +243,17 @@ const Header = () => {
       <Ul>
         {experience.length === 0 ? null : (
           <Link to='/experiences'>
-            <Li>Your last Research</Li>
+            <Li>Votre dernière recherche</Li>
           </Link>
         )}
         <Link to='/'>
-          <Li>Home</Li>
+          <Li>Accueil</Li>
         </Link>
         <Link to='/subscribe'>
-          <Li>Sign up</Li>
+          <Li>S'inscrire</Li>
         </Link>
         <Link to='/login'>
-          <Li>Log in</Li>
+          <Li>Se connecter</Li>
         </Link>
       </Ul>
     </React.Fragment>
@@ -277,9 +289,7 @@ const Header = () => {
           : ' rgba(60, 64, 67, 0.15) 0px 2px 6px 2px, rgba(60, 64, 67, 0.3) 0px 1px 2px 0px',
       }}
     >
-      <Link to='/'>
-        <LogoDiv />
-      </Link>
+      <Link to='/'>{top ? <LogoDivWhite /> : <LogoDiv />}</Link>
       {isOnMobile
         ? isAuthenticated
           ? authLinksMobile

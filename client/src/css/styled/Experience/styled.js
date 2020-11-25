@@ -7,7 +7,6 @@ const Section = styled.section`
   margin-bottom: 45px;
   @media (max-width: 920px) {
     margin: 0;
-    overflow: auto;
   }
 `;
 const Wrapper = styled.section`
@@ -18,27 +17,17 @@ const Wrapper = styled.section`
   max-width: 90vw;
   border-radius: 30px;
 
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.2);
 
   @media (max-width: 920px) {
-    min-width: 100%;
-    border-radius: none;
-    background-color: rgba(255, 255, 255, 0.3);
+    max-width: 100vw;
+    margin-top: 0;
     border-radius: 0;
-    box-shadow: none;
-    min-height: 0;
-    margin: 0;
-    margin-bottom: 35px;
-    padding: 1rem;
-    :focus-within {
-      box-shadow: none;
-      transform: none;
-    }
   }
 `;
 
 const Top = styled.header`
-  width: 60%;
+  width: 80%;
   margin: auto;
   padding-top: 1rem;
 
@@ -47,18 +36,22 @@ const Top = styled.header`
   }
 `;
 const Article = styled.article`
-  width: 60%;
+  width: 80%;
   margin: auto;
   padding-top: 3rem;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: wrap;
 
   a {
     text-decoration: none;
     color: black;
   }
-  @media (max-width: 920px) {
+  @media (max-width: 1400px) {
+    width: 100%;
+  }
+
+  @media (max-width: 1020px) {
     width: 100%;
   }
 `;

@@ -9,7 +9,6 @@ const ExperienceState = (props) => {
 
   const [state, dispatch] = useReducer(experienceReducer, initialState);
 
-  // Set Alert
   const saveExperiences = async (data) => {
     const config = {
       headers: {

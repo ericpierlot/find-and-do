@@ -11,7 +11,6 @@ const Section = styled.section`
 `;
 
 const Wrapper = styled.section`
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.2);
   min-height: 50vh;
   width: 80%;
   margin: auto;
@@ -20,9 +19,14 @@ const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background-color: rgba(255, 255, 255, 0.7);
   transition: box-shadow 250ms ease;
   transition: transform 250ms ease;
+  background-color: rgba(255, 255, 255, 0.3);
+
+  border-radius: 50px;
+  padding: 1rem;
+  border: whitesmoke 2px solid;
+  box-shadow: 0px 0.2em 0.5em rgba(0, 0, 0, 0.3);
   :focus-within {
     box-shadow: 0px 0.2em 2.5em rgba(0, 0, 0, 0.3);
     transform: scale(1.025);
@@ -87,7 +91,7 @@ const Back = styled.a`
     outline: none;
   }
   margin: auto;
-  margin-bottom: 1rem;
+  margin-bottom: 3rem;
   border: 3px rgba(255, 255, 255, 0.3) solid;
 `;
 const Button = styled.button`
@@ -243,7 +247,7 @@ const InputYears = styled.input.attrs((props) => ({
   name: 'years',
 }))`
   font-size: 1.2rem;
-  width: 20%;
+  width: 15%;
   height: 2rem;
   outline: none;
   border-top-right-radius: 5px;
@@ -270,14 +274,14 @@ const SelectMonths = styled.select.attrs((props) => ({
   name: 'months',
 }))`
   font-size: 1.2rem;
-  width: 50%;
+  width: 25%;
   height: 2rem;
   outline: none;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
   background-color: rgba(255, 255, 255, 0.4);
   margin-bottom: 1rem;
-  padding-left: 1rem;
+  padding-left: 0.2rem;
   border: none;
   border: 0.5px white solid;
   border-bottom: 2px black solid;

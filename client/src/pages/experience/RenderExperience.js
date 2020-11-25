@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import ExperienceContext from '../../context/experience/experienceContext';
 import {} from '../../css/styled/Profil/styled';
 import { v4 as uuidv4 } from 'uuid';
+import CardExperience from './components/CardExperience';
 
 const RenderExperience = () => {
   const experienceContext = useContext(ExperienceContext);
@@ -63,6 +64,13 @@ const RenderExperience = () => {
   });
   return (
     <>
+      <CardExperience />
+      <CardExperience />
+      <CardExperience />
+      <CardExperience />
+      <CardExperience />
+      <CardExperience />
+      <CardExperience />
       <div id='send' onClick={() => console.log('')}></div>
       {renderExperience}
     </>

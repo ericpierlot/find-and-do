@@ -11,14 +11,17 @@ const Section = styled.section`
 `;
 
 const Wrapper = styled.section`
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.2);
   min-height: 50vh;
   margin: auto;
   max-width: 40vw;
   border-radius: 30px;
   display: flex;
   flex-direction: column;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 50px;
+  padding: 1rem;
+  border: whitesmoke 2px solid;
+  box-shadow: 0px 0.2em 0.5em rgba(0, 0, 0, 0.3);
   transition: box-shadow 250ms ease;
   transition: transform 250ms ease;
   :focus-within {
@@ -42,6 +45,10 @@ const Wrapper = styled.section`
 const FormContainer = styled.form`
   max-width: 150%;
   min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const H1 = styled.h1`
@@ -51,7 +58,7 @@ const H1 = styled.h1`
 `;
 
 const Button = styled.button`
-  width: 55%;
+  width: 50%;
   text-align: center;
   padding: 0.3rem 1rem 0.3rem 1rem;
   font-size: 1.2rem;

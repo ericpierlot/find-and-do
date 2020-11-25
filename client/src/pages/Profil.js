@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import Card from '../utils/components/Card';
+import Card from './profil/components/Card';
 import ProfilIcon from '../images/register.svg';
 import styled from 'styled-components';
 import AuthContext from '../context/auth/authContext';
@@ -16,22 +16,21 @@ const Section = styled.section`
   }
 `;
 const Wrapper = styled.section`
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.2);
   min-height: 90vh;
   margin: auto;
   margin-top: 5vh;
   max-width: 90vw;
   border-radius: 30px;
 
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: transparent;
 
   @media (max-width: 920px) {
     min-width: 100%;
+    height: 100vh;
     border-radius: none;
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 0;
     box-shadow: none;
-    min-height: 0;
     margin: 0;
     margin-bottom: 35px;
     :focus-within {
@@ -76,7 +75,7 @@ const Profil = () => {
     <Section>
       <Wrapper>
         <Top>
-          <h2>Profil</h2>
+          <h2>Mon compte</h2>
           <p>
             {user.firstName}, {user.email}
           </p>
@@ -86,24 +85,24 @@ const Profil = () => {
             <Card
               Image={ProfilIcon}
               ImageAlt='Personal informations'
-              Title='Personal informations'
-              Description='Give more personal information and say how you will be contacted'
+              Title='Infos personnelles'
+              Description='Fournissez des renseignements personnels'
             />
           </Link>
           <Link to='/profil/login-and-security'>
             <Card
               Image={ProfilIcon}
-              ImageAlt='Login and security'
-              Title='Login and security'
-              Description='Update your password and the security of your account'
+              ImageAlt='Connexion et sécurité'
+              Title='Connexion et sécurité'
+              Description='Mettez à jour votre mot de passe et sécurisez votre compte'
             />
           </Link>
           <Link to='/profil/preferences'>
             <Card
               Image={ProfilIcon}
-              ImageAlt='Global preferences'
-              Title='Global preferences'
-              Description='Define your language and your favorite Theme light or dark'
+              ImageAlt='Préférences globales'
+              Title='Préférences globales'
+              Description='Definissez votre langue, et votre thème par défault'
             />
           </Link>
         </Article>

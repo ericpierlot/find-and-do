@@ -8,29 +8,21 @@ import { Button } from '../../css/styled/Subscribe/styled';
 import axios from 'axios';
 
 const Wrapper = styled.section`
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.2);
   min-height: 90vh;
   margin: auto;
   margin-top: 5vh;
   max-width: 90vw;
-  border-radius: 30px;
-
-  background-color: rgba(255, 255, 255, 0.8);
 
   @media (max-width: 920px) {
     min-width: 100%;
+    min-height: 100vh;
     border-radius: none;
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 0;
     box-shadow: none;
-    min-height: 0;
     margin: 0;
     margin-bottom: 35px;
     padding: 1rem;
-    :focus-within {
-      box-shadow: none;
-      transform: none;
-    }
   }
 `;
 
@@ -49,6 +41,7 @@ const Top = styled.header`
   width: 60%;
   margin: auto;
   padding-top: 1rem;
+  margin-bottom: 2rem;
 
   @media (max-width: 920px) {
     width: 100%;
@@ -56,8 +49,13 @@ const Top = styled.header`
 `;
 const Article = styled.article`
   width: 60%;
+  background-color: transparent;
+  backdrop-filter: blur(20px);
+  border-radius: 10px;
+  padding: 1rem;
+  border: whitesmoke 2px solid;
+  box-shadow: 0px 0.2em 0.5em rgba(0, 0, 0, 0.3);
   margin: auto;
-  padding-top: 3rem;
   display: flex;
   flex-wrap: wrap;
 
@@ -77,7 +75,6 @@ const Flexbox = styled.form`
   justify-content: space-between;
   flex-wrap: wrap;
   border-bottom: 2px white solid;
-  padding-bottom: 80px;
   margin-top: 10px;
   @media (max-width: 920px) {
     width: 100%;
@@ -100,17 +97,16 @@ const Modify = styled.button`
 
 const Input = styled.input`
   font-size: 1.2rem;
-  width: 50%;
+  width: 70%;
   height: 2rem;
   outline: none;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
   background-color: rgba(255, 255, 255, 0.4);
   margin-bottom: 1rem;
-
+  padding-left: 1rem;
   border: none;
   border-bottom: 2px black solid;
-  margin-bottom: 2.5rem;
   transition: all 330ms ease-in-out;
 
   :focus {
@@ -154,7 +150,7 @@ const LoginAndSecurity = () => {
             config
           );
         } catch (error) {
-          setAlert('Error, actual password is wrong', 'danger');
+          setAlert('Le mot de passe actuel est incorrect', 'danger');
           clearErrors();
         }
         // Refresh the user in my Context
@@ -174,10 +170,13 @@ const LoginAndSecurity = () => {
   const passwordOnSubmit = (e) => {
     e.preventDefault();
     if (password.length < 6 || password2.length < 6 || actual.length < 6)
-      return setAlert('Password cannot be less than 6 characters', 'danger');
+      return setAlert(
+        'Le mot de passe ne peut pas faire moins de 6 caractères',
+        'danger'
+      );
     if (password !== password2)
       return setAlert(
-        'Be careful, new password and confirm are different',
+        'Attention, les deux nouveaux mots de passe ne correspondent pas',
         'danger'
       );
 
@@ -195,12 +194,11 @@ const LoginAndSecurity = () => {
     <Section>
       <Wrapper>
         <Top>
-          {' '}
           <h4>
-            <Link to='/profil'>Profil</Link> → Login and Security
+            <Link to='/profil'>Mon compte</Link> → Connexion et sécurité
           </h4>
           <br />
-          <h2>Login and Security</h2>
+          <h2>Connexion et sécurité</h2>
         </Top>
         <Article>
           <Flexbox onSubmit={passwordOnSubmit}>
@@ -214,8 +212,7 @@ const LoginAndSecurity = () => {
                     justifyContent: 'space-between',
                   }}
                 >
-                  <strong>Login</strong>
-
+                  <strong>Connexion</strong>
                   <div
                     style={{
                       cursor: 'pointer',
@@ -226,48 +223,50 @@ const LoginAndSecurity = () => {
                       setIsClicked(false);
                     }}
                   >
-                    Cancel
+                    Annuler
                   </div>
                 </div>
 
                 <div>
-                  <div>
-                    <label>Actual password : </label>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    <br />
+                    <label>Mot de passe actuel : </label>
                     <Input
                       type='password'
                       value={actual}
                       onChange={passwordOnChange}
                       name='actual'
-                      style={{ height: '2rem' }}
                     />
                     <br />
-                    <br />
-                    <label>New Password : </label>
+                    <label>Nouveau mot de passe : </label>
                     <Input
                       type='password'
                       value={password}
                       onChange={passwordOnChange}
                       name='password'
-                      style={{ height: '2rem' }}
                     />
                     <br />
-                    <label>New Password confirmation : </label>
+                    <label>Nouveau mot de passe : </label>
                     <Input
                       type='password'
                       value={password2}
                       onChange={passwordOnChange}
-                      style={{ height: '2rem' }}
                       name='password2'
                     />
                   </div>
-                  <Button>Save</Button>
+                  <Button style={{ width: '70%' }}>Sauvegarder</Button>
                   <Alerts />
                 </div>
               </>
             ) : (
               <>
                 <p>
-                  <strong>Login</strong>
+                  <strong>Connexion</strong>
                   <br />
                   <br />
                 </p>
@@ -276,7 +275,7 @@ const LoginAndSecurity = () => {
                     setIsClicked({ password: true });
                   }}
                 >
-                  Modify
+                  Modifier
                 </Modify>
               </>
             )}

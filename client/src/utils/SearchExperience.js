@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 import ExperienceContext from '../context/experience/experienceContext';
+import Spinner from './components/Spinner.js';
 
 const Form = styled.form`
   display: flex;
@@ -52,13 +53,57 @@ const SearchExperience = (props) => {
   const [inputKm, setInputKm] = useState(5);
   const [cities, setCities] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [citySuggested, setCitySuggested] = useState([]);
+
+  // UseEffect for my API to suggest City name
+  useEffect(() => {
+    if (value.length > 0) {
+      const config = {
+        headers: '',
+      };
+      const FetchCityAPI = async () => {
+        const { data } = await axios.get(
+          `https://geocode.search.hereapi.com/v1/geocode?q=${value}&apiKey=vVtg-sSJWaB1KQ5481hHJq5PmJV27oiCwpdS6p70A38`,
+          config
+        );
+        if (data) {
+          console.log('data : ', data);
+          // Filter to have only French city
+          const dataFiltered = await data.items.filter(
+            (item) => item.address.countryName === 'France'
+          );
+          console.log('Data filtré : ', dataFiltered);
+          await setCitySuggested(dataFiltered);
+        }
+      };
+      FetchCityAPI();
+    }
+  }, [value]);
+
+  // Render city name & postal code
+  const render = citySuggested.map((item, index) => {
+    return (
+      <option
+        key={index}
+        value={`${item.address.city} - ${item.address.postalCode}`}
+      />
+    );
+  });
 
   useEffect(() => {
     if (formSend) {
       const getCity = async () => {
         setIsLoading(true);
+        //remove postal code for the request
+        const cityWithoutPostalCode = value.split(' - ');
         const { data } = await axios.get(
-          `https://www.overpass-api.de/api/interpreter?data=[out:json][timeout:25];(node["place"="city"]["name"="${value}"]->.ville;node["place"="village"]["name"="${value}"]->.village;node["place"="town"]["name"="${value}"]->.commune;node(around.village:${
+          `https://www.overpass-api.de/api/interpreter?data=[out:json][timeout:25];(node["place"="city"]["name"="${
+            cityWithoutPostalCode[0]
+          }"]->.ville;node["place"="village"]["name"="${
+            cityWithoutPostalCode[0]
+          }"]->.village;node["place"="town"]["name"="${
+            cityWithoutPostalCode[0]
+          }"]->.commune;node(around.village:${
             inputKm * 1000
           })["place"="village"];node(around.ville:${
             inputKm * 1000
@@ -130,6 +175,7 @@ const SearchExperience = (props) => {
     <>
       <Form onSubmit={onSubmit}>
         <Input
+          list='suggest'
           id='searchCity'
           type={props.type}
           value={value}
@@ -139,6 +185,7 @@ const SearchExperience = (props) => {
           name={props.name}
           placeholder={props.placeholder}
         />
+        <datalist id='suggest'>{render}</datalist>
         <SelectKm
           id='km'
           type='number'
@@ -158,7 +205,7 @@ const SearchExperience = (props) => {
           </svg>
         </Button>
       </Form>
-      {isLoading ? 'Loading ...' : ''}
+      {isLoading ? <Spinner /> : ''}
     </>
   );
 };

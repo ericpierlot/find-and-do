@@ -37,11 +37,11 @@ const Login = (props) => {
       props.history.push('/');
     }
     if (error === 'Email not found') {
-      setAlert('Sorry, I cannot find this e-mail !');
+      setAlert('Ces identifiants ne correspondent pas');
       clearErrors();
     }
     if (error === 'Password not match') {
-      setAlert('Sorry password is wrong', 'danger');
+      setAlert('Ces identifiants ne correspondent', 'danger');
       clearErrors();
     }
 
@@ -72,7 +72,7 @@ const Login = (props) => {
   return (
     <Section>
       <Wrapper>
-        <H1>Login</H1>
+        <H1>Connexion</H1>
         <Alerts />
         <FormContainer onSubmit={onSubmitForm}>
           <Label>E-mail :</Label>
@@ -85,7 +85,7 @@ const Login = (props) => {
             required
           />
 
-          <Label>Password :</Label>
+          <Label>Mot de passe :</Label>
           <InputPassword
             id='password'
             name='password'
@@ -96,11 +96,12 @@ const Login = (props) => {
           />
 
           <Button name='submit' type='submit' onSubmit={onSubmitForm}>
-            Continue
+            Continuer
           </Button>
         </FormContainer>
         <span>
-          Don't have an account ? <Link to='/subscribe'>Sign up</Link>
+          Vous n'avez pas de compte ?{' '}
+          <Link to='/subscribe'>Créez un compte</Link>
         </span>
       </Wrapper>
     </Section>

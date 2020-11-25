@@ -23,17 +23,15 @@ const Section = styled.section`
   }
 `;
 const Wrapper = styled.section`
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.2);
   min-height: 90vh;
   margin: auto;
   margin-top: 5vh;
   max-width: 90vw;
   border-radius: 30px;
 
-  background-color: rgba(255, 255, 255, 0.8);
-
   @media (max-width: 920px) {
     min-width: 100%;
+    height: 100vh;
     border-radius: none;
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 0;
@@ -42,10 +40,6 @@ const Wrapper = styled.section`
     margin: 0;
     margin-bottom: 35px;
     padding: 1rem;
-    :focus-within {
-      box-shadow: none;
-      transform: none;
-    }
   }
 `;
 
@@ -83,6 +77,13 @@ const Flexbox = styled.form`
   border-bottom: 2px white solid;
   padding-bottom: 80px;
   margin-top: 10px;
+  background-color: transparent;
+  backdrop-filter: blur(20px);
+  border-radius: 10px;
+  padding: 1rem;
+  border: whitesmoke 2px solid;
+  box-shadow: 0px 0.2em 0.5em rgba(0, 0, 0, 0.3);
+
   @media (max-width: 920px) {
     width: 100%;
     border-bottom: 1px white solid;
@@ -255,10 +256,10 @@ const Personal = () => {
     e.preventDefault();
     // Have to set my alerts to throw to the user What's wrong
     if (newUser.firstName === '')
-      return setAlert('Your firstname cannot be empty', 'danger');
+      return setAlert('Votre prénom ne peut pas être vide', 'danger');
 
     if (newUser.lastName === '')
-      return setAlert('Your lastname cannot be empty', 'danger');
+      return setAlert('Votre nom de famille ne peut pas être vide', 'danger');
 
     setNewSelected({ legalName: true });
   };
@@ -266,16 +267,16 @@ const Personal = () => {
   const BirthdateSubmit = (e) => {
     e.preventDefault();
     if (newUser.birthdate.months === 'Month' || newUser.birthdate.months === '')
-      return setAlert('You have to choose a month', 'danger');
+      return setAlert('Vous devez choisir un mois', 'danger');
     if (newUser.birthdate.days > 31)
-      return setAlert('Day cannot be bigger than 31', 'danger');
+      return setAlert('Le jour ne peut pas être plus grand que 31', 'danger');
     if (newUser.birthdate.days < 1)
-      return setAlert('Day cannot be less than 1', 'danger');
+      return setAlert('Le jour ne peut pas être plus petit que 1', 'danger');
     if (newUser.birthdate.years > 2021)
-      return setAlert('You cannot be born in the future', 'danger');
+      return setAlert('Vous ne pouvez pas être né dans le futur', 'danger');
     if (newUser.birthdate.years < 1900)
       return setAlert(
-        'Mmmmh you should go to the World books for older Human',
+        'Mmmmh vous devez vous inscrire dans le livre des records.. du plus viel Humain',
         'danger'
       );
 
@@ -289,7 +290,8 @@ const Personal = () => {
 
   const EmailSubmit = (e) => {
     e.preventDefault();
-    if (!emailIsValid(email)) return setAlert('Email invalid', 'danger');
+    if (!emailIsValid(email))
+      return setAlert('Cette adresse e-mail est invalide', 'danger');
 
     // Everything looks fine, then let's send :
     setNewSelected({ email: true });
@@ -300,10 +302,10 @@ const Personal = () => {
       <Wrapper>
         <Top>
           <h4>
-            <Link to='/profil'>Profil</Link> → Personal Info
+            <Link to='/profil'>Mon compte</Link> → Infos personnelles
           </h4>
           <br />
-          <h2>Personal Information</h2>
+          <h2>Infos personnelles</h2>
         </Top>
         <Article>
           <Flexbox onSubmit={LegalNameSubmit}>
@@ -317,7 +319,7 @@ const Personal = () => {
                     justifyContent: 'space-between',
                   }}
                 >
-                  <strong>Legal Name</strong>
+                  <strong>Nom complet</strong>
 
                   <div
                     style={{
@@ -329,20 +331,20 @@ const Personal = () => {
                       setIsClicked(false);
                     }}
                   >
-                    Cancel
+                    Annuler
                   </div>
                 </div>
                 <br />
                 <br />
                 <div style={{ width: '100%' }}>
-                  This is the name that you have on your passport or ID card or
-                  License driving for example.
+                  C'est le nom qui figure sur votre carte d'identité, votre
+                  passeport, votre permis de conduire.
                 </div>
                 <br />
                 <br />
                 <div>
                   <div>
-                    <label>First name : </label>
+                    <label>Prénom : </label>
                     <Input
                       placeholder={user.firstName}
                       value={newUser.firstName}
@@ -351,7 +353,7 @@ const Personal = () => {
                       style={{ height: '2rem' }}
                     />
                     <br />
-                    <label>Last name : </label>
+                    <label>Nom de famille : </label>
                     <Input
                       placeholder={user.lastName}
                       value={newUser.lastName}
@@ -360,21 +362,21 @@ const Personal = () => {
                       name='lastName'
                     />
                   </div>
-                  <Button>Save</Button>
+                  <Button>Enregistrer</Button>
                   <Alerts />
                 </div>
               </>
             ) : (
               <>
                 <p>
-                  <strong>Legal Name</strong>
+                  <strong>Nom complet</strong>
                   <br />
                   <br />
                   {newUser.firstName}{' '}
                   {newUser.lastName ? (
                     newUser.lastName
                   ) : (
-                    <strong> Last name not define, please let us know</strong>
+                    <strong> Veuillez définir votre Nom de famille</strong>
                   )}
                 </p>
                 <Modify
@@ -382,7 +384,7 @@ const Personal = () => {
                     setIsClicked({ legalName: true });
                   }}
                 >
-                  Modify
+                  Modifier
                 </Modify>
               </>
             )}
@@ -399,7 +401,7 @@ const Personal = () => {
                     justifyContent: 'space-between',
                   }}
                 >
-                  <strong>Birthdate</strong>
+                  <strong>Date de naissance</strong>
 
                   <div
                     style={{
@@ -411,59 +413,59 @@ const Personal = () => {
                       setIsClicked({ birthate: false });
                     }}
                   >
-                    Cancel
+                    Annuler
                   </div>
                 </div>
                 <br />
                 <br />
                 <div style={{}}>
                   <div>
+                    <InputDays
+                      id='days'
+                      name='days'
+                      value={newUser.birthdate.days}
+                      placeholder='JJ'
+                      onChange={onChangeBirthdate}
+                    />
                     <SelectMonths
                       id='months'
                       name='months'
                       value={newUser.birthdate.months}
                       onChange={onChangeBirthdate}
                     >
-                      <option>Month</option>
-                      <option>January</option>
-                      <option>February</option>
-                      <option>March</option>
-                      <option>April</option>
-                      <option>May</option>
-                      <option>June</option>
-                      <option>July</option>
-                      <option>August</option>
-                      <option>September</option>
-                      <option>October</option>
-                      <option>November</option>
-                      <option>December</option>
+                      <option>Mois</option>
+                      <option>Janvier</option>
+                      <option>Février</option>
+                      <option>Mars</option>
+                      <option>Avril</option>
+                      <option>Mai</option>
+                      <option>Juin</option>
+                      <option>Juillet</option>
+                      <option>Août</option>
+                      <option>Septembre</option>
+                      <option>Octobre</option>
+                      <option>Novembre</option>
+                      <option>Décembre</option>
                     </SelectMonths>
-                    <InputDays
-                      id='days'
-                      name='days'
-                      value={newUser.birthdate.days}
-                      placeholder='DD'
-                      onChange={onChangeBirthdate}
-                    />
                     <InputYears
                       id='years'
                       name='years'
                       value={newUser.birthdate.years}
-                      placeholder='YYYY'
+                      placeholder='AAAA'
                       onChange={onChangeBirthdate}
                     />
                   </div>
-                  <Button style={{ width: '30%' }}>Save</Button>
+                  <Button style={{ width: '30%' }}>Enregistrer</Button>
                   <Alerts />
                 </div>
               </>
             ) : (
               <>
                 <p>
-                  <strong>Birthdate</strong>
+                  <strong>Date de naissance</strong>
                   <br />
                   <br />
-                  Born on {newUser.birthdate.days} {newUser.birthdate.months}{' '}
+                  Né(e) le {newUser.birthdate.days} {newUser.birthdate.months}{' '}
                   {newUser.birthdate.years}.
                 </p>
                 <Modify
@@ -471,7 +473,7 @@ const Personal = () => {
                     setIsClicked({ birthate: true });
                   }}
                 >
-                  Modify
+                  Modifier
                 </Modify>
               </>
             )}
@@ -488,7 +490,7 @@ const Personal = () => {
                     justifyContent: 'space-between',
                   }}
                 >
-                  <strong>Email</strong>
+                  <strong>Adresse e-mail</strong>
 
                   <div
                     style={{
@@ -500,14 +502,14 @@ const Personal = () => {
                       setIsClicked({ birthate: false });
                     }}
                   >
-                    Cancel
+                    Annuler
                   </div>
                 </div>
                 <br />
                 <br />
                 <div style={{}}>
                   <div>
-                    <label>New E-mail : </label>
+                    <label>Nouvelle adresse : </label>
                     <Input
                       type='email'
                       placeholder={user.email}
@@ -519,14 +521,14 @@ const Personal = () => {
                     />
                     <br />
                   </div>
-                  <Button>Save</Button>
+                  <Button>Sauvegarder</Button>
                   <Alerts />
                 </div>
               </>
             ) : (
               <>
                 <p>
-                  <strong>Email</strong>
+                  <strong>Adresse e-mail</strong>
                   <br />
                   <br />
                   {newUser.email}
@@ -536,7 +538,7 @@ const Personal = () => {
                     setIsClicked({ email: true });
                   }}
                 >
-                  Modify
+                  Modifier
                 </Modify>
               </>
             )}

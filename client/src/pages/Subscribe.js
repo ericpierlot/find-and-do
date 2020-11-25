@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import AlertContext from '../context/alert/alertContext';
 import AuthContext from '../context/auth/authContext';
 import Alerts from '../utils/Alerts';
-import axios from 'axios';
+
 import {
   Section,
   Wrapper,
@@ -46,7 +46,7 @@ const Subscribe = (props) => {
       props.history.push('/');
     }
     if (error === 'Email already exists') {
-      setAlert(error, 'danger');
+      setAlert('Email déjà existante.', 'danger');
       clearErrors();
     }
     // eslint-disable-next-line
@@ -70,13 +70,17 @@ const Subscribe = (props) => {
   const nextForm = (e) => {
     e.preventDefault();
     // first Sign up page checking
-    if (!emailIsValid(email)) return setAlert('Email invalid', 'danger');
+    if (!emailIsValid(email))
+      return setAlert('Cette adresse e-mail est invalide', 'danger');
     if (password.length < 6 || password2.length < 6)
-      return setAlert('Password must be longer than 6 caracters', 'danger');
+      return setAlert(
+        'Le mot de passe doit faire plus de 6 caractères',
+        'danger'
+      );
     if (password === '' && password2 === '')
-      return setAlert('Password cannot be empty', 'danger');
+      return setAlert('Le mot de passe ne peut pas être vide', 'danger');
     if (password !== password2)
-      return setAlert("Passwords doesn't match", 'danger');
+      return setAlert('Les deux mots de passe ne correspondent pas', 'danger');
 
     // Everything success then we can go next form
     setNext(!next);
@@ -86,22 +90,20 @@ const Subscribe = (props) => {
     e.preventDefault();
     // Checking 2nd part of the form
     if (firstName.length < 1)
-      return setAlert(
-        'Cannot have a first name shorter than one caracter',
-        'danger'
-      );
-    if (city === '') return setAlert('City cannot be empty', 'danger');
+      return setAlert('Le Nom doit avoir plus de 1 caractère', 'danger');
+    if (city === '')
+      return setAlert('La ville ne peut pas être vide', 'danger');
     if (birthdate.months === 'Month' || birthdate.months === '')
-      return setAlert('You have to choose a month', 'danger');
+      return setAlert('Vous devez choisir un mois', 'danger');
     if (birthdate.days > 31)
-      return setAlert('Day cannot be bigger than 31', 'danger');
+      return setAlert('Le Jour ne peut pas être plus grand que 31', 'danger');
     if (birthdate.days < 1)
-      return setAlert('Day cannot be less than 1', 'danger');
+      return setAlert('Le Jour ne peut pas être plus petit que 1', 'danger');
     if (birthdate.years > 2021)
-      return setAlert('You cannot be born in the future', 'danger');
+      return setAlert('Vous ne pouvez pas être naît dans le futur', 'danger');
     if (birthdate.years < 1900)
       return setAlert(
-        'Mmmmh you should go to the World books for older Human',
+        'Mmmmh allez vous inscrire dans le livre des records, du plus vieux Humain',
         'danger'
       );
 
@@ -115,36 +117,15 @@ const Subscribe = (props) => {
     });
   };
 
-  // Just for clean every experiences quickly
-  const deleteall = async () => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-
-    try {
-      await axios.put('/api/experiences/deleteAll', config);
-    } catch (error) {
-      console.log('eerooreoorororr');
-    }
-
-    try {
-      await axios.delete('/api/experiences/clean', config);
-    } catch (error) {
-      console.log('eerooreoorororr');
-    }
-  };
-
   const subscribeForm = (
     <Section>
       <Wrapper>
-        <H1>Sign up</H1>
+        <H1>Inscription</H1>
         <Alerts />
         {next ? (
           <>
             <FormContainer onSubmit={submitForm}>
-              <Label>First name :</Label>
+              <Label>Prénom :</Label>
 
               <Flex>
                 <InputFirstName
@@ -156,7 +137,7 @@ const Subscribe = (props) => {
                   autoFocus
                 />
               </Flex>
-              <Label>Your city :</Label>
+              <Label>Ville :</Label>
               <Flex>
                 <InputCity
                   id='city'
@@ -166,56 +147,56 @@ const Subscribe = (props) => {
                   onChange={onChange}
                 />
               </Flex>
-              <Label>When it's your birthday ?</Label>
+              <Label>Quand est-ce votre anniversaire ? </Label>
               <Flex
                 style={{
                   flexDirection: 'row',
                   flexWrap: 'nowrap',
-                  margin: 'auto',
+                  justifyContent: 'center',
                 }}
               >
+                <InputDays
+                  id='days'
+                  name='days'
+                  value={birthdate.days}
+                  placeholder='JJ'
+                  onChange={onChange}
+                />
                 <SelectMonths
                   id='months'
                   name='months'
                   value={birthdate.months}
                   onChange={onChange}
                 >
-                  <option>Month</option>
-                  <option>January</option>
-                  <option>February</option>
-                  <option>March</option>
-                  <option>April</option>
-                  <option>May</option>
-                  <option>June</option>
-                  <option>July</option>
-                  <option>August</option>
-                  <option>September</option>
-                  <option>October</option>
-                  <option>November</option>
-                  <option>December</option>
+                  <option>Mois</option>
+                  <option>Janvier</option>
+                  <option>Février</option>
+                  <option>Mars</option>
+                  <option>Avril</option>
+                  <option>Mai</option>
+                  <option>Juin</option>
+                  <option>Juillet</option>
+                  <option>Août</option>
+                  <option>Septembre</option>
+                  <option>Octobre</option>
+                  <option>Novembre</option>
+                  <option>Décembre</option>
                 </SelectMonths>
-                <InputDays
-                  id='days'
-                  name='days'
-                  value={birthdate.days}
-                  placeholder='DD'
-                  onChange={onChange}
-                />
                 <InputYears
                   id='years'
                   name='years'
                   value={birthdate.years}
-                  placeholder='YYYY'
+                  placeholder='AAAA'
                   onChange={onChange}
                 />
               </Flex>
 
               <Button name='submit' onClick={submitForm}>
-                Continue
+                Continuer
               </Button>
             </FormContainer>
             <Back name='back' onClick={nextForm}>
-              Back
+              Retour
             </Back>
           </>
         ) : (
@@ -230,8 +211,8 @@ const Subscribe = (props) => {
                 onChange={onChange}
               />
             </Flex>
-            <Label onClick={deleteall}>Delete</Label>
-            <Label>Password :</Label>
+            {/* <Label onClick={deleteall}>Delete</Label> */}
+            <Label>Mot de passe :</Label>
             <Flex>
               <InputPassword
                 id='password'
@@ -242,7 +223,7 @@ const Subscribe = (props) => {
               />
             </Flex>
 
-            <Label>Password confirm :</Label>
+            <Label>Confirmation du mot de passe :</Label>
             <Flex>
               <InputPassword
                 id='password2'
@@ -253,7 +234,7 @@ const Subscribe = (props) => {
               />
             </Flex>
             <Button name='next' onClick={nextForm}>
-              Next
+              Suivant
             </Button>
           </FormContainer>
         )}
