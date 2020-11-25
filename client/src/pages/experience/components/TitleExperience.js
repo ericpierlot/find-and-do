@@ -23,8 +23,8 @@ const Top = styled.div`
 
 const Input = styled.input`
   font-size: 1.2rem;
-  width: 100%;
-  height: 200px;
+  width: 80%;
+  height: 2rem;
   outline: none;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
@@ -50,6 +50,7 @@ const TitleExperience = ({ experience, setExperience }) => {
         <p>Votre titre doit être concis, descriptif et intrigant.</p>
         <h3>Quelle est le titre de votre expérience ?</h3>
         <Input
+          maxLength={40}
           name='title'
           value={experience.title}
           onChange={(e) =>

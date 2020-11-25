@@ -108,8 +108,8 @@ const NavCreateExperience = ({ setLiSelected, experience }) => {
       <ul style={{ listStyleType: 'none' }}>
         <li
           style={{
-            pointerEvents: experience.photos ? '' : 'none',
-            opacity: experience.photos ? '' : '0.2',
+            pointerEvents: experience.title ? '' : 'none',
+            opacity: experience.title ? '' : '0.2',
           }}
           onClick={() => setLiSelected(8)}
         >

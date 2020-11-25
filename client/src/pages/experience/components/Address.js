@@ -47,7 +47,7 @@ const AddressChoosen = ({ experience, setExperience, render }) => {
         <h2>Adresse</h2>
         <p>Dans quelle ville proposerez-vous votre expérience ?</p>
         <p>
-          Vérifiez qu'il s'agit d'une ville valide et que le nom est
+          Vérifiez qu'il s'agit d'une ville valide et que le nom soit
           correctement orthographié. <br /> Ne vous inquiétez pas si votre ville
           est introuvable. <br /> Choisissez la ville la plus proche et vous
           pourrez mettre à jour l'adresse exacte plus tard.

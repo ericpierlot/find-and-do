@@ -29,7 +29,7 @@ router.post(
     }
 
     const { email, password, firstName, lastName, city, birthdate } = req.body;
-    const { days, months, years } = req.body.birthdate;
+    const { days, months, years } = birthdate;
     try {
       const emailAlreadyExist = await User.findOne({ email });
 

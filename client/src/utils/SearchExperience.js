@@ -67,12 +67,10 @@ const SearchExperience = (props) => {
           config
         );
         if (data) {
-          console.log('data : ', data);
           // Filter to have only French city
           const dataFiltered = await data.items.filter(
             (item) => item.address.countryName === 'France'
           );
-          console.log('Data filtré : ', dataFiltered);
           await setCitySuggested(dataFiltered);
         }
       };
@@ -136,8 +134,7 @@ const SearchExperience = (props) => {
         //Send to my context
         saveExperiences(request);
 
-        autoClickButton();
-        push('/experiences');
+        setTimeout(() => push('/experiences'), 2000);
       }; // Fin getCity()
 
       // Let's fetch in our db
@@ -150,21 +147,14 @@ const SearchExperience = (props) => {
     };
   }, [formSend, value, inputKm, cities, saveExperiences, push]);
 
-  const autoClickButton = () => {
-    const mybutton = document.querySelector('#send');
-    mybutton.click();
-  };
   function onSubmit(e) {
     e.preventDefault();
     // NEED TO SET ALERT LATER
+    // TODO : Obliger l'utilisateur à choisir la ville suggérer.
+    // OU mettre automatiquement la liste suggérer dans la valeur de ce hook setValue()
     if (value.length < 2) return <h1>City cannot be empty</h1>;
     setFormSend(!formSend);
   }
-
-  // DEBUG
-  // console.log('Nombre de ville dans Cities :', cities.length);
-  // console.log('Liste des villes dans Cities :', cities);
-  // console.log('Resultats from DB : ', results);
 
   const onChangeKm = (e) => {
     setInputKm(e.target.value);

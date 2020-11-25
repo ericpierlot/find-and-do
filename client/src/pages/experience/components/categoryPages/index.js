@@ -7,7 +7,7 @@ import Histoire from './Histoire';
 import Nature from './Nature';
 import Nourriture from './Nourriture';
 import Sports from './Sports';
-import Visite from './Nature';
+import Visite from './Visite';
 import Bienetre from './Bienetre';
 
 export {

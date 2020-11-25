@@ -14,66 +14,23 @@ const RenderExperience = () => {
     return <Redirect to='/' />;
   }
 
-  // To work on render without enter research
-  // const fake = {
-  //   1: {
-  //     _id: '12',
-  //     title: 'Mon experience',
-  //     description: 'la description',
-  //   },
-  //   2: {
-  //     _id: '13',
-  //     title: 'Mon experience 2',
-  //     description: 'la description',
-  //   },
-  //   3: {
-  //     _id: '14',
-  //     title: 'Mon experience 2',
-  //     description: 'la description',
-  //   },
-  //   4: {
-  //     _id: '15',
-  //     title: 'Mon experience 2',
-  //     description: 'la description',
-  //   },
-  //   5: {
-  //     _id: '16',
-  //     title: 'Mon experience 2',
-  //     description: 'la description',
-  //   },
-  // };
+  console.log('results', results);
 
-  // console.log(fake);
-
-  console.log(results);
-
-  const renderExperience = results.map((res, index) => {
-    const resultID = uuidv4();
+  const renderExperience = results.map((res) => {
+    const { _id, title, programme, lieu, category } = res;
+    const uniqueID = uuidv4();
     return (
-      <div key={resultID}>
-        <div>{res.title}</div>
-        <div>{res.createdBy}</div>
-        <div>{res.description}</div>
-        <div>{res.city}</div>
-        <div></div>
-
-        <br />
-        <br />
+      <div key={uniqueID}>
+        <CardExperience
+          ID={_id}
+          title={title}
+          programme={programme}
+          city={lieu}
+          category={category}
+        />
       </div>
     );
   });
-  return (
-    <>
-      <CardExperience />
-      <CardExperience />
-      <CardExperience />
-      <CardExperience />
-      <CardExperience />
-      <CardExperience />
-      <CardExperience />
-      <div id='send' onClick={() => console.log('')}></div>
-      {renderExperience}
-    </>
-  );
+  return <>{renderExperience}</>;
 };
 export default RenderExperience;

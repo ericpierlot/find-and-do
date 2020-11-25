@@ -10,7 +10,6 @@ const Top = styled.div`
   width: 40%;
   margin: auto;
   h2 {
-    margin-top: 2rem;
     margin-bottom: 2rem;
   }
 `;
@@ -51,6 +50,11 @@ const TextArea = styled.textarea`
 
   :focus {
     border-bottom: 2px #eb3941 solid;
+  }
+
+  ::placeholder {
+    color: black;
+    opacity: 1;
   }
 `;
 

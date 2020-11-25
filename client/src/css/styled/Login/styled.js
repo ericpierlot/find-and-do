@@ -17,14 +17,16 @@ const Wrapper = styled.section`
   border-radius: 30px;
   display: flex;
   flex-direction: column;
-  background-color: rgba(255, 255, 255, 0.3);
-  border-radius: 50px;
-  padding: 1rem;
+  background-color: transparent;
+  backdrop-filter: blur(20px);
   border: whitesmoke 2px solid;
   box-shadow: 0px 0.2em 0.5em rgba(0, 0, 0, 0.3);
+  border-radius: 50px;
+  padding: 1rem;
   transition: box-shadow 250ms ease;
   transition: transform 250ms ease;
   :focus-within {
+    backdrop-filter: none;
     box-shadow: 0px 0.2em 2.5em rgba(0, 0, 0, 0.3);
     transform: scale(1.025);
   }
@@ -100,7 +102,7 @@ const InputEmail = styled.input.attrs((props) => ({
   outline: none;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.2);
   margin-bottom: 1rem;
   padding-left: 1rem;
   border: none;
@@ -109,6 +111,7 @@ const InputEmail = styled.input.attrs((props) => ({
   transition: all 330ms ease-in-out;
 
   :focus {
+    background-color: rgba(255, 255, 255, 0.6);
     border-bottom: 2px #eb3941 solid;
   }
 `;
@@ -122,7 +125,7 @@ const InputPassword = styled.input.attrs((props) => ({
   outline: none;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.2);
   margin-bottom: 1rem;
   padding-left: 1rem;
   border: none;

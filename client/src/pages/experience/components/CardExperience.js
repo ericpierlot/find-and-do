@@ -1,20 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
 import ImageExp from '../../../images/experiences/experience1.jpg';
+import { useHistory } from 'react-router-dom';
 
 const DivWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: transparent;
+  backdrop-filter: blur(6px);
   box-shadow: 0px 0.2em 0.5em rgba(0, 0, 0, 0.3);
-  width: 300px;
+  width: 400px;
   border-radius: 10px;
   flex: 0 0 auto;
   margin: 15px;
+  border: 2px solid whitesmoke;
   transition: box-shadow 250ms ease;
   transition: transform 250ms ease;
   cursor: pointer;
   :hover {
+    backdrop-filter: none;
     box-shadow: 0px 0.2em 2.5em rgba(0, 0, 0, 0.3);
     transform: scale(1.025);
   }
@@ -27,7 +31,7 @@ const DivWrapper = styled.div`
 `;
 
 const IMG = styled.div`
-  background: url(${ImageExp});
+  // background: url(${ImageExp});
   background-size: cover;
   height: 150px;
   width: 100%;
@@ -52,28 +56,47 @@ const Head = styled.div`
   padding-left: 1rem;
   padding-top: 1rem;
   width: 100%;
-  background-color: #f15e64;
+  background-color: rgba(241, 90, 100, 0.4);
   padding-bottom: 1rem;
   @media (max-width: 920px) {
     width: 100%;
   }
 `;
-const CardExperience = () => {
+const CardExperience = ({ title, programme, city, category, ID }) => {
+  const { push } = useHistory();
+  const goToThisExperience = () => {
+    push(`/experience/${ID}`);
+  };
+
+  // Si le programme est trop long, on le réduit et on prévient !
+  const programmeCutted = () => {
+    const result = programme.slice(0, 150);
+    return `${result}... lire la suite`;
+  };
+
   return (
-    <DivWrapper>
-      <IMG />
+    <DivWrapper onClick={goToThisExperience}>
+      <IMG
+        style={{
+          background: 'url(https://source.unsplash.com/random/300x150)',
+        }}
+      />
       <Head>
-        <h3 style={{ fontFamily: 'Poppins' }}>Titre de l'expérience</h3>
+        <h3 style={{ fontFamily: 'Poppins' }}>{title}</h3>
       </Head>
       <Article>
         <div style={{ marginTop: '10px' }}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut ad
-          dignissimos dolor at beatae itaque atque sed consequatur
-          exercitationem esse, doloribus iusto excepturi deleniti accusamus
-          vero. Voluptates sed nihil assumenda.
+          {programme.length > 150 ? programmeCutted() : programme}
         </div>
-        <div style={{ marginTop: '20px' }}>
-          <strong>VILLE</strong>
+        <div
+          style={{
+            marginTop: '20px',
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
+          <strong>{city}</strong>
+          <strong>{category}</strong>
         </div>
       </Article>
     </DivWrapper>

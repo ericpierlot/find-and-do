@@ -34,6 +34,7 @@ const PhotosExperience = ({ experience, setExperience }) => {
   return (
     <Wrapper>
       <Top>
+        <h1>En cours de développement...</h1>
         <h2>Ajoutez des photos à votre expérience</h2>
         <p>
           Ajoutez au moins 3 photos de bonne qualité pour donner aux voyageurs

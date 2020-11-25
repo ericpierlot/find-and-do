@@ -7,25 +7,37 @@ const ExperienceSchema = mongoose.Schema(
       type: String,
       required: true,
       minlength: 2,
-      maxlength: 150,
+      maxlength: 40,
     },
-    description: {
-      type: String,
-      required: true,
-    },
-    imagesURL: {
+    photos: {
       type: String,
       required: false,
     },
-    city: {
+    lieu: {
       type: String,
       required: true,
     },
-    address: {
+    exactAddress: {
       type: String,
       required: true,
     },
     category: {
+      type: String,
+      required: true,
+    },
+    precision: {
+      type: String,
+      required: true,
+    },
+    programme: {
+      type: String,
+      required: true,
+    },
+    aboutYou: {
+      type: String,
+      required: true,
+    },
+    type: {
       type: String,
       required: true,
     },
@@ -40,7 +52,7 @@ const ExperienceSchema = mongoose.Schema(
         },
       },
     ],
-    // Will autohorize by myself to show this experience or not
+    // Will autohorize by myself to show this experience or not & to delete or not
     validated: {
       type: Boolean,
       required: false,

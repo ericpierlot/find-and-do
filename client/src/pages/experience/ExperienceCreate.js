@@ -137,7 +137,7 @@ const ExperienceCreate = () => {
     aboutYou: '',
     exactAddress: '',
     title: '',
-    photos: 'a',
+    photos: 'En développement',
   });
 
   const [citySuggested, setCitySuggested] = useState([]);
@@ -175,7 +175,23 @@ const ExperienceCreate = () => {
       />
     );
   });
+  // Mon envoi à ma BDD
+  const validation = async () => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    const register = async () => {
+      try {
+        await axios.post('/api/experiences', experience, config);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
+    register();
+  };
   return (
     <>
       {numberOfPage === 0 && (
@@ -271,6 +287,8 @@ const ExperienceCreate = () => {
               <Recapitulatif
                 experience={experience}
                 setExperience={setExperience}
+                setLiSelected={setLiSelected}
+                validation={validation}
               />
             )}
           </ContenuCreateExperience>

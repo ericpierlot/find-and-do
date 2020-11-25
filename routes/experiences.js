@@ -39,7 +39,7 @@ router.get('/:city', async (req, res) => {
 
     // Join them together to be able to see them all
     const result = experienceCity.concat(experienceCityQuery);
-    res.json(result);
+    res.send(result);
   } catch (error) {
     console.error(error.message);
   }
@@ -54,14 +54,15 @@ router.post(
   [
     auth,
     [
-      body(
-        'title',
-        'Title must have minimum 2 and max 150 caracters'
-      ).isLength({ min: 2, max: 150 }),
-      body('description', 'Description can not be empty').not().isEmpty(),
-      body('city', 'A city is required').not().isEmpty(),
-      body('address', 'An address is required').not().isEmpty(),
-      body('category', 'At least one category must be define').not().isEmpty(),
+      body('title', 'Title must have minimum 2 and max 40 caracters').isLength({
+        min: 2,
+        max: 40,
+      }),
+      body('programme', 'Programme can not be empty').not().isEmpty(),
+      body('lieu', 'A city is required').not().isEmpty(),
+      body('exactAddress', 'An address is required').not().isEmpty(),
+      body('aboutYou', 'About you must be defined').not().isEmpty(),
+      body('type', 'Type must be defined').not().isEmpty(),
     ],
   ],
 
@@ -70,16 +71,30 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+    const {
+      title,
+      photos,
+      lieu,
+      exactAddress,
+      theme,
+      type,
+      aboutYou,
+      programme,
+    } = req.body;
 
-    const { title, description, pictures, city, category } = req.body;
+    const { precision, category } = theme;
     try {
       //Create experience in DB
       const experience = new Experience({
         title,
-        description,
-        pictures,
-        city,
+        photos,
+        lieu,
+        exactAddress,
         category,
+        type,
+        precision,
+        aboutYou,
+        programme,
         createdBy: req.user.id,
       });
 

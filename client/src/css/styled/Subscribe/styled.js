@@ -19,15 +19,19 @@ const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transition: box-shadow 250ms ease;
-  transition: transform 250ms ease;
-  background-color: rgba(255, 255, 255, 0.3);
+  transition: box-shadow 330ms ease;
+  transition: transform 330ms ease;
+  background-color: transparent;
+  backdrop-filter: blur(20px);
+  border: whitesmoke 2px solid;
+  box-shadow: 0px 0.2em 0.5em rgba(0, 0, 0, 0.3);
 
   border-radius: 50px;
   padding: 1rem;
-  border: whitesmoke 2px solid;
-  box-shadow: 0px 0.2em 0.5em rgba(0, 0, 0, 0.3);
+
   :focus-within {
+    backdrop-filter: none;
+    background-color: rgba(255, 255, 255, 0.3);
     box-shadow: 0px 0.2em 2.5em rgba(0, 0, 0, 0.3);
     transform: scale(1.025);
   }

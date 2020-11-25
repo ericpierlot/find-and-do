@@ -13,6 +13,7 @@ const CardType = styled.div`
   background-color: rgba(255, 255, 255, 0.4);
   border: whitesmoke 2px solid;
   box-shadow: 0px 0.2em 0.5em rgba(0, 0, 0, 0.3);
+  cursor: pointer;
   :hover {
     background-color: rgba(255, 255, 255, 0.8);
   }
@@ -46,7 +47,7 @@ const ContenuCategory = styled.div`
 `;
 
 const Button = styled.button`
-  width: 50%;
+  width: 20%;
   text-align: center;
   padding: 0.3rem 1rem 0.3rem 1rem;
   font-size: 1.2rem;
@@ -75,12 +76,12 @@ const Button = styled.button`
   :focus {
     outline: none;
   }
-  margin: auto;
   margin-bottom: 1rem;
+  margin-top: 2rem;
   border: 3px rgba(255, 255, 255, 0.3) solid;
 `;
 
-const Recapitulatif = ({ experience, setExperience }) => {
+const Recapitulatif = ({ experience, setLiSelected, validation }) => {
   return (
     <Wrapper>
       <Top>
@@ -95,40 +96,40 @@ const Recapitulatif = ({ experience, setExperience }) => {
           expliquant les points qu'il faudra améliorer.
         </p>
         <ContenuCategory>
-          <CardType>
+          <CardType onClick={() => setLiSelected(0)}>
             <h3>Type d'activité</h3>
             <strong>{experience.type}</strong>
           </CardType>
-          <CardType>
+          <CardType onClick={() => setLiSelected(1)}>
             <h3>Titre de votre expérience : </h3>
             <strong>{experience.title}</strong>
           </CardType>
-          <CardType>
+          <CardType onClick={() => setLiSelected(2)}>
             <h3>Votre thème : </h3>
             <strong>{experience.theme.category} - </strong>
             <strong>{experience.theme.precision}</strong>
           </CardType>
-          <CardType>
+          <CardType onClick={() => setLiSelected(3)}>
             <h3>Ville</h3>
             <strong>{experience.lieu}</strong>
           </CardType>
-          <CardType>
+          <CardType onClick={() => setLiSelected(4)}>
             <h3>Adresse exacte : </h3>
             <strong>{experience.exactAddress}</strong>
           </CardType>
-          <CardType style={{ width: '100%' }}>
+          <CardType style={{ width: '100%' }} onClick={() => setLiSelected(5)}>
             <h3>Au programme : </h3>
             <strong>{experience.programme}</strong>
           </CardType>
-          <CardType style={{ width: '100%' }}>
+          <CardType style={{ width: '100%' }} onClick={() => setLiSelected(6)}>
             <h3>A propos de vous : </h3>
             <strong>{experience.aboutYou}</strong>
           </CardType>
-          <CardType style={{ width: '100%' }}>
+          <CardType style={{ width: '100%' }} onClick={() => setLiSelected(7)}>
             <h3>Photos : </h3>
             <strong>{experience.photos}</strong>
           </CardType>
-          <Button>Valider</Button>
+          <Button onClick={validation}>Valider</Button>
         </ContenuCategory>
       </Top>
     </Wrapper>
