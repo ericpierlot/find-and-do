@@ -14,11 +14,12 @@ const RenderExperience = () => {
     return <Redirect to='/' />;
   }
 
-  console.log('results', results);
+  console.log(results);
 
   const renderExperience = results.map((res) => {
     const { _id, title, programme, lieu, category } = res;
     const uniqueID = uuidv4();
+
     return (
       <div key={uniqueID}>
         <CardExperience

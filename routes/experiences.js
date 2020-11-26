@@ -14,13 +14,28 @@ const User = require('../models/User');
 // @desc      Get Experience by user ID
 // @access    Private
 
-router.get('/myexperience', auth, async (req, res) => {
+router.get('/myexperience', async (req, res) => {
   // When one User try to Access to his own experience quickly from his panel
   try {
-    const experiences = await Experience.find({ createdBy: req.user.id });
+    const experiences = await Experience.find({ createdBy: req.params.id });
     res.json(experiences);
   } catch (error) {
     console.error(error.message);
+  }
+});
+
+// @route GET api/expriences/:id
+// @desc  Get Experience by exp ID
+// @access Private
+
+router.get('/id/:id', auth, async (req, res) => {
+  try {
+    const readThisExperience = await Experience.findById({
+      _id: req.params.id,
+    });
+    res.json(readThisExperience);
+  } catch (err) {
+    console.error(err.message);
   }
 });
 
@@ -28,14 +43,14 @@ router.get('/myexperience', auth, async (req, res) => {
 // @desc      Get an Experience by city
 // @access    Private
 
-router.get('/:city', async (req, res) => {
+router.get('/city/:lieu', async (req, res) => {
   // Find experiences from one city requested by one User.
-  // console.log("in params", req.params)
-  // console.log("in query", req.query)
+  console.log('in params', req.params);
+  console.log('in query', req.query);
   try {
-    //http://localhost:5000/api/experiences/Marseille?&city=Avignon&city=Bordeaux <-- Model
-    const experienceCity = await Experience.find({ city: req.params.city });
-    const experienceCityQuery = await Experience.find({ city: req.query.city });
+    //http://localhost:5000/api/experiences/Marseille?&lieu=Avignon&lieu=Bordeaux <-- Model
+    const experienceCity = await Experience.find({ lieu: req.params.lieu });
+    const experienceCityQuery = await Experience.find({ lieu: req.query.lieu });
 
     // Join them together to be able to see them all
     const result = experienceCity.concat(experienceCityQuery);

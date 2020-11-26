@@ -13,6 +13,7 @@ import Experiences from '../pages/Experiences';
 
 import PrivateRoute from '../utils/PrivateRoute';
 import ExperienceCreate from '../pages/experience/ExperienceCreate';
+import ExperienceById from '../pages/experience/components/ExperienceById';
 
 // const Flex = styled.article`
 //   display: flex;
@@ -51,6 +52,7 @@ const Home = () => {
           path='/experience-create'
           component={ExperienceCreate}
         />
+        <Route exact path='/experiences/id/:id' component={ExperienceById} />
       </Switch>
     </Section1>
   );

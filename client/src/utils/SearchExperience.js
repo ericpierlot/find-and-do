@@ -123,18 +123,25 @@ const SearchExperience = (props) => {
         );
 
         //Me retourne en tableau la liste des villes autour
-        await setCities(
-          data.elements.map((element) => {
-            return element.tags.name;
-          })
-        );
-        const arrayCities = await cities.join('&city=');
-        const request = `/api/experiences/${value}?${arrayCities}`;
+        const citiesList = data.elements.map((element) => {
+          return element.tags.name;
+        });
+
+        const arrayCities = await citiesList.join('&lieu=');
+
+        const request = `/api/experiences/city/${cityWithoutPostalCode[0]}?${arrayCities}`;
 
         //Send to my context
-        saveExperiences(request);
-
-        setTimeout(() => push('/experiences'), 2000);
+        saveExperiences(request)
+          .then(() => {
+            push('/experiences');
+          })
+          .catch((err) => {
+            console.error(
+              'Une erreur est survenue lors de lors de la sauvegarde : ',
+              err
+            );
+          });
       }; // Fin getCity()
 
       // Let's fetch in our db

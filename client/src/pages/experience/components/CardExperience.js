@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import ImageExp from '../../../images/experiences/experience1.jpg';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const DivWrapper = styled.div`
   display: flex;
@@ -31,7 +30,6 @@ const DivWrapper = styled.div`
 `;
 
 const IMG = styled.div`
-  // background: url(${ImageExp});
   background-size: cover;
   height: 150px;
   width: 100%;
@@ -62,44 +60,55 @@ const Head = styled.div`
     width: 100%;
   }
 `;
-const CardExperience = ({ title, programme, city, category, ID }) => {
-  const { push } = useHistory();
-  const goToThisExperience = () => {
-    push(`/experience/${ID}`);
-  };
-
+const CardExperience = ({
+  title,
+  programme,
+  city,
+  category,
+  ID,
+  goToThisExperience,
+}) => {
   // Si le programme est trop long, on le réduit et on prévient !
   const programmeCutted = () => {
     const result = programme.slice(0, 150);
-    return `${result}... lire la suite`;
+    return result;
   };
 
   return (
-    <DivWrapper onClick={goToThisExperience}>
-      <IMG
-        style={{
-          background: 'url(https://source.unsplash.com/random/300x150)',
-        }}
-      />
-      <Head>
-        <h3 style={{ fontFamily: 'Poppins' }}>{title}</h3>
-      </Head>
-      <Article>
-        <div style={{ marginTop: '10px' }}>
-          {programme.length > 150 ? programmeCutted() : programme}
-        </div>
-        <div
+    <Link to={`experiences/id/${ID}`}>
+      <DivWrapper>
+        <IMG
           style={{
-            marginTop: '20px',
-            display: 'flex',
-            justifyContent: 'space-between',
+            background: 'url(https://source.unsplash.com/random/300x150)',
           }}
-        >
-          <strong>{city}</strong>
-          <strong>{category}</strong>
-        </div>
-      </Article>
-    </DivWrapper>
+        />
+        <Head>
+          <h3 style={{ fontFamily: 'Poppins' }}>{title}</h3>
+        </Head>
+        <Article>
+          <div style={{ marginTop: '10px' }}>
+            {programme.length > 150 ? (
+              <>
+                {programmeCutted()}
+                ...<u>lire la suite</u>
+              </>
+            ) : (
+              programme
+            )}
+          </div>
+          <div
+            style={{
+              marginTop: '20px',
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
+          >
+            <strong>{city}</strong>
+            <strong>{category}</strong>
+          </div>
+        </Article>
+      </DivWrapper>
+    </Link>
   );
 };
 
