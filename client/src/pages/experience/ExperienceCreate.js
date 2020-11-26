@@ -123,7 +123,8 @@ const ExperienceCreate = () => {
   const authContext = useContext(AuthContext);
   const { user } = authContext;
   const [numberOfPage, setNumberOfPage] = useState(0);
-
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
   const [liSelected, setLiSelected] = useState(0);
   const [experience, setExperience] = useState({
     type: '',
@@ -189,8 +190,17 @@ const ExperienceCreate = () => {
       }
     };
 
-    register();
+    register()
+      .then(() => {
+        console.log('success');
+        setSuccess(true);
+      })
+      .catch((err) => {
+        console.error('Une erreur est survenue : ', err);
+        setError('Une erreur est survenue');
+      });
   };
+
   return (
     <>
       {numberOfPage === 0 && (
@@ -284,6 +294,8 @@ const ExperienceCreate = () => {
             )}
             {liSelected === 8 && (
               <Recapitulatif
+                error={error}
+                success={success}
                 experience={experience}
                 setExperience={setExperience}
                 setLiSelected={setLiSelected}

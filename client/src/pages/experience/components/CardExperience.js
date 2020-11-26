@@ -10,7 +10,6 @@ const DivWrapper = styled.div`
   box-shadow: 0px 0.2em 0.5em rgba(0, 0, 0, 0.3);
   width: 400px;
   border-radius: 10px;
-  flex: 0 0 auto;
   margin: 15px;
   border: 2px solid whitesmoke;
   transition: box-shadow 250ms ease;
@@ -23,8 +22,6 @@ const DivWrapper = styled.div`
   }
   @media (max-width: 920px) {
     width: 90%;
-    margin: auto;
-    margin-bottom: 15px;
     margin-bottom: 20vh;
   }
 `;
@@ -42,12 +39,6 @@ const IMG = styled.div`
 
 const Article = styled.article`
   padding: 1em;
-
-  @media (max-width: 920px) {
-    width: 100%;
-    border-radius: 0;
-    margin: auto;
-  }
 `;
 
 const Head = styled.div`

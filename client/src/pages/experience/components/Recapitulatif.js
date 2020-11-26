@@ -81,7 +81,13 @@ const Button = styled.button`
   border: 3px rgba(255, 255, 255, 0.3) solid;
 `;
 
-const Recapitulatif = ({ experience, setLiSelected, validation }) => {
+const Recapitulatif = ({
+  experience,
+  setLiSelected,
+  validation,
+  success,
+  error,
+}) => {
   return (
     <Wrapper>
       <Top>
@@ -129,7 +135,17 @@ const Recapitulatif = ({ experience, setLiSelected, validation }) => {
             <h3>Photos : </h3>
             <strong>{experience.photos}</strong>
           </CardType>
-          <Button onClick={validation}>Valider</Button>
+          {error ? <h2 style={{ color: 'red' }}>{error}</h2> : null}
+          {success ? (
+            <CardType>
+              <h3>
+                Votre expérience à bien été envoyée, veuillez patientez la
+                vérification de nos équipes.
+              </h3>
+            </CardType>
+          ) : (
+            <Button onClick={validation}>Valider</Button>
+          )}
         </ContenuCategory>
       </Top>
     </Wrapper>

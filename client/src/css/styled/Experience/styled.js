@@ -9,6 +9,7 @@ const Section = styled.section`
     margin: 0;
   }
 `;
+
 const Wrapper = styled.section`
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.2);
   min-height: 90vh;
@@ -49,10 +50,12 @@ const Article = styled.article`
   }
   @media (max-width: 1400px) {
     width: 100%;
+    flex-direction: row;
   }
 
   @media (max-width: 1020px) {
     width: 100%;
+    flex-direction: column;
   }
 `;
 

@@ -28,7 +28,7 @@ router.get('/myexperience', async (req, res) => {
 // @desc  Get Experience by exp ID
 // @access Private
 
-router.get('/id/:id', auth, async (req, res) => {
+router.get('/id/:id', async (req, res) => {
   try {
     const readThisExperience = await Experience.findById({
       _id: req.params.id,
@@ -45,8 +45,6 @@ router.get('/id/:id', auth, async (req, res) => {
 
 router.get('/city/:lieu', async (req, res) => {
   // Find experiences from one city requested by one User.
-  console.log('in params', req.params);
-  console.log('in query', req.query);
   try {
     //http://localhost:5000/api/experiences/Marseille?&lieu=Avignon&lieu=Bordeaux <-- Model
     const experienceCity = await Experience.find({ lieu: req.params.lieu });

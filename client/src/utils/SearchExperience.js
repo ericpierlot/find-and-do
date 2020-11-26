@@ -51,7 +51,6 @@ const SearchExperience = (props) => {
   const [value, setValue] = useState('');
   const [formSend, setFormSend] = useState(false);
   const [inputKm, setInputKm] = useState(5);
-  const [cities, setCities] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [citySuggested, setCitySuggested] = useState([]);
 
@@ -152,7 +151,7 @@ const SearchExperience = (props) => {
     return () => {
       return setFormSend(false);
     };
-  }, [formSend, value, inputKm, cities, saveExperiences, push]);
+  }, [formSend, value, inputKm, saveExperiences, push]);
 
   function onSubmit(e) {
     e.preventDefault();
