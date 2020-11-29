@@ -37,11 +37,11 @@ const Login = (props) => {
       props.history.push('/');
     }
     if (error === 'Email not found') {
-      setAlert('Ces identifiants ne correspondent pas');
+      setAlert('Ces identifiants ne correspondent pas', 'red');
       clearErrors();
     }
     if (error === 'Password not match') {
-      setAlert('Ces identifiants ne correspondent', 'danger');
+      setAlert('Ces identifiants ne correspondent pas', 'red');
       clearErrors();
     }
 

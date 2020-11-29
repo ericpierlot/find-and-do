@@ -45,14 +45,15 @@ router.get('/id/:id', async (req, res) => {
 
 router.get('/city/:lieu', async (req, res) => {
   // Find experiences from one city requested by one User.
-  try {
-    //http://localhost:5000/api/experiences/Marseille?&lieu=Avignon&lieu=Bordeaux <-- Model
-    const experienceCity = await Experience.find({ lieu: req.params.lieu });
-    const experienceCityQuery = await Experience.find({ lieu: req.query.lieu });
 
-    // Join them together to be able to see them all
-    const result = experienceCity.concat(experienceCityQuery);
-    res.send(result);
+  //Push params city to query
+  req.query.lieu.push(req.params.lieu);
+  //Using Set() to keep only unique
+  const noDoubleCity = [...new Set(req.query.lieu)];
+
+  try {
+    const experienceCity = await Experience.find({ lieu: noDoubleCity });
+    res.send(experienceCity);
   } catch (error) {
     console.error(error.message);
   }
@@ -115,14 +116,12 @@ router.post(
       // Simple check if user exist
       const updateUser = await User.findById({ _id: req.user.id });
       if (!updateUser) {
-        return res.status(400).json({ message: 'User not found' });
+        return res.status(401).json({ message: 'User not found' });
       }
 
       //Check if Array experienceCreated is empty or no (User can only create ONE experience)
       if (updateUser.experienceCreated.length > 0)
-        return res
-          .status(400)
-          .json({ message: 'You already have created an experience' });
+        return res.status(401).send('You already have created an experience');
 
       // Push this experience to the Array [experienceCreated] of the Owner
       await updateUser.experienceCreated.push(experience.id);

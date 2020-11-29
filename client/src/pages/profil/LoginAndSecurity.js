@@ -149,20 +149,19 @@ const LoginAndSecurity = () => {
             body,
             config
           );
+          setAlert('Le mot de passe a été actualisé avec succès', 'green');
         } catch (error) {
-          setAlert('Le mot de passe actuel est incorrect', 'danger');
+          setAlert('Le mot de passe actuel est incorrect', 'red');
           clearErrors();
         }
         // Refresh the user in my Context
-        await loadUser();
+        loadUser();
       };
       // newSelected value is true, (form sended) then I call my function updateUser
       updateUser();
 
       // Change display Modify to normal back
       setNewSelected({ password: false });
-      // Change "cancel" to "modify"
-      console.log(error);
     }
     // eslint-disable-next-line
   }, [newSelected.password, error, clearErrors]);
@@ -172,12 +171,12 @@ const LoginAndSecurity = () => {
     if (password.length < 6 || password2.length < 6 || actual.length < 6)
       return setAlert(
         'Le mot de passe ne peut pas faire moins de 6 caractères',
-        'danger'
+        'red'
       );
     if (password !== password2)
       return setAlert(
         'Attention, les deux nouveaux mots de passe ne correspondent pas',
-        'danger'
+        'red'
       );
 
     // looks good then let's update Database

@@ -31,12 +31,6 @@ const UserSchema = mongoose.Schema(
       maxlength: 20,
       default: null,
     },
-    city: {
-      type: String,
-      required: true,
-      minlength: 1,
-      maxlength: 30,
-    },
     birthdate: {
       days: {
         type: String,

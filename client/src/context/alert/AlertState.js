@@ -10,14 +10,14 @@ const AlertState = (props) => {
   const [state, dispatch] = useReducer(alertReducer, initialState);
 
   // Set Alert
-  const setAlert = (message, type, timeout = 5000) => {
+  const setAlert = (message, colorChoosen, timeout = 5000) => {
     const id = uuidv4();
     dispatch({
       type: SET_ALERT,
       payload: {
         message,
-        type,
         id,
+        colorChoosen,
       },
     });
 

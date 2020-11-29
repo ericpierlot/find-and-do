@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import AlertContext from '../context/alert/alertContext';
+import Alerts from '../utils/Alerts';
 import axios from 'axios';
 import styled from 'styled-components';
 import ExperienceContext from '../context/experience/experienceContext';
@@ -44,7 +46,7 @@ const Button = styled.button`
   border: none;
 `;
 
-const SearchExperience = (props) => {
+const SearchExperience = ({ type, name, placeholder }) => {
   const experienceContext = useContext(ExperienceContext);
   const { saveExperiences } = experienceContext;
   const { push } = useHistory();
@@ -53,6 +55,8 @@ const SearchExperience = (props) => {
   const [inputKm, setInputKm] = useState(5);
   const [isLoading, setIsLoading] = useState(false);
   const [citySuggested, setCitySuggested] = useState([]);
+  const alertContext = useContext(AlertContext);
+  const { setAlert } = alertContext;
 
   // UseEffect for my API to suggest City name
   useEffect(() => {
@@ -133,6 +137,7 @@ const SearchExperience = (props) => {
         //Send to my context
         saveExperiences(request)
           .then(() => {
+            setIsLoading(false);
             push('/experiences');
           })
           .catch((err) => {
@@ -155,10 +160,18 @@ const SearchExperience = (props) => {
 
   function onSubmit(e) {
     e.preventDefault();
-    // NEED TO SET ALERT LATER
-    // TODO : Obliger l'utilisateur à choisir la ville suggérer.
-    // OU mettre automatiquement la liste suggérer dans la valeur de ce hook setValue()
-    if (value.length < 2) return <h1>City cannot be empty</h1>;
+
+    if (value.length < 2)
+      return setAlert(
+        'La ville ne peut pas faire moins de 2 caractères.',
+        'black'
+      );
+
+    // Mettre la première lettre en lettre capital
+    setValue(
+      (currentValue) =>
+        currentValue.charAt(0).toUpperCase() + currentValue.slice(1)
+    );
     setFormSend(!formSend);
   }
 
@@ -173,13 +186,13 @@ const SearchExperience = (props) => {
         <Input
           list='suggest'
           id='searchCity'
-          type={props.type}
+          type={type}
           value={value}
           onChange={(e) => {
             setValue(e.target.value);
           }}
-          name={props.name}
-          placeholder={props.placeholder}
+          name={name}
+          placeholder={placeholder}
         />
         <datalist id='suggest'>{render}</datalist>
         <SelectKm
@@ -201,6 +214,7 @@ const SearchExperience = (props) => {
           </svg>
         </Button>
       </Form>
+      <Alerts />
       {isLoading ? <Spinner /> : ''}
     </>
   );

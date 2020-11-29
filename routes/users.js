@@ -28,7 +28,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { email, password, firstName, lastName, city, birthdate } = req.body;
+    const { email, password, firstName, lastName, birthdate } = req.body;
     const { days, months, years } = birthdate;
     try {
       const emailAlreadyExist = await User.findOne({ email });
@@ -42,7 +42,6 @@ router.post(
         password,
         firstName,
         lastName,
-        city,
         birthdate: {
           days,
           months,
@@ -92,30 +91,74 @@ router.get('/allDB', async (req, res) => {
   }
 });
 
+// @route     GET api/users/experience/:id
+// @desc      Update an user
+// @access    Private
+
+router.get('/experience/:id', async (req, res) => {
+  try {
+    const author = await User.find({ experienceCreated: [req.params.id] });
+    res.json({ author });
+  } catch (error) {
+    res.status(500).send('Error to reach the server');
+  }
+});
+
 // @route     PUT api/users/:id
 // @desc      Update an user
 // @access    Private
 
-router.put('/:id', async (req, res) => {
-  // res.send('Update an user');
-  // console.log(req.body);
+router.put('/:id', auth, async (req, res) => {
+  //Destructuring
+  const { firstName, lastName, birthdate } = req.body;
+  const { days, months, years } = birthdate;
+
   try {
-    const profil = await User.findByIdAndUpdate(
+    await User.findByIdAndUpdate(
       { _id: req.params.id },
       {
         $set: {
-          email: req.body.email,
-          firstName: req.body.firstName,
-          lastName: req.body.lastName,
+          firstName,
+          lastName,
           birthdate: {
-            days: req.body.birthdate.days,
-            months: req.body.birthdate.months,
-            years: req.body.birthdate.years,
+            days,
+            months,
+            years,
           },
         },
       }
     );
-    res.json({ profil });
+    res.json({ firstName, lastName, birthdate });
+  } catch (error) {
+    res.status(500).send('Error to reach the server');
+    console.error(error.message);
+  }
+});
+
+// @route     PUT api/users/:id/email
+// @desc      Update email of the user
+// @access    Private
+
+router.put('/:id/email', auth, async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const emailAlreadyExist = await User.findOne({ email });
+
+    if (emailAlreadyExist) {
+      return res.status(400).json({ message: 'Email already exist' });
+    }
+
+    await User.findByIdAndUpdate(
+      { _id: req.params.id },
+      {
+        $set: {
+          email,
+        },
+      }
+    );
+
+    res.json({ email });
   } catch (error) {
     res.status(500).send('Error to reach the server');
     console.error(error.message);
@@ -126,7 +169,7 @@ router.put('/:id', async (req, res) => {
 // @desc      Modify Password only
 // @access    Private
 
-router.put('/:id/updatePassword', async (req, res) => {
+router.put('/:id/updatePassword', auth, async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   req.body.password = await bcrypt.hash(req.body.password, salt);
 
@@ -138,7 +181,7 @@ router.put('/:id/updatePassword', async (req, res) => {
       return res.status(400).json({ message: 'Actual password is wrong' });
     }
 
-    const profil = await User.findByIdAndUpdate(
+    await User.findByIdAndUpdate(
       { _id: req.params.id },
       {
         $set: {
@@ -147,7 +190,7 @@ router.put('/:id/updatePassword', async (req, res) => {
       }
     );
 
-    res.json({ profil });
+    res.json({ message: 'success' });
   } catch (error) {
     res.status(500).send('Error to reach the server');
   }

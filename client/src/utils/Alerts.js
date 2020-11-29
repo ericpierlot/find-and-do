@@ -7,8 +7,16 @@ const Alerts = () => {
   return (
     alertContext.alerts.length > 0 &&
     alertContext.alerts.map((alert) => (
-      <div key={alert.id}>
-        <i style={{ color: 'red' }}>{alert.message}</i>
+      <div style={{}} key={alert.id}>
+        <i
+          style={{
+            fontSize: '1.5rem',
+            fontWeight: 'bold',
+            color: alert.colorChoosen,
+          }}
+        >
+          {alert.message}
+        </i>
       </div>
     ))
   );

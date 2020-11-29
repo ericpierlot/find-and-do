@@ -94,6 +94,12 @@ const Button = styled.button`
 
 const ExperienceById = () => {
   const [readThisID, setReadThisID] = useState('');
+  const [author, setAuthor] = useState({
+    id: '',
+    firstName: '',
+    lastName: '',
+  });
+
   const {
     title,
     aboutYou,
@@ -106,8 +112,8 @@ const ExperienceById = () => {
     programme,
     type,
   } = readThisID;
+
   const { id } = useParams();
-  console.log(id);
 
   useEffect(() => {
     // go to my api rest /api/experience/:id
@@ -115,8 +121,17 @@ const ExperienceById = () => {
       const { data } = await axios.get(`/api/experiences/id/${id}`);
       setReadThisID(data);
     };
+    // retrive Author of the experience
+    const getAuthorFullName = async () => {
+      const { data } = await axios.get(`/api/users/experience/${id}`);
+      console.log(data.author[0]);
+      const { firstName, lastName, _id } = data.author[0];
+      setAuthor({ _id, firstName, lastName });
+    };
+
     fetchExperienceID();
-  }, []);
+    getAuthorFullName();
+  }, [id]);
 
   return (
     <Section>
@@ -153,7 +168,7 @@ const ExperienceById = () => {
                 </h4>
               </TOP>
               <DivWrapper style={{ height: '100px' }}>
-                <h2>Expérience organisée par 'nom de l'auteur'</h2>
+                <h2>Expérience organisée par {author.firstName}</h2>
               </DivWrapper>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <DivWrapper style={{ width: '48%' }}>
@@ -161,12 +176,12 @@ const ExperienceById = () => {
                   <p>{programme}</p>
                 </DivWrapper>
                 <DivWrapper style={{ width: '48%' }}>
-                  <h2>A propos de 'nom de l'auteur'</h2>
+                  <h2>A propos de {author.firstName}</h2>
                   <p>{aboutYou}</p>
                 </DivWrapper>
               </div>
               <DivWrapper style={{ textAlign: 'center' }}>
-                <Button>Contacter 'Nom de l'auteur'</Button>
+                <Button>Contacter {author.firstName}</Button>
                 <h6>
                   Pour protéger votre paiement, ne transférez jamais d'argent et
                   ne communiquez pas en dehors du site ou de l'application Find

@@ -15,7 +15,7 @@ const Wrapper = styled.section`
   border-radius: 30px;
 
   background-color: rgba(255, 255, 255, 0.2);
-
+  margin: auto;
   @media (max-width: 920px) {
     max-width: 100vw;
     margin-top: 0;
@@ -48,7 +48,6 @@ const RenderExperience = () => {
     return <Redirect to='/' />;
   }
 
-  console.log(results);
   //Nombre d'expériences, par catégorie.
   const listingCategory = results.map((res) => {
     const { category } = res;
@@ -63,7 +62,7 @@ const RenderExperience = () => {
     []
   );
 
-  const test = () => {
+  const arrayOfCategory = () => {
     const array = [];
     for (const [category, value] of Object.entries(counts)) {
       array.push(`${category} (${value})`);
@@ -72,13 +71,10 @@ const RenderExperience = () => {
     return array;
   };
 
-  const cateMap = test().map((item) => {
+  const cateMap = arrayOfCategory().map((item) => {
     const uniqueID = uuidv4();
     return <DivWrapper key={uniqueID}>{item}</DivWrapper>;
   });
-  // const test = NombreExpByCategory.map((cat) => {
-  //   console.log('cat: ', cat);
-  // });
 
   const renderExperience = results.map((res) => {
     const { _id, title, programme, lieu, category } = res;

@@ -14,7 +14,6 @@ import {
   InputEmail,
   InputPassword,
   InputFirstName,
-  InputCity,
   InputDays,
   InputYears,
   SelectMonths,
@@ -34,11 +33,10 @@ const Subscribe = (props) => {
     password: '',
     password2: '',
     firstName: '',
-    city: '',
     birthdate: { days: '', months: '', years: '' },
   });
 
-  const { email, password, password2, firstName, city, birthdate } = user;
+  const { email, password, password2, firstName, birthdate } = user;
   const { days, months, years } = user.birthdate;
 
   useEffect(() => {
@@ -46,7 +44,7 @@ const Subscribe = (props) => {
       props.history.push('/');
     }
     if (error === 'Email already exists') {
-      setAlert('Email déjà existante.', 'danger');
+      setAlert('Email déjà existante.', 'red');
       clearErrors();
     }
     // eslint-disable-next-line
@@ -71,16 +69,13 @@ const Subscribe = (props) => {
     e.preventDefault();
     // first Sign up page checking
     if (!emailIsValid(email))
-      return setAlert('Cette adresse e-mail est invalide', 'danger');
+      return setAlert('Cette adresse e-mail est invalide', 'red');
     if (password.length < 6 || password2.length < 6)
-      return setAlert(
-        'Le mot de passe doit faire plus de 6 caractères',
-        'danger'
-      );
+      return setAlert('Le mot de passe doit faire plus de 6 caractères', 'red');
     if (password === '' && password2 === '')
-      return setAlert('Le mot de passe ne peut pas être vide', 'danger');
+      return setAlert('Le mot de passe ne peut pas être vide', 'red');
     if (password !== password2)
-      return setAlert('Les deux mots de passe ne correspondent pas', 'danger');
+      return setAlert('Les deux mots de passe ne correspondent pas', 'red');
 
     // Everything success then we can go next form
     setNext(!next);
@@ -90,21 +85,19 @@ const Subscribe = (props) => {
     e.preventDefault();
     // Checking 2nd part of the form
     if (firstName.length < 1)
-      return setAlert('Le Nom doit avoir plus de 1 caractère', 'danger');
-    if (city === '')
-      return setAlert('La ville ne peut pas être vide', 'danger');
+      return setAlert('Le Nom doit avoir plus de 1 caractère', 'red');
     if (birthdate.months === 'Month' || birthdate.months === '')
-      return setAlert('Vous devez choisir un mois', 'danger');
+      return setAlert('Vous devez choisir un mois', 'red');
     if (birthdate.days > 31)
-      return setAlert('Le Jour ne peut pas être plus grand que 31', 'danger');
+      return setAlert('Le Jour ne peut pas être plus grand que 31', 'red');
     if (birthdate.days < 1)
-      return setAlert('Le Jour ne peut pas être plus petit que 1', 'danger');
+      return setAlert('Le Jour ne peut pas être plus petit que 1', 'red');
     if (birthdate.years > 2021)
-      return setAlert('Vous ne pouvez pas être naît dans le futur', 'danger');
+      return setAlert('Vous ne pouvez pas être naît dans le futur', 'red');
     if (birthdate.years < 1900)
       return setAlert(
         'Mmmmh allez vous inscrire dans le livre des records, du plus vieux Humain',
-        'danger'
+        'red'
       );
 
     //Everything is fine ! Let's add this User to our DB
@@ -112,7 +105,6 @@ const Subscribe = (props) => {
       email,
       password,
       firstName,
-      city,
       birthdate: { days, months, years },
     });
   };
@@ -135,16 +127,6 @@ const Subscribe = (props) => {
                   value={firstName}
                   onChange={onChange}
                   autoFocus
-                />
-              </Flex>
-              <Label>Ville :</Label>
-              <Flex>
-                <InputCity
-                  id='city'
-                  type='text'
-                  name='city'
-                  value={city}
-                  onChange={onChange}
                 />
               </Flex>
               <Label>Quand est-ce votre anniversaire ? </Label>

@@ -158,6 +158,7 @@ const ExperienceCreate = () => {
           const dataFiltered = await data.items.filter(
             (item) => item.address.countryName === 'France'
           );
+
           //console.log('Data filtré : ', dataFiltered);
           await setCitySuggested(dataFiltered);
         }
@@ -185,20 +186,14 @@ const ExperienceCreate = () => {
     const register = async () => {
       try {
         await axios.post('/api/experiences', experience, config);
+        setSuccess(true);
       } catch (error) {
-        console.log(error);
+        setError(error.response.data);
+        setSuccess(false);
       }
     };
 
-    register()
-      .then(() => {
-        console.log('success');
-        setSuccess(true);
-      })
-      .catch((err) => {
-        console.error('Une erreur est survenue : ', err);
-        setError('Une erreur est survenue');
-      });
+    register();
   };
 
   return (

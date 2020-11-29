@@ -205,9 +205,19 @@ const Personal = () => {
           },
         };
 
-        await axios.put(`/api/users/${user._id}`, newUser, config);
-        // Refresh the user in my Context
-        await loadUser();
+        try {
+          await axios.put(`/api/users/${user._id}/email`, newUser, config);
+          // Refresh the user in my Context
+          loadUser();
+        } catch (error) {
+          return (
+            setAlert('Cette addresse e-mail est déjà utilisée', 'red'),
+            setNewUser({
+              ...newUser,
+              email: user.email,
+            })
+          );
+        }
       };
       // newSelected value is true, (form sended) then I call my function updateUser
       updateUser();
@@ -221,7 +231,6 @@ const Personal = () => {
     // eslint-disable-next-line
   }, [newSelected]);
   // When one category become true, this useEffect will be rendered then doing fetch for the properly case
-  console.log('ONFLY NEWUSER : ', newUser);
   const onChange = (e) => {
     setNewUser({
       ...newUser,
@@ -256,10 +265,10 @@ const Personal = () => {
     e.preventDefault();
     // Have to set my alerts to throw to the user What's wrong
     if (newUser.firstName === '')
-      return setAlert('Votre prénom ne peut pas être vide', 'danger');
+      return setAlert('Votre prénom ne peut pas être vide', 'red');
 
     if (newUser.lastName === '')
-      return setAlert('Votre nom de famille ne peut pas être vide', 'danger');
+      return setAlert('Votre nom de famille ne peut pas être vide', 'red');
 
     setNewSelected({ legalName: true });
   };
@@ -267,17 +276,17 @@ const Personal = () => {
   const BirthdateSubmit = (e) => {
     e.preventDefault();
     if (newUser.birthdate.months === 'Month' || newUser.birthdate.months === '')
-      return setAlert('Vous devez choisir un mois', 'danger');
+      return setAlert('Vous devez choisir un mois', 'red');
     if (newUser.birthdate.days > 31)
-      return setAlert('Le jour ne peut pas être plus grand que 31', 'danger');
+      return setAlert('Le jour ne peut pas être plus grand que 31', 'red');
     if (newUser.birthdate.days < 1)
-      return setAlert('Le jour ne peut pas être plus petit que 1', 'danger');
+      return setAlert('Le jour ne peut pas être plus petit que 1', 'red');
     if (newUser.birthdate.years > 2021)
-      return setAlert('Vous ne pouvez pas être né dans le futur', 'danger');
+      return setAlert('Vous ne pouvez pas être né dans le futur', 'red');
     if (newUser.birthdate.years < 1900)
       return setAlert(
         'Mmmmh vous devez vous inscrire dans le livre des records.. du plus viel Humain',
-        'danger'
+        'red'
       );
 
     // Everything looks fine, then let's send :
@@ -291,7 +300,7 @@ const Personal = () => {
   const EmailSubmit = (e) => {
     e.preventDefault();
     if (!emailIsValid(email))
-      return setAlert('Cette adresse e-mail est invalide', 'danger');
+      return setAlert('Cette adresse e-mail est invalide', 'red');
 
     // Everything looks fine, then let's send :
     setNewSelected({ email: true });
@@ -507,7 +516,7 @@ const Personal = () => {
                 </div>
                 <br />
                 <br />
-                <div style={{}}>
+                <div>
                   <div>
                     <label>Nouvelle adresse : </label>
                     <Input
@@ -522,7 +531,6 @@ const Personal = () => {
                     <br />
                   </div>
                   <Button>Sauvegarder</Button>
-                  <Alerts />
                 </div>
               </>
             ) : (
@@ -533,6 +541,7 @@ const Personal = () => {
                   <br />
                   {newUser.email}
                 </p>
+                <Alerts />
                 <Modify
                   onClick={() => {
                     setIsClicked({ email: true });

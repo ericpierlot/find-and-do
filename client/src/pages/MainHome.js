@@ -7,7 +7,7 @@ const Section = styled.section`
   width: 100%;
   text-align: center;
   @media (max-width: 640px) {
-    margin: 0;
+    margin-top: 100px;
   }
 `;
 

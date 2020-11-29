@@ -57,10 +57,15 @@ const AddressChoosen = ({ experience, setExperience, render }) => {
         <Input
           list='sugg'
           type='text'
-          value={experience.lieu}
+          value={
+            experience.lieu.charAt(0).toUpperCase() + experience.lieu.slice(1)
+          }
           placeholder='Entrez le nom de la ville'
           onChange={(e) =>
-            setExperience({ ...experience, lieu: e.target.value })
+            setExperience({
+              ...experience,
+              lieu: e.target.value.split(' - ')[0],
+            })
           }
         />
         <datalist id='sugg'>{render}</datalist>
