@@ -104,7 +104,7 @@ const Subscribe = (props) => {
     register({
       email,
       password,
-      firstName,
+      firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1),
       birthdate: { days, months, years },
     });
   };
@@ -124,7 +124,7 @@ const Subscribe = (props) => {
                   id='firstName'
                   type='text'
                   name='firstName'
-                  value={firstName}
+                  value={firstName.charAt(0).toUpperCase() + firstName.slice(1)}
                   onChange={onChange}
                   autoFocus
                 />

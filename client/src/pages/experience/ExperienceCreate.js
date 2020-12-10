@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import AuthContext from '../../context/auth/authContext';
-
+import { useHistory } from 'react-router-dom';
 // My Components
 import NavCreateExperience from './components/NavCreateExperience';
 import Address from './components/Address';
@@ -122,7 +122,10 @@ const ContenuCreateExperience = styled.div`
 const ExperienceCreate = () => {
   const authContext = useContext(AuthContext);
   const { user } = authContext;
-  const [numberOfPage, setNumberOfPage] = useState(0);
+  const history = useHistory();
+  const [numberOfPage, setNumberOfPage] = useState(
+    user.experienceCreated[0] ? false : 0
+  );
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
   const [liSelected, setLiSelected] = useState(0);
@@ -141,7 +144,9 @@ const ExperienceCreate = () => {
   });
 
   const [citySuggested, setCitySuggested] = useState([]);
-
+  useEffect(() => {
+    if (!user && !numberOfPage) return history.push('/');
+  }, [numberOfPage, user, history]);
   useEffect(() => {
     if (experience.lieu.length > 0) {
       const config = {

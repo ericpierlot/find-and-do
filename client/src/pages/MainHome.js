@@ -49,7 +49,8 @@ const UnderTitle = styled.h3`
 const Contenu = styled.div`
   padding: 1rem;
   /* background-color: rgba(255, 255, 255, 0.4); */
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(6px);
   border-radius: 30px;
   width: 30%;
   margin: auto;
@@ -70,7 +71,7 @@ const MainHome = () => {
         <SearchExperience
           type='search'
           name='ville'
-          placeholder='Chercher dans une ville...'
+          placeholder="Entrez le nom d'une Ville..."
         />
       </Contenu>
     </Section>

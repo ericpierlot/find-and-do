@@ -27,6 +27,7 @@ app.use((req, res, next) => {
 app.use('/api/users', require('./routes/users'));
 app.use('/api/experiences', require('./routes/experiences'));
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/messages', require('./routes/messages'));
 
 // serve static assets for production
 if (process.env.NODE_ENV === 'production') {

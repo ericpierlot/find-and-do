@@ -11,21 +11,17 @@ import Spinner from './components/Spinner.js';
 const Form = styled.form`
   display: flex;
   justify-content: space-between;
-
-  transition: transform 250ms ease;
-  :focus-within {
-    transform: scale(1.033);
-  }
 `;
 const Input = styled.input`
   padding: 0.5rem;
   border: none;
-  border-radius: 30px;
+
   width: 70%;
   background-color: transparent;
   font-size: 1rem;
   transition: 330ms ease-in-out;
   outline: none;
+  border-bottom: 2px solid black;
   @media (max-width: 768px) {
     :hover {
       transition: 100ms ease-in-out;
@@ -44,6 +40,10 @@ const Button = styled.button`
   width: 2rem;
   background-color: transparent;
   border: none;
+`;
+
+const HandleAction = styled.div`
+  text-align: center;
 `;
 
 const SearchExperience = ({ type, name, placeholder }) => {
@@ -69,19 +69,15 @@ const SearchExperience = ({ type, name, placeholder }) => {
           `https://geocode.search.hereapi.com/v1/geocode?q=${value}&apiKey=vVtg-sSJWaB1KQ5481hHJq5PmJV27oiCwpdS6p70A38`,
           config
         );
-        if (data) {
-          // Filter to have only French city
-          const dataFiltered = await data.items.filter(
-            (item) => item.address.countryName === 'France'
-          );
-          await setCitySuggested(dataFiltered);
-        }
+        setCitySuggested(
+          data.items.filter((item) => item.address.countryName === 'France')
+        );
       };
       FetchCityAPI();
     }
   }, [value]);
 
-  // Render city name & postal code
+  //Render city name & postal code
   const render = citySuggested.map((item, index) => {
     return (
       <option
@@ -140,11 +136,10 @@ const SearchExperience = ({ type, name, placeholder }) => {
             setIsLoading(false);
             push('/experiences');
           })
-          .catch((err) => {
-            console.error(
-              'Une erreur est survenue lors de lors de la sauvegarde : ',
-              err
-            );
+          .catch(() => {
+            setIsLoading(false);
+            setValue('');
+            setAlert('Aucune expérience a été trouvée', 'black');
           });
       }; // Fin getCity()
 
@@ -156,7 +151,7 @@ const SearchExperience = ({ type, name, placeholder }) => {
     return () => {
       return setFormSend(false);
     };
-  }, [formSend, value, inputKm, saveExperiences, push]);
+  }, [formSend, value, inputKm, saveExperiences, push, setAlert]);
 
   function onSubmit(e) {
     e.preventDefault();
@@ -182,6 +177,16 @@ const SearchExperience = ({ type, name, placeholder }) => {
   // J'affiche mon JSX
   return (
     <>
+      <label
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          paddingBottom: '1rem',
+        }}
+        htmlFor='searchCity'
+      >
+        Choisissez votre Ville et la Distance du rayon de recherche.
+      </label>
       <Form onSubmit={onSubmit}>
         <Input
           list='suggest'
@@ -189,7 +194,9 @@ const SearchExperience = ({ type, name, placeholder }) => {
           type={type}
           value={value}
           onChange={(e) => {
-            setValue(e.target.value);
+            setValue(
+              e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1)
+            );
           }}
           name={name}
           placeholder={placeholder}
@@ -214,8 +221,10 @@ const SearchExperience = ({ type, name, placeholder }) => {
           </svg>
         </Button>
       </Form>
-      <Alerts />
-      {isLoading ? <Spinner /> : ''}
+      <HandleAction>
+        {isLoading ? <Spinner /> : ''}
+        <Alerts />
+      </HandleAction>
     </>
   );
 };

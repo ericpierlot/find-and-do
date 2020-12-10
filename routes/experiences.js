@@ -14,13 +14,46 @@ const User = require('../models/User');
 // @desc      Get Experience by user ID
 // @access    Private
 
-router.get('/myexperience', async (req, res) => {
+router.get('/myexperience', auth, async (req, res) => {
   // When one User try to Access to his own experience quickly from his panel
+
   try {
-    const experiences = await Experience.find({ createdBy: req.params.id });
-    res.json(experiences);
+    const userExperience = await Experience.find({ createdBy: req.query.id });
+    res.status(200).json(userExperience);
   } catch (error) {
-    console.error(error.message);
+    res
+      .status(401)
+      .json({ message: 'Une erreur est survenue lors de la recherche' }, error);
+  }
+});
+
+router.delete('/delete', auth, async (req, res) => {
+  try {
+    // Select the User by ID
+    const UserByExpID = await User.findById({
+      _id: req.user.id,
+    });
+
+    //Check [] of experienceCreated by the user
+    if (UserByExpID.experienceCreated.length === 0)
+      return res
+        .status(400)
+        .json({ message: 'User have no experienceCreated' });
+
+    // Delete the experienceCreated to the User & Save
+    await UserByExpID.experienceCreated.pop();
+    await UserByExpID.save();
+
+    // Delete all Experiences that was requested to be deleted (All because testing purpose from me)
+    await Experience.deleteMany({ createdBy: UserByExpID.id });
+
+    //Everything was fine :
+    res.status(200).json({
+      message:
+        'Experience removed from the User collection & Remove from Experience collection.',
+    });
+  } catch (error) {
+    res.status(401).json({ errors: error });
   }
 });
 
@@ -33,7 +66,7 @@ router.get('/id/:id', async (req, res) => {
     const readThisExperience = await Experience.findById({
       _id: req.params.id,
     });
-    res.json(readThisExperience);
+    res.status(200).json(readThisExperience);
   } catch (err) {
     console.error(err.message);
   }
@@ -45,17 +78,14 @@ router.get('/id/:id', async (req, res) => {
 
 router.get('/city/:lieu', async (req, res) => {
   // Find experiences from one city requested by one User.
-
-  //Push params city to query
-  req.query.lieu.push(req.params.lieu);
-  //Using Set() to keep only unique
-  const noDoubleCity = [...new Set(req.query.lieu)];
-
   try {
-    const experienceCity = await Experience.find({ lieu: noDoubleCity });
+    const experienceCity = await Experience.find({ lieu: req.query.lieu });
+    if (experienceCity.length === 0) {
+      return res.status(401).json({ message: 'No experiences found' });
+    }
     res.send(experienceCity);
   } catch (error) {
-    console.error(error.message);
+    res.status(500).send('Error from Server', error);
   }
 });
 

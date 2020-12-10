@@ -381,9 +381,9 @@ const Personal = () => {
                   <strong>Nom complet</strong>
                   <br />
                   <br />
-                  {newUser.firstName}{' '}
-                  {newUser.lastName ? (
-                    newUser.lastName
+                  {user.firstName}{' '}
+                  {user.lastName ? (
+                    user.lastName
                   ) : (
                     <strong> Veuillez définir votre Nom de famille</strong>
                   )}
@@ -474,8 +474,8 @@ const Personal = () => {
                   <strong>Date de naissance</strong>
                   <br />
                   <br />
-                  Né(e) le {newUser.birthdate.days} {newUser.birthdate.months}{' '}
-                  {newUser.birthdate.years}.
+                  Né(e) le {user.birthdate.days} {user.birthdate.months}{' '}
+                  {user.birthdate.years}.
                 </p>
                 <Modify
                   onClick={() => {
@@ -539,7 +539,7 @@ const Personal = () => {
                   <strong>Adresse e-mail</strong>
                   <br />
                   <br />
-                  {newUser.email}
+                  {user.email}
                 </p>
                 <Alerts />
                 <Modify

@@ -104,6 +104,16 @@ router.get('/experience/:id', async (req, res) => {
   }
 });
 
+router.post('/message', auth, async (req, res) => {
+  try {
+    const userFirstName = await User.findById({ _id: req.body.data }).select(
+      'firstName'
+    );
+    res.status(200).json(userFirstName);
+  } catch (error) {
+    res.status(401).json({ message: error });
+  }
+});
 // @route     PUT api/users/:id
 // @desc      Update an user
 // @access    Private

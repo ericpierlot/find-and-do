@@ -8,15 +8,15 @@ const Alerts = () => {
     alertContext.alerts.length > 0 &&
     alertContext.alerts.map((alert) => (
       <div style={{}} key={alert.id}>
-        <i
+        <u
           style={{
-            fontSize: '1.5rem',
+            fontSize: '1rem',
             fontWeight: 'bold',
             color: alert.colorChoosen,
           }}
         >
           {alert.message}
-        </i>
+        </u>
       </div>
     ))
   );

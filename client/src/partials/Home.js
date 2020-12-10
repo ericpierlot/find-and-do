@@ -13,7 +13,11 @@ import Experiences from '../pages/Experiences';
 
 import PrivateRoute from '../utils/PrivateRoute';
 import ExperienceCreate from '../pages/experience/ExperienceCreate';
+import ExperienceManage from '../pages/experience/ExperienceManage';
 import ExperienceById from '../pages/experience/components/ExperienceById';
+import Messagerie from '../pages/messagerie/Messagerie';
+import BoiteReception from '../pages/messagerie/components/Reception';
+import BoiteEnvoi from '../pages/messagerie/components/Envoi';
 
 // const Flex = styled.article`
 //   display: flex;
@@ -46,11 +50,27 @@ const Home = () => {
           path='/profil/preferences'
           component={Preferences}
         />
+        <PrivateRoute exact path='/profil/messagerie' component={Messagerie} />
+        <PrivateRoute
+          exact
+          path='/profil/messagerie/reception'
+          component={BoiteReception}
+        />
+        <PrivateRoute
+          exact
+          path='/profil/messagerie/envoi'
+          component={BoiteEnvoi}
+        />
         <Route exact path='/experiences' component={Experiences} />
         <PrivateRoute
           exact
           path='/experience-create'
           component={ExperienceCreate}
+        />
+        <PrivateRoute
+          exact
+          path='/experience-manage/:id'
+          component={ExperienceManage}
         />
         <Route exact path='/experiences/id/:id' component={ExperienceById} />
       </Switch>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.article`
@@ -88,6 +88,12 @@ const Recapitulatif = ({
   success,
   error,
 }) => {
+  useEffect(() => {
+    if (success) {
+      window.location = '/';
+    }
+  }, [success]);
+
   return (
     <Wrapper>
       <Top>

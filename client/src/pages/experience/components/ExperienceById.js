@@ -1,19 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Spinner from '../../../utils/components/Spinner';
+import { Link } from 'react-router-dom';
 import {
   Wrapper,
   Section,
   Article,
 } from '../../../css/styled/Experience/styled';
+import { FormContactUser } from './formContactUser/FormContactUser';
 import styled from 'styled-components';
+import AuthContext from '../../../context/auth/authContext';
+import AlertContext from '../../../context/alert/alertContext';
+import Alerts from '../../../utils/Alerts';
 
 const DivWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: transparent;
-  backdrop-filter: blur(5px);
+  background-color: white;
+
   border: whitesmoke 2px solid;
   box-shadow: 0px 0.2em 0.5em rgba(0, 0, 0, 0.3);
   width: 100%;
@@ -93,6 +98,10 @@ const Button = styled.button`
 `;
 
 const ExperienceById = () => {
+  const alertContext = useContext(AlertContext);
+  const { setAlert } = alertContext;
+  const authContext = useContext(AuthContext);
+  const { user } = authContext;
   const [readThisID, setReadThisID] = useState('');
   const [author, setAuthor] = useState({
     id: '',
@@ -113,10 +122,22 @@ const ExperienceById = () => {
     type,
   } = readThisID;
 
+  // Loading
+  const [isLoading, setIsLoading] = useState(false);
+  // CONTACT HOOKS
+  const [contactIsClicked, setContactIsClicked] = useState(false);
+  const [messageToSend, setMessageToSend] = useState('');
+  let sendUserID = null;
+  if (user) {
+    sendUserID = user._id;
+  }
+  const recipientID = author._id;
+
   const { id } = useParams();
 
   useEffect(() => {
     // go to my api rest /api/experience/:id
+
     const fetchExperienceID = async () => {
       const { data } = await axios.get(`/api/experiences/id/${id}`);
       setReadThisID(data);
@@ -124,7 +145,7 @@ const ExperienceById = () => {
     // retrive Author of the experience
     const getAuthorFullName = async () => {
       const { data } = await axios.get(`/api/users/experience/${id}`);
-      console.log(data.author[0]);
+      //console.log(data.author[0]);
       const { firstName, lastName, _id } = data.author[0];
       setAuthor({ _id, firstName, lastName });
     };
@@ -132,6 +153,41 @@ const ExperienceById = () => {
     fetchExperienceID();
     getAuthorFullName();
   }, [id]);
+
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+
+    const sendMessage = async () => {
+      setIsLoading(true);
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const dataToSend = {
+        messageToSend,
+        recipientID,
+        sendUserID,
+      };
+
+      try {
+        await axios.post('/api/messages/send', dataToSend, config);
+        setAlert(
+          'Votre message a été envoyé avec succès, vous pouvez avoir accès via votre profil.',
+          'green'
+        );
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+        setAlert(
+          "Une erreur est survenue, votre message n'a pas pu être envoyé.",
+          'red'
+        );
+      }
+    };
+    sendMessage();
+  };
 
   return (
     <Section>
@@ -149,11 +205,11 @@ const ExperienceById = () => {
                   alt='image2'
                 />
                 <img
-                  src='https://source.unsplash.com/random/226x170'
+                  src='https://source.unsplash.com/random/226x169'
                   alt='image3'
                 />
                 <img
-                  src='https://source.unsplash.com/random/226x170'
+                  src='https://source.unsplash.com/random/226x169'
                   alt='image4'
                 />
                 <img
@@ -181,7 +237,42 @@ const ExperienceById = () => {
                 </DivWrapper>
               </div>
               <DivWrapper style={{ textAlign: 'center' }}>
-                <Button>Contacter {author.firstName}</Button>
+                {contactIsClicked ? (
+                  user ? (
+                    <FormContactUser
+                      messageToSend={messageToSend}
+                      setMessageToSend={setMessageToSend}
+                      handleSendMessage={handleSendMessage}
+                      isLoading={isLoading}
+                    />
+                  ) : (
+                    <Link
+                      to='/subscribe'
+                      style={{
+                        color: 'red',
+                        fontWeight: 'bold',
+                        textDecoration: 'underline',
+                      }}
+                    >
+                      Pour pouvoir contacter {author.firstName} veuillez créer
+                      un compte.
+                    </Link>
+                  )
+                ) : (
+                  ''
+                )}
+
+                <Button
+                  style={{
+                    backgroundColor: contactIsClicked ? 'grey' : '',
+                    backgroundImage: contactIsClicked ? 'none' : null,
+                    pointerEvents: contactIsClicked ? 'none' : '',
+                  }}
+                  onClick={() => setContactIsClicked(true)}
+                >
+                  Contacter {author.firstName}
+                </Button>
+                <h6></h6>
                 <h6>
                   Pour protéger votre paiement, ne transférez jamais d'argent et
                   ne communiquez pas en dehors du site ou de l'application Find

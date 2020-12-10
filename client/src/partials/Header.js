@@ -131,7 +131,7 @@ const Header = () => {
           <Li>Mon compte</Li>
         </Link>
         {user && user.experienceCreated.length > 0 ? (
-          <Link to='/experience-manage'>
+          <Link to={`/experience-manage/${user._id}`}>
             <Li>Gérer votre expérience</Li>
           </Link>
         ) : (

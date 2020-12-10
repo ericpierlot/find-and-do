@@ -105,6 +105,14 @@ const Profil = () => {
               Description='Definissez votre langue, et votre thème par défault'
             />
           </Link>
+          <Link to='/profil/messagerie'>
+            <Card
+              Image={ProfilIcon}
+              ImageAlt='Messagerie'
+              Title='Votre messagerie'
+              Description="Accédez à votre boite de réception et votre boîte d'envoi"
+            />
+          </Link>
         </Article>
       </Wrapper>
     </Section>
