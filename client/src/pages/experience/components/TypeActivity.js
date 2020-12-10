@@ -14,7 +14,6 @@ const CardType = styled.button`
   :hover {
     background-color: rgba(255, 255, 255, 0.8);
   }
-  margin-right: 1rem;
 `;
 
 const Wrapper = styled.article`
@@ -28,11 +27,17 @@ const Top = styled.div`
   h2 {
     margin-bottom: 2rem;
   }
+  @media (max-width: 920px) {
+    width: 100%;
+  }
 `;
 
 const Contenu = styled.div`
   width: 40%;
   margin: auto;
+  @media (max-width: 920px) {
+    width: 100%;
+  }
 `;
 
 const ActivityChoosen = ({ experience, setExperience }) => {

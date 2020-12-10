@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import SearchExperience from '../utils/SearchExperience';
+import axios from 'axios';
 
 const Section = styled.section`
   margin: auto;
@@ -63,6 +64,22 @@ const Contenu = styled.div`
 `;
 
 const MainHome = () => {
+  const [cityData, setCityData] = useState([]);
+
+  const fetchCityExperiences = () => {
+    return axios
+      .get('/api/experiences/allcity')
+      .then(({ data }) => {
+        return data;
+      })
+      .catch((err) => console.error(err));
+  };
+  useEffect(() => {
+    fetchCityExperiences()
+      .then((data) => setCityData(data || []))
+      .catch((err) => console.error(err));
+  }, []);
+
   return (
     <Section>
       <Title>Find & Do</Title>
@@ -73,6 +90,15 @@ const MainHome = () => {
           name='ville'
           placeholder="Entrez le nom d'une Ville..."
         />
+        <div style={{ marginTop: '2rem', padding: '1rem' }}>
+          Actuellement il y a des expériences dans les villes suivantes :
+          <ul>
+            {cityData.map((ville, idx) => {
+              const { lieu } = ville;
+              return <li key={idx}>{lieu}</li>;
+            })}
+          </ul>
+        </div>
       </Contenu>
     </Section>
   );

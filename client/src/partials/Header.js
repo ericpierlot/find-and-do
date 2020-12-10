@@ -93,6 +93,16 @@ const MobileDiv = styled.div`
   justify-content: space-evenly;
   flex: 1;
 `;
+
+// const fetchUserRecipient = () => {
+//   return axios
+//     .post('/api/messages')
+//     .then(({ data }) => {
+//       return data;
+//     })
+//     .catch((err) => console.error(err));
+// };
+
 const Header = () => {
   const authContext = useContext(AuthContext);
   const experienceContext = useContext(ExperienceContext);
@@ -100,6 +110,15 @@ const Header = () => {
   const { isAuthenticated, logout, user, loadUser } = authContext;
   const [top, setTop] = useState(true);
   const [bottom, setBottom] = useState(false);
+  //const [haveNewMessage, setHaveNewMessage] = useState();
+  // A mettre dans le useState si je veux une actualisation directe, mais consomme quelques appels..
+  /* 
+      fetchUserRecipient().then((userData) => {
+      if (!userData) return setHaveNewMessage(0);
+      if (userData.length > 0) return setHaveNewMessage(userData.length);
+    });
+    */
+
   const isOnMobile = window.matchMedia('(max-width: 920px)').matches;
   const onLogout = () => {
     logout();
@@ -107,7 +126,15 @@ const Header = () => {
 
   useEffect(() => {
     loadUser();
+
     // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    // fetchUserRecipient().then((userData) => {
+    //   if (!userData) return setHaveNewMessage(0);
+    //   if (userData.length > 0) return setHaveNewMessage(userData.length);
+    // });
   }, []);
 
   const authLinks = (

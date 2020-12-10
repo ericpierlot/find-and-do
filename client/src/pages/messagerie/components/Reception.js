@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
-import AuthContext from '../../../context/auth/authContext';
 import { CardReception } from './CardReception';
 
 const Section = styled.section`
@@ -83,9 +82,6 @@ const Flexbox = styled.form`
 `;
 
 const BoiteReception = () => {
-  const authContext = useContext(AuthContext);
-  const { user } = authContext;
-  const { _id } = user;
   const [myReception, setMyReception] = useState([]);
 
   const fetchUserRecipient = () => {

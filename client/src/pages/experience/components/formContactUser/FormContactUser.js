@@ -42,7 +42,7 @@ export const FormContactUser = ({
   isLoading,
 }) => {
   return (
-    <form
+    <div
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -69,6 +69,6 @@ export const FormContactUser = ({
       <Button onClick={handleSendMessage}>
         {isLoading ? <Spinner /> : 'Envoyer'}
       </Button>
-    </form>
+    </div>
   );
 };

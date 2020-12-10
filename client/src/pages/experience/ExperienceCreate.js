@@ -108,6 +108,12 @@ const ConteneurCreateExperience = styled.div`
   padding: 2rem;
   display: flex;
   flex-direction: row;
+  @media (max-width: 920px) {
+    flex-direction: column;
+    width: 100vw;
+    border: 0;
+    padding: 1rem;
+  }
 `;
 
 const ContenuCreateExperience = styled.div`
@@ -117,6 +123,11 @@ const ContenuCreateExperience = styled.div`
   background-color: rgba(255, 255, 255, 0.2);
   border-top-right-radius: 30px;
   border-bottom-right-radius: 30px;
+  @media (max-width: 920px) {
+    width: 100%;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+  }
 `;
 
 const ExperienceCreate = () => {
@@ -136,8 +147,8 @@ const ExperienceCreate = () => {
       category: '',
       precision: '',
     },
-    programme: '',
-    aboutYou: '',
+    programme: ``,
+    aboutYou: ``,
     exactAddress: '',
     title: '',
     photos: 'En développement',

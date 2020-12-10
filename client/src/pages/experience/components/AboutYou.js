@@ -20,6 +20,9 @@ const Top = styled.div`
   p {
     margin-top: 1rem;
   }
+  @media (max-width: 920px) {
+    width: 100%;
+  }
 `;
 
 const TextArea = styled.textarea`

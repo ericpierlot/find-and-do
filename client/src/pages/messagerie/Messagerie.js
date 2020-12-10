@@ -107,7 +107,7 @@ const Messagerie = () => {
               <br />
               <br />
               <div style={{ width: '100%' }}>
-                Vous avez actuellement 0 nouveau message.
+                Accédez aux messages que vous avez reçu.
               </div>
             </>
           </Flexbox>
@@ -126,8 +126,7 @@ const Messagerie = () => {
               <br />
               <br />
               <div style={{ width: '100%' }}>
-                Vous avez actuellement envoyé X message, cliquez pour re-lire ou
-                voir si ils ont été lu.
+                Vous pouvez accéder aux messages que vous avez envoyé.
               </div>
             </>
           </Flexbox>

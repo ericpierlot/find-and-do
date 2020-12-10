@@ -65,13 +65,17 @@ const SearchExperience = ({ type, name, placeholder }) => {
         headers: '',
       };
       const FetchCityAPI = async () => {
-        const { data } = await axios.get(
-          `https://geocode.search.hereapi.com/v1/geocode?q=${value}&apiKey=vVtg-sSJWaB1KQ5481hHJq5PmJV27oiCwpdS6p70A38`,
-          config
-        );
-        setCitySuggested(
-          data.items.filter((item) => item.address.countryName === 'France')
-        );
+        return await axios
+          .get(
+            `https://geocode.search.hereapi.com/v1/geocode?q=${value}&apiKey=vVtg-sSJWaB1KQ5481hHJq5PmJV27oiCwpdS6p70A38`,
+            config
+          )
+          .then(({ data }) =>
+            setCitySuggested(
+              data.items.filter((item) => item.address.countryName === 'France')
+            )
+          )
+          .catch((err) => console.error(err));
       };
       FetchCityAPI();
     }
@@ -125,9 +129,8 @@ const SearchExperience = ({ type, name, placeholder }) => {
         const citiesList = data.elements.map((element) => {
           return element.tags.name;
         });
-
-        const arrayCities = await citiesList.join('&lieu=');
-
+        citiesList.push(cityWithoutPostalCode[0]);
+        const arrayCities = citiesList.join('&lieu=');
         const request = `/api/experiences/city/${cityWithoutPostalCode[0]}?${arrayCities}`;
 
         //Send to my context

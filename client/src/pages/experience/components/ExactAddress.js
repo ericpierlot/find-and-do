@@ -35,7 +35,9 @@ const Input = styled.input`
   margin-bottom: 2.5rem;
   transition: border-bottom 330ms ease-in-out;
   margin-top: 2rem;
-
+  @media (max-width: 920px) {
+    width: 100%;
+  }
   :focus {
     border-bottom: 2px #eb3941 solid;
   }

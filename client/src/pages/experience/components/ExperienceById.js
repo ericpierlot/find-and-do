@@ -12,7 +12,6 @@ import { FormContactUser } from './formContactUser/FormContactUser';
 import styled from 'styled-components';
 import AuthContext from '../../../context/auth/authContext';
 import AlertContext from '../../../context/alert/alertContext';
-import Alerts from '../../../utils/Alerts';
 
 const DivWrapper = styled.div`
   display: flex;
@@ -35,9 +34,12 @@ const DivWrapper = styled.div`
   }
 
   @media (max-width: 920px) {
-    width: 200px;
-    height: 150px;
-    justify-content: space-evenly;
+    width: 100%;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+    justify-content: center;
+    align-items: center;
   }
 `;
 
@@ -49,6 +51,12 @@ const TOP = styled.div`
   }
   h4 {
     margin-top: 1rem;
+  }
+
+  @media (max-width: 920px) {
+    h2 {
+      margin-top: 0;
+    }
   }
 `;
 
@@ -62,6 +70,21 @@ const IMAGES = styled.div`
   img {
     border: 2px solid whitesmoke;
     border-radius: 15px;
+  }
+
+  @media (max-width: 920px) {
+    img:nth-child(2) {
+      display: none;
+    }
+    img:nth-child(3) {
+      display: none;
+    }
+    img:nth-child(4) {
+      display: none;
+    }
+    img:nth-child(5) {
+      display: none;
+    }
   }
 `;
 
@@ -109,18 +132,7 @@ const ExperienceById = () => {
     lastName: '',
   });
 
-  const {
-    title,
-    aboutYou,
-    category,
-    precision,
-    createdBy,
-    exactAddress,
-    createdAt,
-    lieu,
-    programme,
-    type,
-  } = readThisID;
+  const { title, aboutYou, lieu, programme } = readThisID;
 
   // Loading
   const [isLoading, setIsLoading] = useState(false);
@@ -226,17 +238,17 @@ const ExperienceById = () => {
               <DivWrapper style={{ height: '100px' }}>
                 <h2>Expérience organisée par {author.firstName}</h2>
               </DivWrapper>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <DivWrapper style={{ width: '48%' }}>
+              <div>
+                <DivWrapper>
                   <h2>Au programme</h2>
                   <p>{programme}</p>
                 </DivWrapper>
-                <DivWrapper style={{ width: '48%' }}>
+                <DivWrapper>
                   <h2>A propos de {author.firstName}</h2>
                   <p>{aboutYou}</p>
                 </DivWrapper>
               </div>
-              <DivWrapper style={{ textAlign: 'center' }}>
+              <DivWrapper style={{ marginBottom: '5rem' }}>
                 {contactIsClicked ? (
                   user ? (
                     <FormContactUser
@@ -272,8 +284,7 @@ const ExperienceById = () => {
                 >
                   Contacter {author.firstName}
                 </Button>
-                <h6></h6>
-                <h6>
+                <h6 style={{ textAlign: 'center' }}>
                   Pour protéger votre paiement, ne transférez jamais d'argent et
                   ne communiquez pas en dehors du site ou de l'application Find
                   & Do

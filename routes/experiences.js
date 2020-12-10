@@ -23,7 +23,19 @@ router.get('/myexperience', auth, async (req, res) => {
   } catch (error) {
     res
       .status(401)
-      .json({ message: 'Une erreur est survenue lors de la recherche' }, error);
+      .json({ message: 'Une erreur est survenue lors de la recherche' });
+  }
+});
+
+router.get('/allcity', async (req, res) => {
+  try {
+    const allCities = await Experience.find({}).select('lieu').select('-_id');
+
+    res.status(200).json(allCities);
+  } catch (error) {
+    res
+      .status(401)
+      .json({ message: 'Une erreur est survenue lors de la recherche' });
   }
 });
 
@@ -76,14 +88,14 @@ router.get('/id/:id', async (req, res) => {
 // @desc      Get an Experience by city
 // @access    Private
 
-router.get('/city/:lieu', async (req, res) => {
+router.post('/city/:lieu', async (req, res) => {
   // Find experiences from one city requested by one User.
   try {
     const experienceCity = await Experience.find({ lieu: req.query.lieu });
     if (experienceCity.length === 0) {
       return res.status(401).json({ message: 'No experiences found' });
     }
-    res.send(experienceCity);
+    res.status(200).json(experienceCity);
   } catch (error) {
     res.status(500).send('Error from Server', error);
   }

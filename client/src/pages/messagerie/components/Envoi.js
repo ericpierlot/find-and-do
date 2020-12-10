@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
-import AuthContext from '../../../context/auth/authContext';
 import { CardEnvoi } from './CardEnvoi';
+import Spinner from '../../../utils/components/Spinner';
 
 const Section = styled.section`
   margin: auto;
@@ -83,20 +83,21 @@ const Flexbox = styled.div`
 `;
 
 const BoiteEnvoi = () => {
-  const authContext = useContext(AuthContext);
-  const { user } = authContext;
-  const { _id } = user;
   const [isLoading, setIsLoading] = useState(false);
   const [mySended, setMySended] = useState([]);
-  const [recipientName, setRecipientName] = useState('');
 
   const fetchSendedUser = () => {
+    setIsLoading(true);
     return axios
       .post('/api/messages/sended')
       .then(({ data }) => {
+        setIsLoading(false);
         return data;
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        setIsLoading(false);
+        console.error(err);
+      });
   };
 
   useEffect(() => {
@@ -105,16 +106,19 @@ const BoiteEnvoi = () => {
 
   const handleDelete = async (message_id) => {
     try {
+      setIsLoading(true);
       await axios
         .delete('/api/messages/delete', { params: { id: message_id } })
         .then(({ data }) => {
           if (data === 'success') {
+            setIsLoading(false);
             setMySended(
               mySended.filter((element) => element._id !== message_id)
             );
           }
         });
     } catch (error) {
+      setIsLoading(false);
       console.error(error);
     }
   };
@@ -164,7 +168,7 @@ const BoiteEnvoi = () => {
               <div
                 style={{ width: '100%', borderBottom: '2px solid whitesmoke' }}
               >
-                {result}
+                {isLoading ? <Spinner /> : result}
               </div>
             </>
           </Flexbox>

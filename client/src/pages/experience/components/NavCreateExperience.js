@@ -6,24 +6,51 @@ const Navigation = styled.nav`
   flex-direction: column;
   width: 20%;
   background-color: rgba(255, 255, 255, 0.2);
+  @media (max-width: 920px) {
+    width: 100%;
+    flex-wrap: wrap;
+    background-color: rgba(255, 255, 255, 0.2);
+  }
   border-top-left-radius: 30px;
   border-bottom-left-radius: 30px;
   padding: 2rem;
+  @media (max-width: 920px) {
+    padding: 1rem;
+    border-border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
   ul {
     list-style-type: none;
     margin-bottom: 2rem;
+    @media (max-width: 920px) {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      flex-wrap: wrap;
+    }
   }
   li {
     color: white;
+    @media (max-width: 920px) {
+      color: black;
+      width: 25%;
+    }
     margin-top: 1rem;
     background-color: rgba(255, 255, 255, 0.4);
     border: 2px solid rgba(255, 255, 255, 0.5);
     padding: 1rem;
+    @media (max-width: 920px) {
+      padding: 0.5rem;
+      text-align: center;
+    }
     border-radius: 15px;
     transition: background-color 900ms ease;
     :hover {
       cursor: pointer;
       background-color: rgba(255, 255, 255, 0.1);
+      @media (max-width: 920px) {
+        background-color: rgba(0, 0, 0, 0.7);
+      }
     }
     :active {
       background-color: #e03e3e;

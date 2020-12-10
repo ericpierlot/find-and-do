@@ -55,6 +55,9 @@ const ContenuCategory = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  @media (max-width: 920px) {
+    width: 100%;
+  }
 `;
 
 const CardTypeCategory = styled.button`

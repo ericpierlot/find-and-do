@@ -15,7 +15,7 @@ const ExperienceState = (props) => {
         'Content-Type': 'application/json',
       },
     };
-    const res = await axios.get(data, config);
+    const res = await axios.post(data, config);
 
     dispatch({
       type: SEARCH_EXPERIENCE,
