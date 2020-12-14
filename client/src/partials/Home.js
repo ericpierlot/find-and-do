@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import styled from 'styled-components';
 import MainHome from '../pages/MainHome';
 import Login from '../pages/Login';
 import Subscribe from '../pages/Subscribe';
@@ -19,21 +18,9 @@ import Messagerie from '../pages/messagerie/Messagerie';
 import BoiteReception from '../pages/messagerie/components/Reception';
 import BoiteEnvoi from '../pages/messagerie/components/Envoi';
 
-// const Flex = styled.article`
-//   display: flex;
-//   flex-direction: column;
-//   overflow: hidden;
-//   min-height: 100vh;
-// `;
-
-const Section1 = styled.section`
-  display: flex;
-  min-height: 100vh;
-`;
-
 const Home = () => {
   return (
-    <Section1>
+    <>
       <Switch>
         <Route exact path='/' component={MainHome} />
         <Route exact path='/login' component={Login} />
@@ -74,7 +61,7 @@ const Home = () => {
         />
         <Route exact path='/experiences/id/:id' component={ExperienceById} />
       </Switch>
-    </Section1>
+    </>
   );
 };
 

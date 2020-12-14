@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-const Section = styled.div`
+export const Section = styled.div`
   width: 100%;
   min-height: 100vh;
   display: flex;
@@ -10,7 +10,7 @@ const Section = styled.div`
   }
 `;
 
-const Container = styled.section`
+export const Container = styled.section`
   width: 90%;
   margin: auto;
   display: flex;
@@ -29,19 +29,19 @@ const Container = styled.section`
   }
 `;
 
-const FormContainer = styled.form`
+export const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
 
-const H1 = styled.h1`
+export const H1 = styled.h1`
   font-size: 2rem;
   padding: 2rem;
 `;
 
-const Button = styled.button`
+export const Button = styled.button`
   width: 50%;
   text-align: center;
   padding: 0.3rem 1rem 0.3rem 1rem;
@@ -68,7 +68,11 @@ const Button = styled.button`
   background-clip: padding-box;
 `;
 
-const InputEmail = styled.input.attrs((props) => ({
+export const Back = styled(Button)`
+  background-color: #4d4d4d;
+`;
+
+export const InputEmail = styled.input.attrs((props) => ({
   type: 'email',
 }))`
   font-size: 1.2rem;
@@ -94,7 +98,16 @@ const InputEmail = styled.input.attrs((props) => ({
   }
 `;
 
-const InputPassword = styled.input.attrs((props) => ({
+export const Flex = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+`;
+
+export const InputPassword = styled.input.attrs((props) => ({
   type: 'password',
 }))`
   font-size: 1.2rem;
@@ -109,6 +122,8 @@ const InputPassword = styled.input.attrs((props) => ({
   border: none;
   border-bottom: 2px black solid;
   margin-bottom: 2.5rem;
+  transition: all 330ms ease-in-out;
+
   :focus {
     background-color: rgba(255, 255, 255, 0.6);
     border-bottom: 2px #eb3941 solid;
@@ -118,7 +133,7 @@ const InputPassword = styled.input.attrs((props) => ({
     width: 50%;
   }
 `;
-const Label = styled.label`
+export const Label = styled.label`
   width: 70%;
   display: flex;
   justify-content: flex-start;
@@ -141,7 +156,6 @@ export const InputFirstName = styled.input.attrs((props) => ({
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
   background-color: rgba(255, 255, 255, 0.4);
-  margin-bottom: 1rem;
   padding-left: 1rem;
   border: none;
   border-bottom: 2px black solid;
@@ -149,6 +163,7 @@ export const InputFirstName = styled.input.attrs((props) => ({
   transition: all 330ms ease-in-out;
 
   :focus {
+    background-color: rgba(255, 255, 255, 0.6);
     border-bottom: 2px #eb3941 solid;
   }
 
@@ -168,10 +183,8 @@ export const InputDays = styled.input.attrs((props) => ({
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
   background-color: rgba(255, 255, 255, 0.4);
-  margin-bottom: 1rem;
   padding-left: 0.5rem;
   border: none;
-  border: 0.5px white solid;
   border-bottom: 2px black solid;
   margin-bottom: 2.5rem;
   transition: all 330ms ease-in-out;
@@ -181,7 +194,11 @@ export const InputDays = styled.input.attrs((props) => ({
     margin: 0;
   }
   :focus {
+    background-color: rgba(255, 255, 255, 0.6);
     border-bottom: 2px #eb3941 solid;
+  }
+  @media (min-width: 840px) {
+    width: 10%;
   }
 `;
 export const InputYears = styled.input.attrs((props) => ({
@@ -195,10 +212,8 @@ export const InputYears = styled.input.attrs((props) => ({
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
   background-color: rgba(255, 255, 255, 0.4);
-  margin-bottom: 1rem;
   padding-left: 0.5rem;
   border: none;
-  border: 0.5px white solid;
   border-bottom: 2px black solid;
   margin-bottom: 2.5rem;
   transition: all 330ms ease-in-out;
@@ -208,7 +223,11 @@ export const InputYears = styled.input.attrs((props) => ({
     margin: 0;
   }
   :focus {
+    background-color: rgba(255, 255, 255, 0.6);
     border-bottom: 2px #eb3941 solid;
+  }
+  @media (min-width: 840px) {
+    width: 15%;
   }
 `;
 export const SelectMonths = styled.select.attrs((props) => ({
@@ -222,10 +241,8 @@ export const SelectMonths = styled.select.attrs((props) => ({
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
   background-color: rgba(255, 255, 255, 0.4);
-  margin-bottom: 1rem;
   padding-left: 0.2rem;
   border: none;
-  border: 0.5px white solid;
   border-bottom: 2px black solid;
   margin-bottom: 2.5rem;
   transition: all 330ms ease-in-out;
@@ -235,21 +252,10 @@ export const SelectMonths = styled.select.attrs((props) => ({
     margin: 0;
   }
   :focus {
+    background-color: rgba(255, 255, 255, 0.6);
     border-bottom: 2px #eb3941 solid;
   }
+  @media (min-width: 840px) {
+    width: 25%;
+  }
 `;
-
-export {
-  Section,
-  Container,
-  FormContainer,
-  H1,
-  Button,
-  InputEmail,
-  InputPassword,
-  Label,
-  InputFirstName,
-  InputMonths,
-  InputDays,
-  InputYears,
-};

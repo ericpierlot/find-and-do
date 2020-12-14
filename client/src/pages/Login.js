@@ -7,14 +7,14 @@ import Alerts from '../utils/Alerts';
 import { Link } from 'react-router-dom';
 import {
   Section,
-  Wrapper,
+  Container,
   FormContainer,
   H1,
   Button,
   InputEmail,
   InputPassword,
   Label,
-} from '../css/styled/Login/styled';
+} from '../css/styled/form';
 
 const Login = (props) => {
   // Declare my useContext hooks
@@ -71,7 +71,7 @@ const Login = (props) => {
 
   return (
     <Section>
-      <Wrapper>
+      <Container>
         <H1>Connexion</H1>
         <Alerts />
         <FormContainer onSubmit={onSubmitForm}>
@@ -103,7 +103,7 @@ const Login = (props) => {
           Vous n'avez pas de compte ?{' '}
           <Link to='/subscribe'>Créez un compte</Link>
         </span>
-      </Wrapper>
+      </Container>
     </Section>
   );
 };

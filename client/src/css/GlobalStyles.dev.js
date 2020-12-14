@@ -1,0 +1,33 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.GlobalStyles = void 0;
+
+var _styledComponents = require("styled-components");
+
+var _wallpaper = _interopRequireDefault(require("../images/wallpaper.jpg"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _templateObject() {
+  var data = _taggedTemplateLiteral(["\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nhtml {\n  scroll-behavior: smooth;\n}\n\nh1,\nh2,\nh3 {\n  font-family: 'Poppins', sans-serif;\n}\n\n  body {\n    position: relative;\n    background: url(", ");\n    background-attachment: fixed;\n    background-size: cover;\n    color: ", ";\n    font-family: Montserrat, Tahoma, Helvetica, Arial, Roboto, sans-serif;\n    &:before {\n      content: '';\n      position: absolute;\n      width: 100%;\n      height: 100%;\n      top:0;\n      left:0;\n      background-color: ", ";\n      transition: background-color 500ms linear;\n     z-index: -5;\n    }\n  }\n  \n  .toggle {\n    --width: 40px;\n    --height: calc(var(--width) / 2);\n    --border-radius: calc(var(--height) / 2);\n\n    display: inline-block;\n    cursor: pointer;\n}\n.toggle__input {\n    display: none;\n}\n.toggle__fill {\n    position: relative;\n    width: var(--width);\n    height: var(--height);\n    border-radius: var(--border-radius);\n    background: #dddddd;\n    transition: background 0.2s;\n}\n.toggle__fill::after {\n    content: \"\";\n    position: absolute;\n    top: 0;\n    left: 0;\n    height: var(--height);\n    width: var(--height);\n    background: #ffffff;\n    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);\n    border-radius: var(--border-radius);\n    transition: transform 0.2s;\n}\n.toggle__input:checked ~ .toggle__fill {\n    background: #009578;\n}\n\n.toggle__input:checked ~ .toggle__fill::after {\n    transform: translateX(var(--height));\n}\n  "]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+var GlobalStyles = (0, _styledComponents.createGlobalStyle)(_templateObject(), _wallpaper["default"], function (_ref) {
+  var theme = _ref.theme;
+  return theme.text;
+}, function (_ref2) {
+  var theme = _ref2.theme;
+  return theme.bg;
+});
+exports.GlobalStyles = GlobalStyles;

@@ -5,37 +5,59 @@ import {} from '../../css/styled/Profil/styled';
 import { v4 as uuidv4 } from 'uuid';
 import CardExperience from './components/CardExperience';
 import styled from 'styled-components';
-import { Section, Article } from '../../css/styled/Experience/styled';
 
-const Wrapper = styled.section`
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.2);
-  min-height: 90vh;
-  margin-top: 5vh;
-  max-width: 90vw;
-  border-radius: 30px;
-
-  background-color: rgba(255, 255, 255, 0.2);
+const Section = styled.section`
+  width: 90%;
   margin: auto;
-  @media (max-width: 920px) {
-    max-width: 100vw;
-    margin-top: 0;
-    border-radius: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @media screen and(min-width: 840px) {
+    width: 80%;
+  }
+`;
+
+const Container = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+const Wrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  a {
+    text-decoration: none;
+    color: ${({ theme }) => theme.text};
+  }
+  @media (min-width: 840px) {
+    flex-direction: row;
   }
 `;
 
 const DivWrapper = styled.button`
-  background-color: transparent;
-  backdrop-filter: blur(5px);
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(30px) contrast(120%);
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 30px 0px;
   width: 200px;
-  border: whitesmoke 2px solid;
-  box-shadow: 0px 0.2em 0.5em rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  border-radius: 15px;
   padding: 1rem;
-  margin: 15px;
   text-align: center;
-
+  margin: 15px;
+  cursor: pointer;
+  color: ${({ theme }) => theme.text};
+  :hover {
+    background-color: ${({ theme }) => theme.header};
+  }
   @media (max-width: 920px) {
     width: 200px;
+    margin-top: 20vh;
   }
 `;
 
@@ -94,10 +116,10 @@ const RenderExperience = () => {
   });
   return (
     <Section>
-      <Wrapper>
-        {cateMap}
-        <Article>{renderExperience}</Article>
-      </Wrapper>
+      <Container>
+        <div style={{ display: 'flex' }}>{cateMap}</div>
+        <Wrapper>{renderExperience}</Wrapper>
+      </Container>
     </Section>
   );
 };

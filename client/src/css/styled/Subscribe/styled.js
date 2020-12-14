@@ -2,59 +2,47 @@ import styled from 'styled-components';
 
 const Section = styled.section`
   margin: auto;
+  height: 100vh;
   width: 100%;
-  text-align: center;
-  @media (max-width: 920px) {
-    margin-top: 0;
-    overflow: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @media (min-width: 840px) {
+    height: 100vh;
+    width: 80%;
+    flex-direction: row;
   }
 `;
 
-const Wrapper = styled.section`
-  min-height: 50vh;
-  width: 80%;
+const Container = styled.section`
+  width: 90%;
   margin: auto;
-  width: 30vw;
-  border-radius: 30px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  transition: box-shadow 330ms ease;
-  transition: transform 330ms ease;
-  background-color: transparent;
-  backdrop-filter: blur(20px);
-  border: whitesmoke 2px solid;
-  box-shadow: 0px 0.2em 0.5em rgba(0, 0, 0, 0.3);
-
-  border-radius: 50px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(30px) contrast(120%);
+  border: 3px solid transparent;
+  background-clip: padding-box;
   padding: 1rem;
-
-  :focus-within {
-    backdrop-filter: none;
-    background-color: rgba(255, 255, 255, 0.3);
-    box-shadow: 0px 0.2em 2.5em rgba(0, 0, 0, 0.3);
-    transform: scale(1.025);
-  }
-  @media (max-width: 920px) {
-    height: 100vh;
-    min-width: 100%;
-    border-radius: none;
-    background-color: rgba(255, 255, 255, 0.3);
-    border-radius: 0;
-    box-shadow: none;
-    min-height: 0;
-    :focus-within {
-      box-shadow: none;
-      transform: none;
-    }
+  text-align: center;
+  @media (min-width: 840px) {
+    min-height: 50vh;
+    max-width: 40vw;
+    border-radius: 30px;
   }
 `;
 const FormContainer = styled.form`
-  max-width: 100%;
-  min-height: 100px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Flex = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -66,38 +54,7 @@ const H1 = styled.h1`
   font-size: 2rem;
   padding: 2rem;
 `;
-const Back = styled.a`
-  margin-right: 20px;
-  text-align: center;
-  padding: 0.3rem 1rem 0.3rem 1rem;
-  font-size: 1.2rem;
-  color: #fff;
-  cursor: pointer;
 
-  text-align: center;
-  border: none;
-  background-size: 300% 100%;
-  border-radius: 50px;
-  transition: all 0.4s ease-in-out;
-  background-image: linear-gradient(
-    to right,
-    #353535,
-    #555555,
-    #795b5c,
-    #412e2f
-  );
-  font-weight: 600;
-  :hover {
-    background-position: 100% 0;
-    transition: all 0.4s ease-in-out;
-  }
-  :focus {
-    outline: none;
-  }
-  margin: auto;
-  margin-bottom: 3rem;
-  border: 3px rgba(255, 255, 255, 0.3) solid;
-`;
 const Button = styled.button`
   width: 50%;
   text-align: center;
@@ -132,12 +89,47 @@ const Button = styled.button`
   margin-bottom: 1rem;
   border: 3px rgba(255, 255, 255, 0.3) solid;
 `;
+const Back = styled(Button)`
+  background-image: linear-gradient(
+    to right,
+    #353535,
+    #555555,
+    #795b5c,
+    #412e2f
+  );
+`;
 
 const InputEmail = styled.input.attrs((props) => ({
   type: 'email',
 }))`
   font-size: 1.2rem;
-  width: 50%;
+  width: 70%;
+  height: 2rem;
+  outline: none;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border: none;
+  border-bottom: 2px black solid;
+  margin-bottom: 2.5rem;
+  transition: all 330ms ease-in-out;
+
+  :focus {
+    background-color: rgba(255, 255, 255, 0.6);
+    border-bottom: 2px #eb3941 solid;
+  }
+  @media (min-width: 840px) {
+    width: 50%;
+  }
+`;
+
+const InputPassword = styled.input.attrs((props) => ({
+  type: 'password',
+}))`
+  font-size: 1.2rem;
+  width: 70%;
   height: 2rem;
   outline: none;
   border-top-right-radius: 5px;
@@ -153,26 +145,9 @@ const InputEmail = styled.input.attrs((props) => ({
   :focus {
     border-bottom: 2px #eb3941 solid;
   }
-`;
-const InputPassword = styled.input.attrs((props) => ({
-  type: 'password',
-}))`
-  font-size: 1.2rem;
-  width: 50%;
-  height: 2rem;
-  outline: none;
-  border-top-right-radius: 5px;
-  border-top-left-radius: 5px;
-  background-color: rgba(255, 255, 255, 0.4);
-  margin-bottom: 1rem;
-  padding-left: 1rem;
-  border: none;
-  border-bottom: 2px black solid;
-  margin-bottom: 2.5rem;
-  transition: all 330ms ease-in-out;
 
-  :focus {
-    border-bottom: 2px #eb3941 solid;
+  @media (min-width: 840px) {
+    width: 50%;
   }
 `;
 const InputFirstName = styled.input.attrs((props) => ({
@@ -180,7 +155,7 @@ const InputFirstName = styled.input.attrs((props) => ({
   name: 'firstName',
 }))`
   font-size: 1.2rem;
-  width: 50%;
+  width: 70%;
   height: 2rem;
   outline: none;
   border-top-right-radius: 5px;
@@ -196,35 +171,18 @@ const InputFirstName = styled.input.attrs((props) => ({
   :focus {
     border-bottom: 2px #eb3941 solid;
   }
-`;
-const InputCity = styled.input.attrs((props) => ({
-  type: 'text',
-  name: 'city',
-}))`
-  font-size: 1.2rem;
-  width: 50%;
-  height: 2rem;
-  outline: none;
-  border-top-right-radius: 5px;
-  border-top-left-radius: 5px;
-  background-color: rgba(255, 255, 255, 0.4);
-  margin-bottom: 1rem;
-  padding-left: 1rem;
-  border: none;
-  border-bottom: 2px black solid;
-  margin-bottom: 2.5rem;
-  transition: all 330ms ease-in-out;
 
-  :focus {
-    border-bottom: 2px #eb3941 solid;
+  @media (min-width: 840px) {
+    width: 50%;
   }
 `;
+
 const InputDays = styled.input.attrs((props) => ({
   type: 'number',
   name: 'days',
 }))`
   font-size: 1.2rem;
-  width: 10%;
+  width: 16%;
   height: 2rem;
   outline: none;
   border-top-right-radius: 5px;
@@ -251,7 +209,7 @@ const InputYears = styled.input.attrs((props) => ({
   name: 'years',
 }))`
   font-size: 1.2rem;
-  width: 15%;
+  width: 21%;
   height: 2rem;
   outline: none;
   border-top-right-radius: 5px;
@@ -278,7 +236,7 @@ const SelectMonths = styled.select.attrs((props) => ({
   name: 'months',
 }))`
   font-size: 1.2rem;
-  width: 25%;
+  width: 31%;
   height: 2rem;
   outline: none;
   border-top-right-radius: 5px;
@@ -302,17 +260,20 @@ const SelectMonths = styled.select.attrs((props) => ({
 `;
 
 const Label = styled.label`
-  width: 50%;
+  width: 70%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   margin: auto;
   padding-bottom: 1rem;
+  @media (min-width: 840px) {
+    width: 50%;
+  }
 `;
 
 export {
   Section,
-  Wrapper,
+  Container,
   FormContainer,
   Flex,
   H1,
@@ -321,7 +282,6 @@ export {
   InputEmail,
   InputPassword,
   InputFirstName,
-  InputCity,
   InputDays,
   InputYears,
   SelectMonths,

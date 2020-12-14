@@ -183,7 +183,6 @@ const SearchExperience = ({ type, name, placeholder }) => {
       <label
         style={{
           display: 'flex',
-          justifyContent: 'center',
           paddingBottom: '1rem',
         }}
         htmlFor='searchCity'

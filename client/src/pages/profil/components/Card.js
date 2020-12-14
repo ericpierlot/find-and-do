@@ -3,18 +3,23 @@ import React from 'react';
 import styled from 'styled-components';
 
 const DivWrapper = styled.div`
+  color: ${({ theme }) => theme.text};
   display: flex;
   flex-direction: column;
-  background-color: transparent;
-  backdrop-filter: blur(5px);
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(30px) contrast(120%);
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 30px 0px;
   justify-content: space-between;
-  border: whitesmoke 2px solid;
-  box-shadow: 0px 0.2em 0.5em rgba(0, 0, 0, 0.3);
   width: 300px;
-  border-radius: 10px;
+  border-radius: 15px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
   padding: 1rem;
   flex: 0 0 auto;
   margin: 15px;
+  :hover {
+    background-color: ${({ theme }) => theme.header};
+  }
   @media (max-width: 1200px) {
     width: 225px;
   }
@@ -30,35 +35,14 @@ const Card = ({ Image, ImageAlt, Title, Description }) => {
 
   const CardOnMobile = (
     <DivWrapper>
-      <div>
-        <img
-          src={Image}
-          alt={ImageAlt}
-          className='svg'
-          style={{
-            height: '20px',
-            width: '20px',
-            position: 'relative',
-            top: '50%',
-            left: '50%',
-            transform: 'translateX(-50%) translateY(-50%)',
-          }}
-        />
-      </div>
+      <div style={{ textAlign: 'center' }}>{Image}</div>
       <p style={{ textAlign: 'center' }}>{Title}</p>
     </DivWrapper>
   );
 
   const CardComputer = (
     <DivWrapper>
-      <div>
-        <img
-          src={Image}
-          alt={ImageAlt}
-          className='svg'
-          style={{ height: '20px', width: '20px' }}
-        />
-      </div>
+      <div>{Image}</div>
       <h4 style={{ paddingTop: '1rem' }}>{Title}</h4>
       <h5 style={{ paddingTop: '1rem', fontWeight: 'normal' }}>
         {Description}

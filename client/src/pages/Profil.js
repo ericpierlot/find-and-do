@@ -6,64 +6,72 @@ import styled from 'styled-components';
 import AuthContext from '../context/auth/authContext';
 
 const Section = styled.section`
+  width: 90%;
   margin: auto;
-  width: 100%;
-  margin-top: 90px;
-  margin-bottom: 45px;
-  @media (max-width: 920px) {
-    margin: 0;
-    overflow: auto;
-  }
-`;
-const Wrapper = styled.section`
-  min-height: 90vh;
-  margin: auto;
-  margin-top: 5vh;
-  max-width: 90vw;
-  border-radius: 30px;
-
-  background-color: transparent;
-
-  @media (max-width: 920px) {
-    min-width: 100%;
-    height: 100vh;
-    border-radius: none;
-    background-color: rgba(255, 255, 255, 0.3);
-    border-radius: 0;
-    box-shadow: none;
-    margin: 0;
-    margin-bottom: 35px;
-    :focus-within {
-      box-shadow: none;
-      transform: none;
-    }
-  }
-`;
-
-const Article = styled.article`
-  width: 60%;
-  margin: auto;
-  padding-top: 3rem;
+  min-height: 100vh;
   display: flex;
-  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  @media screen and(min-width: 840px) {
+    width: 80%;
+  }
+`;
 
+const Container = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   a {
     text-decoration: none;
-    color: black;
   }
-  @media (max-width: 920px) {
-    width: 100%;
-    margin: 0;
+  @media (min-width: 840px) {
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 `;
 
-const Top = styled.header`
-  width: 60%;
+const Left = styled.div`
+  text-align: center;
   margin: auto;
-  padding-top: 1rem;
-  padding-left: 1rem;
-  @media (max-width: 920px) {
-    width: 100%;
+  padding-bottom: 2rem;
+  @media (min-width: 840px) {
+    padding-bottom: 0;
+    text-align: left;
+    width: 40%;
+  }
+`;
+const Right = styled.div`
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  @media (min-width: 840px) {
+    text-align: left;
+    width: 60%;
+  }
+`;
+const Title = styled.h1`
+  font-size: 4rem;
+  color: ${({ theme }) => theme.textinvert};
+  text-shadow: rgba(60, 64, 67, 0.3) 0px 1px 10px;
+  @media (min-width: 840px) {
+    font-size: 5rem;
+  }
+`;
+
+const UnderTitle = styled.h3`
+  color: ${({ theme }) => theme.textinvert};
+  font-size: 1rem;
+  letter-spacing: 0.125rem;
+  font-weight: 600;
+  text-shadow: rgba(60, 64, 67, 0.3) 0px 1px 10px;
+  @media (min-width: 840px) {
+    margin-bottom: 0;
+    font-size: 2rem;
   }
 `;
 
@@ -73,48 +81,32 @@ const Profil = () => {
 
   return (
     <Section>
-      <Wrapper>
-        <Top>
-          <h2>Mon compte</h2>
-          <p>
+      <Container>
+        <Left>
+          <Title>Mon compte</Title>
+          <UnderTitle>
             {user.firstName}, {user.email}
-          </p>
-        </Top>
-        <Article>
-          <Link to='/profil/personal-info'>
-            <Card
-              Image={ProfilIcon}
-              ImageAlt='Personal informations'
-              Title='Infos personnelles'
-              Description='Fournissez des renseignements personnels'
-            />
-          </Link>
-          <Link to='/profil/login-and-security'>
-            <Card
-              Image={ProfilIcon}
-              ImageAlt='Connexion et sécurité'
-              Title='Connexion et sécurité'
-              Description='Mettez à jour votre mot de passe et sécurisez votre compte'
-            />
-          </Link>
-          <Link to='/profil/preferences'>
-            <Card
-              Image={ProfilIcon}
-              ImageAlt='Préférences globales'
-              Title='Préférences globales'
-              Description='Definissez votre langue, et votre thème par défault'
-            />
-          </Link>
+          </UnderTitle>
+        </Left>
+        <Right>
           <Link to='/profil/messagerie'>
             <Card
-              Image={ProfilIcon}
+              Image='📬'
               ImageAlt='Messagerie'
               Title='Votre messagerie'
               Description="Accédez à votre boite de réception et votre boîte d'envoi"
             />
           </Link>
-        </Article>
-      </Wrapper>
+          <Link to='/profil/personal-info'>
+            <Card
+              Image='🔐'
+              ImageAlt='Personal informations'
+              Title='Infos personnelles'
+              Description='Fournissez des renseignements personnels'
+            />
+          </Link>
+        </Right>
+      </Container>
     </Section>
   );
 };

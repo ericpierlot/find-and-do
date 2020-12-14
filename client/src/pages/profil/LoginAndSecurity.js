@@ -4,57 +4,11 @@ import styled from 'styled-components';
 import AuthContext from '../../context/auth/authContext';
 import AlertContext from '../../context/alert/alertContext';
 import Alerts from '../../utils/Alerts';
-import { Button } from '../../css/styled/Subscribe/styled';
+import { Button } from '../../css/styled/form';
 import axios from 'axios';
 
-const Wrapper = styled.section`
-  min-height: 90vh;
-  margin: auto;
-  margin-top: 5vh;
-  max-width: 90vw;
-
-  @media (max-width: 920px) {
-    min-width: 100%;
-    min-height: 100vh;
-    border-radius: none;
-    background-color: rgba(255, 255, 255, 0.3);
-    border-radius: 0;
-    box-shadow: none;
-    margin: 0;
-    margin-bottom: 35px;
-    padding: 1rem;
-  }
-`;
-
-const Section = styled.section`
-  margin: auto;
-  width: 100%;
-  margin-top: 90px;
-  margin-bottom: 45px;
-  @media (max-width: 920px) {
-    margin: 0;
-    overflow: auto;
-  }
-`;
-
-const Top = styled.header`
-  width: 60%;
-  margin: auto;
-  padding-top: 1rem;
-  margin-bottom: 2rem;
-
-  @media (max-width: 920px) {
-    width: 100%;
-  }
-`;
 const Article = styled.article`
-  width: 60%;
-  background-color: transparent;
-  backdrop-filter: blur(20px);
-  border-radius: 10px;
-  padding: 1rem;
-  border: whitesmoke 2px solid;
-  box-shadow: 0px 0.2em 0.5em rgba(0, 0, 0, 0.3);
+  width: 100%;
   margin: auto;
   display: flex;
   flex-wrap: wrap;
@@ -68,17 +22,25 @@ const Article = styled.article`
   }
 `;
 
-const Flexbox = styled.form`
+const Flexbox = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
-  border-bottom: 2px white solid;
+  padding-bottom: 80px;
   margin-top: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(30px) contrast(120%);
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 30px 0px;
+  border-radius: 15px;
+  padding: 1rem;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  cursor: pointer;
+
   @media (max-width: 920px) {
     width: 100%;
-    border-bottom: 1px white solid;
   }
 `;
 
@@ -190,98 +152,87 @@ const LoginAndSecurity = () => {
     });
   };
   return (
-    <Section>
-      <Wrapper>
-        <Top>
-          <h4>
-            <Link to='/profil'>Mon compte</Link> → Connexion et sécurité
-          </h4>
-          <br />
-          <h2>Connexion et sécurité</h2>
-        </Top>
-        <Article>
-          <Flexbox onSubmit={passwordOnSubmit}>
-            {isClicked.password ? (
-              <>
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <strong>Connexion</strong>
-                  <div
-                    style={{
-                      cursor: 'pointer',
-                      color: '#b62c2c',
-                      textDecoration: 'underline',
-                    }}
-                    onClick={() => {
-                      setIsClicked(false);
-                    }}
-                  >
-                    Annuler
-                  </div>
-                </div>
+    <Article>
+      <Flexbox onSubmit={passwordOnSubmit}>
+        {isClicked.password ? (
+          <>
+            <div
+              style={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}
+            >
+              <strong>Mot de passe</strong>
+              <div
+                style={{
+                  cursor: 'pointer',
+                  color: '#b62c2c',
+                  textDecoration: 'underline',
+                }}
+                onClick={() => {
+                  setIsClicked(false);
+                }}
+              >
+                Annuler
+              </div>
+            </div>
 
-                <div>
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                    }}
-                  >
-                    <br />
-                    <label>Mot de passe actuel : </label>
-                    <Input
-                      type='password'
-                      value={actual}
-                      onChange={passwordOnChange}
-                      name='actual'
-                    />
-                    <br />
-                    <label>Nouveau mot de passe : </label>
-                    <Input
-                      type='password'
-                      value={password}
-                      onChange={passwordOnChange}
-                      name='password'
-                    />
-                    <br />
-                    <label>Nouveau mot de passe : </label>
-                    <Input
-                      type='password'
-                      value={password2}
-                      onChange={passwordOnChange}
-                      name='password2'
-                    />
-                  </div>
-                  <Button style={{ width: '70%' }}>Sauvegarder</Button>
-                  <Alerts />
-                </div>
-              </>
-            ) : (
-              <>
-                <p>
-                  <strong>Connexion</strong>
-                  <br />
-                  <br />
-                </p>
-                <Modify
-                  onClick={() => {
-                    setIsClicked({ password: true });
-                  }}
-                >
-                  Modifier
-                </Modify>
-              </>
-            )}
-          </Flexbox>
-        </Article>
-      </Wrapper>
-    </Section>
+            <div>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <br />
+                <label>Mot de passe actuel : </label>
+                <Input
+                  type='password'
+                  value={actual}
+                  onChange={passwordOnChange}
+                  name='actual'
+                />
+                <br />
+                <label>Nouveau mot de passe : </label>
+                <Input
+                  type='password'
+                  value={password}
+                  onChange={passwordOnChange}
+                  name='password'
+                />
+                <br />
+                <label>Nouveau mot de passe : </label>
+                <Input
+                  type='password'
+                  value={password2}
+                  onChange={passwordOnChange}
+                  name='password2'
+                />
+              </div>
+              <Button style={{ width: '70%' }}>Sauvegarder</Button>
+              <Alerts />
+            </div>
+          </>
+        ) : (
+          <>
+            <p>
+              <strong>Mot de passe</strong>
+              <br />
+              <br />
+            </p>
+            <Modify
+              onClick={() => {
+                setIsClicked({ password: true });
+              }}
+            >
+              Modifier
+            </Modify>
+          </>
+        )}
+      </Flexbox>
+    </Article>
   );
 };
 

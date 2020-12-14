@@ -3,60 +3,100 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Spinner from '../../../utils/components/Spinner';
 import { Link } from 'react-router-dom';
-import {
-  Wrapper,
-  Section,
-  Article,
-} from '../../../css/styled/Experience/styled';
 import { FormContactUser } from './formContactUser/FormContactUser';
 import styled from 'styled-components';
 import AuthContext from '../../../context/auth/authContext';
 import AlertContext from '../../../context/alert/alertContext';
 
-const DivWrapper = styled.div`
+const Section = styled.section`
+  width: 90%;
+  padding-top: 5rem;
+  margin: auto;
+  display: flex;
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+  @media screen and(min-width: 840px) {
+    width: 80%;
+  }
+`;
+
+const Container = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
-  background-color: white;
+  justify-content: center;
+  align-items: center;
+  @media (min-width: 840px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+`;
 
-  border: whitesmoke 2px solid;
-  box-shadow: 0px 0.2em 0.5em rgba(0, 0, 0, 0.3);
+const Left = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: auto;
+  padding-bottom: 2rem;
+  @media (min-width: 840px) {
+    padding-bottom: 0;
+    text-align: left;
+    width: 40%;
+  }
+`;
+
+const Right = styled.div`
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @media (min-width: 840px) {
+    text-align: left;
+    width: 60%;
+  }
+`;
+const Title = styled.h1`
+  text-align: center;
+  font-size: 4rem;
+  color: ${({ theme }) => theme.textinvert};
+  text-shadow: rgba(60, 64, 67, 0.3) 0px 1px 10px;
+  @media (min-width: 840px) {
+    font-size: 5rem;
+    text-align: left;
+  }
+`;
+
+const UnderTitle = styled.h3`
+  color: ${({ theme }) => theme.textinvert};
+  font-size: 1rem;
+  letter-spacing: 0.125rem;
+  font-weight: 600;
+  text-shadow: rgba(60, 64, 67, 0.3) 0px 1px 10px;
+  @media (min-width: 840px) {
+    margin-bottom: 0;
+    font-size: 2rem;
+  }
+`;
+
+const DivWrapper = styled.div`
   width: 100%;
-  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(30px) contrast(120%);
+  border-radius: 15px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 30px 0px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
   padding: 1rem;
   margin-top: 2.5rem;
-
   p {
     margin-top: 1rem;
     width: 100%;
   }
-  @media (max-width: 1200px) {
-    width: 225px;
-  }
-
-  @media (max-width: 920px) {
+  @media (min-width: 840px) {
     width: 100%;
-    flex-wrap: wrap;
-    flex-direction: row;
-
-    justify-content: center;
-    align-items: center;
-  }
-`;
-
-const TOP = styled.div`
-  width: 100%;
-  margin: auto;
-  h2 {
-    margin-top: 2.2rem;
-  }
-  h4 {
-    margin-top: 1rem;
-  }
-
-  @media (max-width: 920px) {
-    h2 {
-      margin-top: 0;
-    }
   }
 `;
 
@@ -67,12 +107,18 @@ const IMAGES = styled.div`
   flex-direction: column;
   flex-wrap: wrap;
   margin: auto;
+
   img {
-    border: 2px solid whitesmoke;
-    border-radius: 15px;
+    border: 3px solid transparent;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    background-clip: padding-box;
+    border-radius: 10px;
   }
 
-  @media (max-width: 920px) {
+  @media (max-width: 840px) {
+    img:first-child {
+    }
     img:nth-child(2) {
       display: none;
     }
@@ -89,35 +135,45 @@ const IMAGES = styled.div`
 `;
 
 const Button = styled.button`
+  width: 100%;
   text-align: center;
   padding: 0.3rem 1rem 0.3rem 1rem;
   font-size: 1.2rem;
-  color: #fff;
+  color: ${({ theme }) => theme.text};
   cursor: pointer;
+  height: 3rem;
   text-align: center;
   border: none;
-  background-size: 300% 100%;
-  border-radius: 15px;
+  border-radius: 10px;
   transition: all 0.4s ease-in-out;
-  background-image: linear-gradient(
-    to right,
-    #eb3941,
-    #f15e64,
-    #e14e53,
-    #e2373f
-  );
+  background-color: #eb9e82;
+
   font-weight: 600;
-  box-shadow: 0 5px 15px rgba(242, 97, 103, 0.4);
   :hover {
-    background-position: 100% 0;
+    border: 3px rgba(255, 255, 255, 0.2) solid;
     transition: all 0.4s ease-in-out;
   }
   :focus {
     outline: none;
   }
-  margin: auto;
   margin-bottom: 1rem;
-  border: 3px rgba(255, 255, 255, 0.3) solid;
+  border: 3px transparent solid;
+  background-clip: padding-box;
+  @media (min-width: 840px) {
+    width: 30%;
+  }
+`;
+
+const Wrapper = styled.div`
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: auto;
+  @media (min-width: 840px) {
+    width: 70%;
+  }
 `;
 
 const ExperienceById = () => {
@@ -203,52 +259,51 @@ const ExperienceById = () => {
 
   return (
     <Section>
-      <Wrapper>
-        <Article>
-          {readThisID ? (
-            <>
+      <Container>
+        {readThisID ? (
+          <>
+            <Left>
               <IMAGES>
                 <img
                   src='https://source.unsplash.com/random/226x340'
                   alt='image1'
                 />
                 <img
-                  src='https://source.unsplash.com/random/226x340'
-                  alt='image2'
-                />
-                <img
-                  src='https://source.unsplash.com/random/226x169'
-                  alt='image3'
-                />
-                <img
-                  src='https://source.unsplash.com/random/226x169'
+                  src='https://source.unsplash.com/random/226x167'
                   alt='image4'
                 />
                 <img
+                  src='https://source.unsplash.com/random/226x167'
+                  alt='image3'
+                />
+                <img
                   src='https://source.unsplash.com/random/226x340'
-                  alt='image5'
+                  alt='image2'
                 />
               </IMAGES>
-              <TOP>
-                <h2>{title}</h2>
-                <h4>
-                  Proposée sur <u>{lieu}</u>
-                </h4>
-              </TOP>
-              <DivWrapper style={{ height: '100px' }}>
-                <h2>Expérience organisée par {author.firstName}</h2>
+            </Left>
+            <Right>
+              <Title>{title}</Title>
+              <UnderTitle>
+                Proposée sur <u>{lieu}</u>
+              </UnderTitle>
+            </Right>
+            <Wrapper>
+              <DivWrapper>
+                <h2>Au programme</h2>
+                <p>{programme}</p>
               </DivWrapper>
-              <div>
-                <DivWrapper>
-                  <h2>Au programme</h2>
-                  <p>{programme}</p>
-                </DivWrapper>
-                <DivWrapper>
-                  <h2>A propos de {author.firstName}</h2>
-                  <p>{aboutYou}</p>
-                </DivWrapper>
-              </div>
-              <DivWrapper style={{ marginBottom: '5rem' }}>
+            </Wrapper>
+            <Wrapper>
+              <DivWrapper style={{ cursor: 'pointer' }}>
+                <h2>
+                  A propos de {author.firstName} {author.lastName}
+                </h2>
+                <p>{aboutYou}</p>
+              </DivWrapper>
+            </Wrapper>
+            <Wrapper>
+              <DivWrapper style={{ marginBottom: '5rem', textAlign: 'center' }}>
                 {contactIsClicked ? (
                   user ? (
                     <FormContactUser
@@ -276,8 +331,7 @@ const ExperienceById = () => {
 
                 <Button
                   style={{
-                    backgroundColor: contactIsClicked ? 'grey' : '',
-                    backgroundImage: contactIsClicked ? 'none' : null,
+                    display: contactIsClicked ? 'none' : '',
                     pointerEvents: contactIsClicked ? 'none' : '',
                   }}
                   onClick={() => setContactIsClicked(true)}
@@ -290,12 +344,12 @@ const ExperienceById = () => {
                   & Do
                 </h6>
               </DivWrapper>
-            </>
-          ) : (
-            <Spinner />
-          )}
-        </Article>
-      </Wrapper>
+            </Wrapper>
+          </>
+        ) : (
+          <Spinner />
+        )}
+      </Container>
     </Section>
   );
 };

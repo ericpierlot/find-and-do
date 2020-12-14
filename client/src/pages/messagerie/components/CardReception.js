@@ -11,20 +11,50 @@ const Flexbox = styled.div`
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
-  border-bottom: 2px white solid;
   padding-bottom: 80px;
   margin-top: 10px;
-  background-color: transparent;
-  backdrop-filter: blur(20px);
-  border-radius: 10px;
+  margin-bottom: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(30px) contrast(120%);
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 30px 0px;
+  border-radius: 15px;
   padding: 1rem;
-  border: whitesmoke 2px solid;
-  box-shadow: 0px 0.2em 0.5em rgba(0, 0, 0, 0.3);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  :hover {
+    background-color: ${({ theme }) => theme.header};
+  }
   @media (max-width: 920px) {
     width: 100%;
-    border-bottom: 1px white solid;
   }
 `;
+
+const Button = styled.button`
+  text-align: center;
+  padding: 0.3rem 1rem 0.3rem 1rem;
+  font-size: 1rem;
+  color: ${({ theme }) => theme.textinvert};
+  cursor: pointer;
+  text-align: center;
+  border: none;
+  border-radius: 10px;
+  transition: all 0.4s ease-in-out;
+  background-color: #a3fa7b;
+
+  font-weight: 600;
+  :hover {
+    background-color: #ffffff;
+    color: #a3fa7b;
+    border: 3px rgba(255, 255, 255, 0.2) solid;
+    transition: all 0.4s ease-in-out;
+  }
+  :focus {
+    outline: none;
+  }
+  border: 3px transparent solid;
+  background-clip: padding-box;
+`;
+
 export const CardReception = ({
   senderFirstName,
   createdAt,
@@ -88,14 +118,14 @@ export const CardReception = ({
         </div>
         <div>{text}</div>
         {/* <button onClick={() => handleDelete(_id)}>Supprimer</button> */}
-        <button
+        <Button
           onClick={(e) => {
             e.preventDefault();
             setIsOpen(!isOpen);
           }}
         >
           Répondre
-        </button>
+        </Button>
       </Flexbox>
       {isOpen ? (
         <FormContactUser

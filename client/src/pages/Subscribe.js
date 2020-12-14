@@ -5,12 +5,12 @@ import Alerts from '../utils/Alerts';
 
 import {
   Section,
-  Wrapper,
+  Container,
   FormContainer,
   Flex,
   H1,
-  Back,
   Button,
+  Back,
   InputEmail,
   InputPassword,
   InputFirstName,
@@ -18,7 +18,7 @@ import {
   InputYears,
   SelectMonths,
   Label,
-} from '../css/styled/Subscribe/styled';
+} from '../css/styled/form';
 
 const Subscribe = (props) => {
   const alertContext = useContext(AlertContext);
@@ -111,7 +111,7 @@ const Subscribe = (props) => {
 
   const subscribeForm = (
     <Section>
-      <Wrapper>
+      <Container>
         <H1>Inscription</H1>
         <Alerts />
         {next ? (
@@ -176,10 +176,10 @@ const Subscribe = (props) => {
               <Button name='submit' onClick={submitForm}>
                 Continuer
               </Button>
+              <Back name='back' onClick={nextForm}>
+                Retour
+              </Back>
             </FormContainer>
-            <Back name='back' onClick={nextForm}>
-              Retour
-            </Back>
           </>
         ) : (
           <FormContainer onSubmit={nextForm}>
@@ -220,7 +220,7 @@ const Subscribe = (props) => {
             </Button>
           </FormContainer>
         )}
-      </Wrapper>
+      </Container>
     </Section>
   );
 

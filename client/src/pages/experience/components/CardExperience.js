@@ -4,25 +4,24 @@ import { Link } from 'react-router-dom';
 
 const DivWrapper = styled.div`
   display: flex;
+  height: 400px;
   flex-direction: column;
-  background-color: transparent;
-  backdrop-filter: blur(6px);
-  box-shadow: 0px 0.2em 0.5em rgba(0, 0, 0, 0.3);
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(30px) contrast(120%);
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 30px 0px;
   width: 400px;
-  border-radius: 10px;
+  border-radius: 15px;
   margin: 15px;
-  border: 2px solid whitesmoke;
-  transition: box-shadow 250ms ease;
-  transition: transform 250ms ease;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  transition: all 250ms ease;
+  color: ${({ theme }) => theme.textinvert};
   cursor: pointer;
   :hover {
-    backdrop-filter: none;
-    box-shadow: 0px 0.2em 2.5em rgba(0, 0, 0, 0.3);
-    transform: scale(1.025);
+    background-color: ${({ theme }) => theme.header};
   }
   @media (max-width: 920px) {
     width: 90%;
-    margin-bottom: 20vh;
   }
 `;
 
@@ -30,22 +29,27 @@ const IMG = styled.div`
   background-size: cover;
   height: 150px;
   width: 100%;
-  border-top-right-radius: 10px;
-  border-top-left-radius: 10px;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
   @media (max-width: 920px) {
     width: 100%;
   }
 `;
 
-const Article = styled.article`
-  padding: 1em;
+const Article = styled.div`
+  padding: 1rem;
+  height: 125px;
+`;
+
+const Bas = styled.div`
+  padding: 1rem;
 `;
 
 const Head = styled.div`
   padding-left: 1rem;
   padding-top: 1rem;
   width: 100%;
-  background-color: rgba(241, 90, 100, 0.4);
+  background-color: rgba(241, 90, 100, 0.1);
   padding-bottom: 1rem;
   @media (max-width: 920px) {
     width: 100%;
@@ -74,7 +78,9 @@ const CardExperience = ({
           }}
         />
         <Head>
-          <h3 style={{ fontFamily: 'Poppins' }}>{title}</h3>
+          <h3 style={{ fontFamily: 'Poppins', textDecoration: 'none' }}>
+            {title}
+          </h3>
         </Head>
         <Article>
           <div style={{ marginTop: '10px' }}>
@@ -87,17 +93,19 @@ const CardExperience = ({
               programme
             )}
           </div>
+        </Article>
+        <Bas>
           <div
             style={{
-              marginTop: '20px',
               display: 'flex',
+              flexDirection: 'row',
               justifyContent: 'space-between',
             }}
           >
-            <strong>{city}</strong>
-            <strong>{category}</strong>
+            <div>{city}</div>
+            <div>{category}</div>
           </div>
-        </Article>
+        </Bas>
       </DivWrapper>
     </Link>
   );

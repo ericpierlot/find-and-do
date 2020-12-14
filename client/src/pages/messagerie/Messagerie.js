@@ -1,137 +1,107 @@
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import Card from '../profil/components/Card';
 
 const Section = styled.section`
+  width: 90%;
   margin: auto;
-  width: 100%;
-  margin-top: 90px;
-  margin-bottom: 45px;
-  @media (max-width: 920px) {
-    margin: 0;
-    overflow: auto;
-  }
-`;
-const Wrapper = styled.section`
-  min-height: 90vh;
-  margin: auto;
-  margin-top: 5vh;
-  max-width: 90vw;
-  border-radius: 30px;
-
-  @media (max-width: 920px) {
-    min-width: 100%;
-    height: 100vh;
-    border-radius: none;
-    background-color: rgba(255, 255, 255, 0.3);
-    border-radius: 0;
-    box-shadow: none;
-    min-height: 0;
-    margin: 0;
-    margin-bottom: 35px;
-    padding: 1rem;
-  }
-`;
-
-const Top = styled.header`
-  width: 60%;
-  margin: auto;
-  padding-top: 1rem;
-
-  @media (max-width: 920px) {
-    width: 100%;
-  }
-`;
-const Article = styled.article`
-  width: 60%;
-  margin: auto;
-  padding-top: 3rem;
+  min-height: 100vh;
   display: flex;
-  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  @media screen and(min-width: 840px) {
+    width: 80%;
+  }
+`;
 
+const Container = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   a {
     text-decoration: none;
-    color: black;
   }
-  @media (max-width: 920px) {
-    width: 100%;
+  @media (min-width: 840px) {
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 `;
 
-const Flexbox = styled.form`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  border-bottom: 2px white solid;
-  padding-bottom: 80px;
-  margin-top: 10px;
-  background-color: transparent;
-  backdrop-filter: blur(20px);
-  border-radius: 10px;
-  padding: 1rem;
-  border: whitesmoke 2px solid;
-  box-shadow: 0px 0.2em 0.5em rgba(0, 0, 0, 0.3);
-  cursor: pointer;
-  @media (max-width: 920px) {
-    width: 100%;
-    border-bottom: 1px white solid;
+const Left = styled.div`
+  text-align: center;
+  margin: auto;
+  padding-bottom: 2rem;
+  @media (min-width: 840px) {
+    padding-bottom: 0;
+    text-align: left;
+    width: 40%;
   }
 `;
+const Right = styled.div`
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  @media (min-width: 840px) {
+    text-align: left;
+    width: 60%;
+  }
+`;
+const Title = styled.h1`
+  font-size: 4rem;
+  color: ${({ theme }) => theme.textinvert};
+  text-shadow: rgba(60, 64, 67, 0.3) 0px 1px 10px;
+  @media (min-width: 840px) {
+    font-size: 5rem;
+  }
+`;
+
+const UnderTitle = styled.h3`
+  color: ${({ theme }) => theme.textinvert};
+  font-size: 1rem;
+  letter-spacing: 0.125rem;
+  font-weight: 600;
+  text-shadow: rgba(60, 64, 67, 0.3) 0px 1px 10px;
+  @media (min-width: 840px) {
+    margin-bottom: 0;
+    font-size: 2rem;
+  }
+`;
+
 const Messagerie = () => {
-  const history = useHistory();
   return (
     <Section>
-      <Wrapper>
-        <Top>
-          <h4>
-            <Link to='/profil'>Mon compte</Link> → Messagerie
-          </h4>
-          <br />
-          <h2>Messagerie</h2>
-        </Top>
-        <Article>
-          <Flexbox onClick={() => history.push('/profil/messagerie/reception')}>
-            <>
-              <div
-                style={{
-                  width: '100%',
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <strong>Boite de réception</strong>
-              </div>
-              <br />
-              <br />
-              <div style={{ width: '100%' }}>
-                Accédez aux messages que vous avez reçu.
-              </div>
-            </>
-          </Flexbox>
-          <Flexbox onClick={() => history.push('/profil/messagerie/envoi')}>
-            <>
-              <div
-                style={{
-                  width: '100%',
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <strong>Boite d'envoi</strong>
-              </div>
-              <br />
-              <br />
-              <div style={{ width: '100%' }}>
-                Vous pouvez accéder aux messages que vous avez envoyé.
-              </div>
-            </>
-          </Flexbox>
-        </Article>
-      </Wrapper>
+      <Container>
+        <Left>
+          <UnderTitle>
+            <Link to='/profil'>Mon compte</Link>
+          </UnderTitle>
+          <Title>Messagerie</Title>
+        </Left>
+        <Right>
+          <Link to='/profil/messagerie/reception'>
+            <Card
+              Image='📩'
+              ImageAlt='Messagerie'
+              Title='Boite de réception'
+              Description='Lisez et répondez aux messages reçu'
+            />
+          </Link>
+          <Link to='/profil/messagerie/envoi'>
+            <Card
+              Image='📧'
+              ImageAlt='Messagerie'
+              Title="Boite d'envoi"
+              Description='Lisez vos messages envoyé'
+            />
+          </Link>
+        </Right>
+      </Container>
     </Section>
   );
 };
