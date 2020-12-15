@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Card from './profil/components/Card';
-import ProfilIcon from '../images/register.svg';
 import styled from 'styled-components';
 import AuthContext from '../context/auth/authContext';
 

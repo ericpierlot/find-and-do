@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 import ExperienceContext from '../../context/experience/experienceContext';
 import {} from '../../css/styled/Profil/styled';
@@ -65,6 +65,8 @@ const RenderExperience = () => {
   const experienceContext = useContext(ExperienceContext);
   const { experience } = experienceContext;
   const results = experience.search;
+  const [resultsCategory, setResultsCategory] = useState([]);
+  const [categoryClicked, setCategoryClicked] = useState(false);
 
   if (!results) {
     return <Redirect to='/' />;
@@ -73,6 +75,7 @@ const RenderExperience = () => {
   //Nombre d'expériences, par catégorie.
   const listingCategory = results.map((res) => {
     const { category } = res;
+
     return category;
   });
 
@@ -93,9 +96,47 @@ const RenderExperience = () => {
     return array;
   };
 
+  const handleFilterCategory = (category) => {
+    setCategoryClicked(true);
+    const onlyCategory = results.filter((item) => {
+      return item.category === category;
+    });
+
+    const resultCategory = onlyCategory.map((item) => {
+      const { _id, title, programme, lieu, category } = item;
+      const uniqueID = uuidv4();
+
+      return (
+        <div key={uniqueID}>
+          <CardExperience
+            ID={_id}
+            title={title}
+            programme={programme}
+            city={lieu}
+            category={category}
+          />
+        </div>
+      );
+    });
+
+    setResultsCategory(resultCategory);
+  };
+
   const cateMap = arrayOfCategory().map((item) => {
     const uniqueID = uuidv4();
-    return <DivWrapper key={uniqueID}>{item}</DivWrapper>;
+
+    // Remove (x) from item (instead of 'name category (number)' I have now only 'name category')
+    const array = item.split(' ');
+    array.pop();
+    const CategoryName = array.join(' ');
+    return (
+      <DivWrapper
+        onClick={() => handleFilterCategory(CategoryName)}
+        key={uniqueID}
+      >
+        {item}
+      </DivWrapper>
+    );
   });
 
   const renderExperience = results.map((res) => {
@@ -117,8 +158,16 @@ const RenderExperience = () => {
   return (
     <Section>
       <Container>
-        <div style={{ display: 'flex' }}>{cateMap}</div>
-        <Wrapper>{renderExperience}</Wrapper>
+        <div style={{ display: 'flex' }}>
+          {cateMap}{' '}
+          <DivWrapper onClick={() => setCategoryClicked(false)}>
+            Toutes
+          </DivWrapper>
+        </div>
+
+        <Wrapper>
+          {categoryClicked ? resultsCategory : renderExperience}
+        </Wrapper>
       </Container>
     </Section>
   );

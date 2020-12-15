@@ -45,7 +45,7 @@ const Right = styled.div`
   align-items: center;
   @media (min-width: 840px) {
     text-align: left;
-    width: 60%;
+    width: 40%;
   }
 `;
 const Title = styled.h1`
@@ -89,7 +89,7 @@ const ListVilles = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 100%;
+  width: 90%;
   padding: 1rem;
   background-color: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(30px) contrast(120%);

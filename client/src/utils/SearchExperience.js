@@ -9,23 +9,22 @@ import ExperienceContext from '../context/experience/experienceContext';
 import Spinner from './components/Spinner.js';
 
 const Form = styled.form`
+  display: inline;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
 `;
 const Input = styled.input`
   padding: 0.5rem;
   border: none;
-
-  width: 70%;
+  width: 100%;
   background-color: transparent;
   font-size: 1rem;
   transition: 330ms ease-in-out;
   outline: none;
   border-bottom: 2px solid black;
-  @media (max-width: 768px) {
-    :hover {
-      transition: 100ms ease-in-out;
-    }
+  @media (min-width: 840px) {
+    width: 40%;
   }
 `;
 
@@ -184,6 +183,8 @@ const SearchExperience = ({ type, name, placeholder }) => {
         style={{
           display: 'flex',
           paddingBottom: '1rem',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
         htmlFor='searchCity'
       >

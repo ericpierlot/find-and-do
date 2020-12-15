@@ -31,7 +31,10 @@ const Footer = () => {
             Eric Pierlot
           </a>
           {' - '}
-          Tous droits réservés 🤟
+          Tous droits réservés{' '}
+          <span role='img' aria-label='Love you'>
+            🤟
+          </span>
         </span>
       </DivMain>
     </footer>

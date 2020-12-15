@@ -11,7 +11,7 @@ const Head = styled.header`
   top: 0;
   width: 100%;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   @media (min-width: 920px) {
     transition: background-color 330ms linear;
@@ -135,6 +135,7 @@ const MenuBuger = styled.div`
   }
 `;
 const SunMoon = styled.button`
+  padding-right: 1rem;
   background-color: transparent;
   font-size: 1.5rem;
   outline: none;
@@ -301,7 +302,15 @@ const Header = ({ themeToggler, theme }) => {
         <Link to='/login'>Connexion</Link>
         <Link to='/subscribe'>S'inscrire</Link>
         <SunMoon onClick={themeToggler}>
-          {theme === 'light' ? '🌞' : '🌚'}
+          {theme === 'light' ? (
+            <span role='img' aria-label='Light'>
+              🌞
+            </span>
+          ) : (
+            <span role='img' aria-label='Dark'>
+              🌚
+            </span>
+          )}
         </SunMoon>
       </MobileDiv>
     </>
@@ -309,7 +318,12 @@ const Header = ({ themeToggler, theme }) => {
 
   const guestLinks = (
     <React.Fragment>
-      <h4>{hours >= 17 || hours < 0 ? 'Bonsoir ' : 'Bonjour'} 👋</h4>
+      <h4>
+        {hours >= 17 || hours < 0 ? 'Bonsoir ' : 'Bonjour'}{' '}
+        <span role='img' aria-label='Hello'>
+          👋
+        </span>
+      </h4>
       <Ul>
         {experience.length === 0 ? null : (
           <Link to='/experiences'>
