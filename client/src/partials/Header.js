@@ -7,7 +7,7 @@ import AuthContext from '../context/auth/authContext';
 import ExperienceContext from '../context/experience/experienceContext';
 
 const Head = styled.header`
-  position: fixed;
+  position: sticky;
   top: 0;
   width: 100%;
   display: flex;
@@ -159,7 +159,7 @@ const ButtonBurger = styled.button`
 //     .catch((err) => console.error(err));
 // };
 
-const Header = ({ themeToggler, theme }) => {
+const Header = ({ themeToggler, theme, setTheme }) => {
   const authContext = useContext(AuthContext);
   const experienceContext = useContext(ExperienceContext);
   const { experience } = experienceContext;
@@ -206,11 +206,12 @@ const Header = ({ themeToggler, theme }) => {
   }, []);
 
   useEffect(() => {
+    hours >= 17 || hours < 0 ? setTheme('dark') : setTheme('light');
     // fetchUserRecipient().then((userData) => {
     //   if (!userData) return setHaveNewMessage(0);
     //   if (userData.length > 0) return setHaveNewMessage(userData.length);
     // });
-  }, []);
+  }, [hours, setTheme]);
 
   const authLinks = (
     <React.Fragment>

@@ -57,6 +57,11 @@ const UserSchema = mongoose.Schema(
       required: false,
       default: false,
     },
+    hasAccess: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
   },
   { timestamps: true }
 );

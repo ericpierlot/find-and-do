@@ -178,7 +178,7 @@ router.post(
           'Experience pushed to the User & experience created successfully',
       });
     } catch (error) {
-      res.status(500).send('Error from Server');
+      res.status(500).send('Error from Server', error);
     }
   }
 );
@@ -190,57 +190,112 @@ router.post(
 //TO BE ABLE TO RESET USER
 //& EXPERIENCE
 // Quickly :)
-router.put('/deleteAll', async (req, res) => {
-  const conditions = {};
-  const update = { $set: { deleteRequested: true } };
-  const options = { upsert: false };
 
+/* ADMIN */
+// Obtenir une liste de toutes les expériences.
+router.get('/admin/all', admin, async (req, res) => {
   try {
-    await Experience.updateMany(conditions, update, options);
-    res.json({ message: 'All experiences got set to deleteRequested : true' });
-  } catch (error) {
-    console.error(`Failed to update items: ${error}`);
+    const AllExperiences = await Experience.find({}).sort({ updatedAt: -1 });
+
+    res.status(200).send(AllExperiences);
+  } catch (err) {
+    res.status(500).send('Error from Server', err);
   }
 });
+
+// Supprimer l'expérience sélectionnée
+router.delete('/admin/delete', admin, async (req, res) => {
+  const { experienceID, userID } = req.params;
+
+  try {
+    await Experience.findOneAndDelete({ id: experienceID });
+    const selectAuthor = await User.findById({ _id: userID });
+
+    if (selectAuthor.experienceCreated.length === 0)
+      return res
+        .status(400)
+        .json({ message: 'Cet utilisateur a aucune expérience' });
+
+    // Delete the experienceCreated to the User & Save
+    await selectAuthor.experienceCreated.pop();
+    await selectAuthor.save();
+
+    //Everything was fine :
+    res.status(200).json({
+      message:
+        'Expérience supprimée, cet utilisateur peut maintenant en créer une autre.',
+    });
+  } catch (err) {
+    res.status(500).send('Error from Server', err);
+  }
+});
+
+router.put('/admin/validated/:id', admin, async (req, res) => {
+  const { id } = req.params;
+  const { state } = req.body;
+
+  try {
+    await Experience.findByIdAndUpdate(
+      { _id: id },
+      { $set: { validated: !state } }
+    );
+    res.status(200).send('Action effectuée avec succès');
+  } catch (err) {
+    res.status(500).send('Error from Server', err);
+  }
+});
+
+// router.put('/deleteAll', async (req, res) => {
+//   const conditions = {};
+//   const update = { $set: { deleteRequested: true } };
+//   const options = { upsert: false };
+
+//   try {
+//     await Experience.updateMany(conditions, update, options);
+//     res.json({ message: 'All experiences got set to deleteRequested : true' });
+//   } catch (error) {
+//     console.error(`Failed to update items: ${error}`);
+//   }
+// });
 
 // @route     PUT api/experiences/clean
 // @desc      Delete all experiences requested by User, only Admin
 // @access    Admin
 
-router.delete('/clean', async (req, res) => {
-  // Declare [] of all experiences requested to be deleted
-  const ExperienceRequested = await Experience.find({ deleteRequested: true });
+// router.delete('/clean', async (req, res) => {
+//   // Declare [] of all experiences requested to be deleted
+//   const ExperienceRequested = await Experience.find({ deleteRequested: true });
 
-  // Check if [] is empty
-  if (ExperienceRequested.length === 0)
-    return res.status(400).json({ message: 'No delete requested by Users' });
+//   // Check if [] is empty
+//   if (ExperienceRequested.length === 0)
+//     return res.status(400).json({ message: 'No delete requested by Users' });
 
-  // Fetch the user ID from the CreateBy in each Experience
-  ExperienceRequested.map(async (experience, index) => {
-    const UserByExpID = await User.findById({ _id: experience.createdBy });
-    try {
-      //Check [] of experienceCreated by the user
-      if (UserByExpID.experienceCreated.length === 0)
-        return res
-          .status(400)
-          .json({ message: 'User have no more experienceCreated' });
+//   // Fetch the user ID from the CreateBy in each Experience
+//   ExperienceRequested.map(async (experience, index) => {
+//     const UserByExpID = await User.findById({ _id: experience.createdBy });
+//     try {
+//       //Check [] of experienceCreated by the user
+//       if (UserByExpID.experienceCreated.length === 0)
+//         return res
+//           .status(400)
+//           .json({ message: 'User have no more experienceCreated' });
 
-      // Delete the experienceCreated to the User & Save
-      await UserByExpID.experienceCreated.pop();
-      await UserByExpID.save();
+//       // Delete the experienceCreated to the User & Save
+//       await UserByExpID.experienceCreated.pop();
+//       await UserByExpID.save();
 
-      // Delete all Experiences that was requested to be deleted
-      await Experience.deleteMany({ deleteRequested: true });
-    } catch (error) {
-      res.status(500).send('Error from Server');
-    }
-  });
+//       // Delete all Experiences that was requested to be deleted
+//       await Experience.deleteMany({ deleteRequested: true });
+//     } catch (error) {
+//       res.status(500).send('Error from Server');
+//     }
+//   });
 
-  //Everything was fine :
-  res.json({
-    message:
-      'Experience removed from the UserCreated & Remove from Experience collection',
-  });
-});
+//   //Everything was fine :
+//   res.json({
+//     message:
+//       'Experience removed from the UserCreated & Remove from Experience collection',
+//   });
+// });
 
 module.exports = router;

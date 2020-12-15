@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 
 const auth = require('../middlewares/auth');
+const admin = require('../middlewares/admin');
 
 const User = require('../models/User.js');
 
@@ -73,7 +74,7 @@ router.post(
       );
     } catch (error) {
       // console.error(error.message);
-      res.status(500).send('Error from Server');
+      res.status(500).send('Error from Server', error);
     }
   }
 );
@@ -82,12 +83,14 @@ router.post(
 // @desc      Get profile by id
 // @access    Private
 
-router.get('/allDB', async (req, res) => {
+router.get('/profil/:id', async (req, res) => {
   try {
-    // maybe for admin purpose ?
-    res.send('get all users from my DB collection users');
+    const user = await User.find({ _id: req.params.id })
+      .select('-password')
+      .select('-email');
+    res.status(200).json(user);
   } catch (error) {
-    console.error(error.message);
+    res.status(500).send('Error to reach the server', error);
   }
 });
 
@@ -212,6 +215,30 @@ router.put('/:id/updatePassword', auth, async (req, res) => {
 
 router.delete('/:id', (req, res) => {
   res.send('Delete an user');
+});
+
+// Selecter tout les utilisateurs du site
+router.get('/admin/all', admin, async (req, res) => {
+  try {
+    const allUsers = await User.find({}).sort({ updatedAt: -1 });
+
+    res.status(200).send(allUsers);
+  } catch (err) {
+    res.status(500).send('Error from Server', err);
+  }
+});
+
+// Bannir un compte utilisateur
+router.put('/admin/ban/:id', admin, async (req, res) => {
+  const { id } = req.params;
+  const { state } = req.body;
+  try {
+    await User.findByIdAndUpdate({ _id: id }, { $set: { hasAccess: !state } });
+
+    res.status(200).send('Les modifications ont bien été enregistrées');
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
 
 module.exports = router;

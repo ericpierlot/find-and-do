@@ -61,6 +61,11 @@ router.post(
       if (!isMatch) {
         return res.status(400).json({ message: 'Password not match' });
       }
+
+      // Vérification si l'utilisateur a accès au site (banni ou pas)
+      if (!user.hasAccess && !user.isAdmin)
+        return res.status(401).json({ message: 'Banni' });
+
       // Using payload to use in jwt We want only ID of user, anything else
       const payload = {
         user: {

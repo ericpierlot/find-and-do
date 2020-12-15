@@ -25,7 +25,11 @@ const App = () => {
           <ExperienceState>
             <BrowserRouter>
               {/*  Header */}
-              <Header themeToggler={themeToggler} theme={theme} />
+              <Header
+                themeToggler={themeToggler}
+                theme={theme}
+                setTheme={setTheme}
+              />
               {/* ----------- */}
               <Home />
               {/* -------------- */}

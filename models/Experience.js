@@ -58,10 +58,6 @@ const ExperienceSchema = mongoose.Schema(
       required: false,
       default: false,
     },
-    deleteRequested: {
-      type: Boolean,
-      default: false,
-    },
     // ID of the Author of this experience to get his name, and appear in it.
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
