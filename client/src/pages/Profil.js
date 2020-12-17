@@ -1,8 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Card from './profil/components/Card';
 import styled from 'styled-components';
 import AuthContext from '../context/auth/authContext';
+import axios from 'axios';
 
 const Section = styled.section`
   width: 90%;
@@ -73,16 +74,33 @@ const UnderTitle = styled.h3`
     font-size: 2rem;
   }
 `;
+const FetchNewMessage = () => {
+  return axios
+    .post('/api/messages/read')
+    .then(({ data }) => data.length)
+    .catch((err) => console.error(err));
+};
 
 const Profil = () => {
   const authContext = useContext(AuthContext);
   const { user } = authContext;
+  const [hasNewMessage, setHasNewMessage] = useState(0);
+
+  useEffect(() => {
+    FetchNewMessage()
+      .then((numberUnread) => {
+        setHasNewMessage(numberUnread);
+      })
+      .catch((err) => console.error(err));
+  }, []);
 
   return (
     <Section>
       <Container>
         <Left>
-          <Title>Mon compte</Title>
+          <Title>
+            Mon compte {hasNewMessage !== 0 && `(${hasNewMessage})`}
+          </Title>
           <UnderTitle>
             {user.firstName}, {user.email}
           </UnderTitle>
@@ -90,7 +108,11 @@ const Profil = () => {
         <Right>
           <Link to='/profil/messagerie'>
             <Card
-              Image='📬'
+              Image={`📬 ${
+                hasNewMessage > 1 ? `→ ${hasNewMessage} messages non lu.` : ''
+              }${
+                hasNewMessage === 1 ? `→ ${hasNewMessage} message non lu.` : ''
+              } `}
               ImageAlt='Messagerie'
               Title='Votre messagerie'
               Description="Accédez à votre boite de réception et votre boîte d'envoi"

@@ -63,15 +63,23 @@ const DivWrapper = styled.button`
 
 const RenderExperience = () => {
   const experienceContext = useContext(ExperienceContext);
-  const { experience } = experienceContext;
-  const results = experience.search;
-  const [resultsCategory, setResultsCategory] = useState([]);
-  const [categoryClicked, setCategoryClicked] = useState(false);
-
-  if (!results) {
-    return <Redirect to='/' />;
+  const { experience, saveExperiences, apiURL } = experienceContext;
+  let results = [];
+  let totalExperiences = [];
+  if (experience.length === 0) {
+    results = [];
+  } else {
+    results = experience.search.experiences;
+    totalExperiences = experience.search.totalExperiences;
   }
 
+  const [resultsCategory, setResultsCategory] = useState([]);
+  const [categoryClicked, setCategoryClicked] = useState(false);
+  const [page, setPage] = useState(1);
+
+  if (results.length === 0) {
+    return <Redirect to='/' />;
+  }
   //Nombre d'expériences, par catégorie.
   const listingCategory = results.map((res) => {
     const { category } = res;
@@ -155,6 +163,17 @@ const RenderExperience = () => {
       </div>
     );
   });
+
+  const nextPage = () => {
+    const newPage = page + 1;
+    setPage(newPage);
+    saveExperiences(`${apiURL.slice(0, -1)}${newPage}`);
+  };
+  const previousPage = () => {
+    const newPage = page - 1;
+    setPage(newPage);
+    saveExperiences(`${apiURL.slice(0, -1)}${newPage}`);
+  };
   return (
     <Section>
       <Container>
@@ -164,10 +183,19 @@ const RenderExperience = () => {
             Toutes
           </DivWrapper>
         </div>
-
         <Wrapper>
           {categoryClicked ? resultsCategory : renderExperience}
         </Wrapper>
+        {page > 1 ? (
+          <button onClick={previousPage}>Page précédente</button>
+        ) : (
+          ''
+        )}{' '}
+        {totalExperiences > 5 && page * 5 < totalExperiences ? (
+          <button onClick={nextPage}>Page suivante</button>
+        ) : (
+          ''
+        )}
       </Container>
     </Section>
   );

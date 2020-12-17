@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useState } from 'react';
 import ExperienceContext from './experienceContext';
 import experienceReducer from './experienceReducer';
 import { SEARCH_EXPERIENCE } from '../types';
@@ -8,19 +8,22 @@ const ExperienceState = (props) => {
   const initialState = [];
 
   const [state, dispatch] = useReducer(experienceReducer, initialState);
+  const [apiURL, setApiURL] = useState('');
 
-  const saveExperiences = async (data) => {
+  const saveExperiences = async (url) => {
     const config = {
       headers: {
         'Content-Type': 'application/json',
       },
     };
-    const res = await axios.post(data, config);
+    const { data } = await axios.post(url, config);
 
     dispatch({
       type: SEARCH_EXPERIENCE,
-      payload: res.data,
+      payload: data,
     });
+
+    setApiURL(url);
   };
 
   return (
@@ -28,6 +31,7 @@ const ExperienceState = (props) => {
       value={{
         experience: state,
         saveExperiences,
+        apiURL,
       }}
     >
       {props.children}

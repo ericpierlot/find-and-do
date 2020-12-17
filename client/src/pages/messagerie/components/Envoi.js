@@ -177,7 +177,13 @@ const BoiteEnvoi = () => {
                   width: '100%',
                 }}
               >
-                {isLoading ? <Spinner /> : result.lenght}
+                {isLoading ? (
+                  <Spinner />
+                ) : result === [] ? (
+                  'Vous avez aucun message envoyé.'
+                ) : (
+                  result
+                )}
               </div>
             </div>
           </Flexbox>

@@ -29,12 +29,14 @@ router.get('/myexperience', auth, async (req, res) => {
 
 router.get('/allcity', async (req, res) => {
   try {
-    const allCities = await Experience.find({}).select('lieu').select('-_id');
+    const allCities = await Experience.find({ validated: { $eq: true } })
+      .select('lieu')
+      .select('-_id');
 
     res.status(200).json(allCities);
   } catch (error) {
     res
-      .status(401)
+      .status(500)
       .json({ message: 'Une erreur est survenue lors de la recherche' });
   }
 });
@@ -90,12 +92,45 @@ router.get('/id/:id', async (req, res) => {
 
 router.post('/city/:lieu', async (req, res) => {
   // Find experiences from one city requested by one User.
+  const { lieu } = req.query;
+  const currentPage = req.query.page || 1;
+  const perPage = 5;
+  let totalExperiences;
+
   try {
-    const experienceCity = await Experience.find({ lieu: req.query.lieu });
-    if (experienceCity.length === 0) {
-      return res.status(401).json({ message: 'No experiences found' });
-    }
-    res.status(200).json(experienceCity);
+    await Experience.find({
+      $and: [
+        {
+          lieu: { $in: lieu },
+        },
+        { validated: { $eq: true } },
+      ],
+    })
+      .countDocuments()
+      .then((count) => {
+        totalExperiences = count;
+        return Experience.find({
+          $and: [
+            {
+              lieu: { $in: lieu },
+            },
+            { validated: { $eq: true } },
+          ],
+        })
+          .skip((currentPage - 1) * perPage)
+          .limit(perPage);
+      })
+      .then((experiences) => {
+        if (experiences.length === 0) {
+          return res.status(401).json({ message: 'No experiences found' });
+        }
+        res.status(200).json({
+          message: 'Requête réussie',
+          experiences: experiences,
+          totalExperiences: totalExperiences,
+        });
+      })
+      .catch((err) => res.status(500).send('Une erreur est survenue.', err));
   } catch (error) {
     res.status(500).send('Error from Server', error);
   }
@@ -183,21 +218,31 @@ router.post(
   }
 );
 
-// @route     PUT api/experiences/deleteAll
-// @desc      Update an experience
-// @access    Private
-//////////////////// DEVELOPMENT PURPOSE SET ALL EXPERIENCE TO deleteRequested : true,
-//TO BE ABLE TO RESET USER
-//& EXPERIENCE
-// Quickly :)
-
 /* ADMIN */
 // Obtenir une liste de toutes les expériences.
 router.get('/admin/all', admin, async (req, res) => {
-  try {
-    const AllExperiences = await Experience.find({}).sort({ updatedAt: -1 });
+  const { page } = req.query || 1;
+  const perPage = 5;
+  let totalExperiences;
 
-    res.status(200).send(AllExperiences);
+  try {
+    await Experience.find({})
+      .sort({ createdAt: -1 })
+      .countDocuments()
+      .then((count) => {
+        totalExperiences = count;
+        return Experience.find({})
+          .sort({ createdAt: -1 })
+          .skip((page - 1) * perPage)
+          .limit(perPage);
+      })
+      .then((allExperiences) => {
+        res.status(200).json({
+          allExperiences: allExperiences,
+          totalExperiences: totalExperiences,
+        });
+      })
+      .catch((err) => res.status(500).send('Error from Server', err));
   } catch (err) {
     res.status(500).send('Error from Server', err);
   }

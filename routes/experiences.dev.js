@@ -65,7 +65,11 @@ router.get('/allcity', function _callee2(req, res) {
         case 0:
           _context2.prev = 0;
           _context2.next = 3;
-          return regeneratorRuntime.awrap(Experience.find({}).select('lieu').select('-_id'));
+          return regeneratorRuntime.awrap(Experience.find({
+            validated: {
+              $eq: true
+            }
+          }).select('lieu').select('-_id'));
 
         case 3:
           allCities = _context2.sent;
@@ -76,7 +80,7 @@ router.get('/allcity', function _callee2(req, res) {
         case 7:
           _context2.prev = 7;
           _context2.t0 = _context2["catch"](0);
-          res.status(401).json({
+          res.status(500).json({
             message: 'Une erreur est survenue lors de la recherche'
           });
 
@@ -184,45 +188,70 @@ router.get('/id/:id', function _callee4(req, res) {
 // @access    Private
 
 router.post('/city/:lieu', function _callee5(req, res) {
-  var experienceCity;
+  var lieu, currentPage, perPage, totalExperiences;
   return regeneratorRuntime.async(function _callee5$(_context5) {
     while (1) {
       switch (_context5.prev = _context5.next) {
         case 0:
-          _context5.prev = 0;
-          _context5.next = 3;
+          // Find experiences from one city requested by one User.
+          lieu = req.query.lieu;
+          currentPage = req.query.page || 1;
+          perPage = 2;
+          _context5.prev = 3;
+          _context5.next = 6;
           return regeneratorRuntime.awrap(Experience.find({
-            lieu: req.query.lieu
-          }));
+            $and: [{
+              lieu: {
+                $in: lieu
+              }
+            }, {
+              validated: {
+                $eq: true
+              }
+            }]
+          }).countDocuments().then(function (count) {
+            totalExperiences = count;
+            return Experience.find({
+              $and: [{
+                lieu: {
+                  $in: lieu
+                }
+              }, {
+                validated: {
+                  $eq: true
+                }
+              }]
+            }).skip((currentPage - 1) * perPage).limit(perPage);
+          }).then(function (experiences) {
+            if (experiences.length === 0) {
+              return res.status(401).json({
+                message: 'No experiences found'
+              });
+            }
 
-        case 3:
-          experienceCity = _context5.sent;
-
-          if (!(experienceCity.length === 0)) {
-            _context5.next = 6;
-            break;
-          }
-
-          return _context5.abrupt("return", res.status(401).json({
-            message: 'No experiences found'
+            res.status(200).json({
+              message: 'Requête réussie',
+              experiences: experiences
+            });
+          })["catch"](function (err) {
+            return res.status(500).send('Une erreur est survenue.', err);
           }));
 
         case 6:
-          res.status(200).json(experienceCity);
-          _context5.next = 12;
+          _context5.next = 11;
           break;
 
-        case 9:
-          _context5.prev = 9;
-          _context5.t0 = _context5["catch"](0);
+        case 8:
+          _context5.prev = 8;
+          _context5.t0 = _context5["catch"](3);
           res.status(500).send('Error from Server', _context5.t0);
 
-        case 12:
+        case 11:
         case "end":
           return _context5.stop();
       }
     }
-  }, null, null, [[0, 9]]);
+  }, null, null, [[3, 8]]);
 }); // @route     POST api/experiences
 // @desc      Register an Experience
 // @access    Private
@@ -343,7 +372,7 @@ router.get('/admin/all', admin, function _callee7(req, res) {
           _context7.prev = 0;
           _context7.next = 3;
           return regeneratorRuntime.awrap(Experience.find({}).sort({
-            updatedAt: -1
+            createdAt: -1
           }));
 
         case 3:

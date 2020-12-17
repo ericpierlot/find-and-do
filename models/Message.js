@@ -16,7 +16,11 @@ const MessageSchema = mongoose.Schema(
       required: true,
     },
 
-    read: { type: Date },
+    read: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
   },
   {
     timestamps: true,

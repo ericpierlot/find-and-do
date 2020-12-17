@@ -219,10 +219,24 @@ router.delete('/:id', (req, res) => {
 
 // Selecter tout les utilisateurs du site
 router.get('/admin/all', admin, async (req, res) => {
+  //const currentPage = req.query.page || 1;
+  const { page } = req.query || 1;
+  const perPage = 5;
+  let totalUsers;
   try {
-    const allUsers = await User.find({}).sort({ updatedAt: -1 });
-
-    res.status(200).send(allUsers);
+    await User.find({})
+      .sort({ createdAt: -1 })
+      .countDocuments()
+      .then((count) => {
+        totalUsers = count;
+        return User.find({})
+          .skip((page - 1) * perPage)
+          .limit(perPage);
+      })
+      .then((users) => {
+        res.status(200).json({ users: users, totalUsers: totalUsers });
+      })
+      .catch((err) => res.status(500).send('Error from Server', err));
   } catch (err) {
     res.status(500).send('Error from Server', err);
   }

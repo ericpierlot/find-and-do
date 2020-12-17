@@ -201,7 +201,6 @@ const Header = ({ themeToggler, theme, setTheme }) => {
 
   useEffect(() => {
     loadUser();
-
     // eslint-disable-next-line
   }, []);
 

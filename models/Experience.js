@@ -52,11 +52,12 @@ const ExperienceSchema = mongoose.Schema(
         },
       },
     ],
-    // Will autohorize by myself to show this experience or not & to delete or not
+    // Will autohorize by myself to show this experience or not
+    // Modifier à false pour activer cette fonction.
     validated: {
       type: Boolean,
       required: false,
-      default: false,
+      default: true,
     },
     // ID of the Author of this experience to get his name, and appear in it.
     createdBy: {

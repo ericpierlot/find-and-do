@@ -10,6 +10,24 @@ const Experience = require('../models/Experience.js');
 const User = require('../models/User');
 const Message = require('../models/Message');
 
+router.post('/read', auth, async (req, res) => {
+  const { id } = req.user;
+
+  try {
+    const NumberMessageUnread = await Message.find({
+      $and: [
+        {
+          recipient: { $in: id },
+        },
+        { read: { $eq: false } },
+      ],
+    }).select('read');
+
+    res.status(200).send(NumberMessageUnread);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
 // @route GET api/messages/
 // @desc  Check if have a message
 // @access Private
@@ -22,8 +40,13 @@ router.post('/', auth, async (req, res) => {
       recipient: { $in: id },
     })
       .lean()
-      .sort({ updatedAt: -1 })
-      .limit(20);
+      .sort({ createdAt: -1 });
+
+    userRecipient.map(async (item) => {
+      const { _id, read } = item;
+      if (read === true) return item;
+      return await Message.findByIdAndUpdate(_id, { $set: { read: true } });
+    });
 
     await Promise.all(
       userRecipient.map((item) => {
@@ -54,7 +77,7 @@ router.post('/', auth, async (req, res) => {
       })
       .catch(() =>
         res
-          .status(401)
+          .status(500)
           .json({ message: 'Une erreur est survenue lors de la recherche' })
       );
 
@@ -70,7 +93,7 @@ router.post('/', auth, async (req, res) => {
 router.delete('/delete', auth, async (req, res) => {
   const { id } = req.query;
   try {
-    const deleteUserMessage = await Message.findOneAndDelete({ _id: id });
+    await Message.findOneAndDelete({ _id: id });
     res.status(200).json('success');
   } catch (error) {
     res.status(401).json({ message: error });
@@ -148,7 +171,7 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(500).json({ errors: errors.array() });
     }
     const { messageToSend, recipientID, sendUserID } = req.body;
 
@@ -160,18 +183,6 @@ router.post(
         recipient: recipientID,
         sender: sendUserID,
       });
-
-      // const message = new Message({
-      //   message: {
-      //     text: messageToSend,
-      //   },
-      //   users: [
-      //     {
-      //       user: recipientID,
-      //     },
-      //   ],
-      //   sender: sendUserID,
-      // });
 
       message.save();
       res.json({

@@ -136,19 +136,24 @@ const Button = styled.button`
   background-clip: padding-box;
 `;
 
-const FetchAllExperiences = () => {
+const FetchAllExperiences = (nbpage) => {
   return axios
-    .get('/api/experiences/admin/all')
+    .get(`/api/experiences/admin/all?&page=${nbpage}`)
     .then(({ data }) => data)
     .catch((err) => console.error(err));
 };
 
 const AdminExperience = () => {
   const [experiences, setExperiences] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalExperiences, setTotalExperiences] = useState(0);
 
   useEffect(() => {
     FetchAllExperiences()
-      .then((allExperiences) => setExperiences(allExperiences || []))
+      .then((data) => {
+        setExperiences(data.allExperiences || []);
+        setTotalExperiences(data.totalExperiences);
+      })
       .catch((err) => console.error(err));
   }, []);
 
@@ -158,7 +163,7 @@ const AdminExperience = () => {
       .put(`/api/experiences/admin/validated/${experienceID}`, { state })
       .then(() =>
         FetchAllExperiences()
-          .then((allExperiences) => setExperiences(allExperiences || []))
+          .then((data) => setExperiences(data.allExperiences || []))
           .catch((err) => console.error(err))
       )
       .catch((err) => console.error(err));
@@ -184,6 +189,28 @@ const AdminExperience = () => {
     );
   });
 
+  const nextExperience = () => {
+    const newPage = page + 1;
+    setPage(newPage);
+    FetchAllExperiences(newPage)
+      .then((data) => {
+        setExperiences(data.allExperiences);
+        setTotalExperiences(data.totalExperiences);
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const prevExperience = () => {
+    const newPage = page - 1;
+    setPage(newPage);
+    FetchAllExperiences(newPage)
+      .then((data) => {
+        setExperiences(data.allExperiences);
+        setTotalExperiences(data.totalExperiences);
+      })
+      .catch((err) => console.error(err));
+  };
+
   return (
     <Section>
       <Container>
@@ -194,6 +221,16 @@ const AdminExperience = () => {
         <Right>
           <Contenu>{listOfExperiences}</Contenu>
         </Right>
+        {page > 1 ? (
+          <button onClick={prevExperience}>Page précédente</button>
+        ) : (
+          ''
+        )}
+        {totalExperiences > 5 && page * 5 < totalExperiences ? (
+          <button onClick={nextExperience}>Page suivante</button>
+        ) : (
+          ''
+        )}
       </Container>
     </Section>
   );

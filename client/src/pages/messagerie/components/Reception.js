@@ -119,7 +119,7 @@ const BoiteReception = () => {
   const MessagesRecu = myReception.map((message) => {
     const { senderFirstName, createdAt, _id, sender } = message;
     const { text } = message.message;
-    console.log(message);
+
     return (
       <CardReception
         key={_id}

@@ -414,7 +414,7 @@ router.get('/admin/all', admin, function _callee8(req, res) {
           _context8.prev = 0;
           _context8.next = 3;
           return regeneratorRuntime.awrap(User.find({}).sort({
-            updatedAt: -1
+            createdAt: -1
           }));
 
         case 3:

@@ -122,9 +122,7 @@ const ListVilles = styled.div`
 const fetchCityExperiences = () => {
   return axios
     .get('/api/experiences/allcity')
-    .then(({ data }) => {
-      return data;
-    })
+    .then(({ data }) => data || [])
     .catch((err) => console.error(err));
 };
 
@@ -133,7 +131,7 @@ const MainHome = () => {
 
   useEffect(() => {
     fetchCityExperiences()
-      .then((data) => setCityData(data || []))
+      .then((data) => setCityData(data))
       .catch((err) => console.error(err));
   }, []);
 

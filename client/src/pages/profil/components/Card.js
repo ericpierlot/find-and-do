@@ -30,7 +30,7 @@ const DivWrapper = styled.div`
     justify-content: space-evenly;
   }
 `;
-const Card = ({ Image, ImageAlt, Title, Description }) => {
+const Card = ({ Image, Title, Description }) => {
   const isOnMobile = window.matchMedia('(max-width: 920px)').matches;
 
   const CardOnMobile = (

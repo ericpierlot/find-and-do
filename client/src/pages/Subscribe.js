@@ -84,7 +84,7 @@ const Subscribe = (props) => {
   const submitForm = (e) => {
     e.preventDefault();
     // Checking 2nd part of the form
-    if (firstName.length < 1)
+    if (firstName.length < 2)
       return setAlert('Le Nom doit avoir plus de 1 caractère', 'red');
     if (birthdate.months === 'Month' || birthdate.months === '')
       return setAlert('Vous devez choisir un mois', 'red');

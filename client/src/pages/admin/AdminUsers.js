@@ -134,17 +134,24 @@ const Button = styled.button`
   background-clip: padding-box;
 `;
 
-const FetchListUsers = () => {
+const FetchListUsers = (nbpage) => {
   return axios
-    .get('/api/users/admin/all')
+    .get(`/api/users/admin/all?&page=${nbpage}`)
     .then(({ data }) => data)
     .catch((err) => err);
 };
+
 const AdminUsers = () => {
   const [allUsers, setAllUsers] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalUsers, setTotalUsers] = useState(0);
+
   useEffect(() => {
     FetchListUsers()
-      .then((data) => setAllUsers(data || []))
+      .then((data) => {
+        setAllUsers(data.users);
+        setTotalUsers(data.totalUsers);
+      })
       .catch((err) => console.error(err));
   }, []);
 
@@ -158,6 +165,29 @@ const AdminUsers = () => {
       )
       .catch((err) => console.error(err));
   };
+
+  const nextUser = () => {
+    const newPage = page + 1;
+    setPage(newPage);
+    FetchListUsers(newPage)
+      .then((data) => {
+        setAllUsers(data.users);
+        setTotalUsers(data.totalUsers);
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const prevUser = () => {
+    const newPage = page - 1;
+    setPage(newPage);
+    FetchListUsers(newPage)
+      .then((data) => {
+        setAllUsers(data.users);
+        setTotalUsers(data.totalUsers);
+      })
+      .catch((err) => console.error(err));
+  };
+
   return (
     <Section>
       <Container>
@@ -181,6 +211,16 @@ const AdminUsers = () => {
                 </ContainState>
               );
             })}
+            {page > 1 ? (
+              <button onClick={prevUser}>Page précédente</button>
+            ) : (
+              ''
+            )}
+            {totalUsers > 5 && page * 5 < totalUsers ? (
+              <button onClick={nextUser}>Page suivante</button>
+            ) : (
+              ''
+            )}
           </Contenu>
         </Right>
       </Container>

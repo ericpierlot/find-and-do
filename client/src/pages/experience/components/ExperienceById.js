@@ -249,7 +249,7 @@ const ExperienceById = () => {
       } catch (error) {
         setIsLoading(false);
         setAlert(
-          "Une erreur est survenue, votre message n'a pas pu être envoyé.",
+          "Une erreur est survenue, votre message n'a pas pu être envoyé, minimum 20 caractères.",
           'red'
         );
       }
