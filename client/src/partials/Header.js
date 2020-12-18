@@ -168,8 +168,7 @@ const Header = ({ theme, setTheme }) => {
   const Burger = useRef();
   const menuInvi = useRef();
   const [isOpen, setIsOpen] = useState(true);
-  const fullDate = new Date().toLocaleString();
-  const hours = fullDate.slice(11, 14);
+  const hours = new Date().getHours();
 
   //const [haveNewMessage, setHaveNewMessage] = useState();
   // A mettre dans le useState si je veux une actualisation directe, mais consomme quelques appels..
