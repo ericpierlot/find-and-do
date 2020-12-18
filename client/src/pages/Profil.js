@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Card from './profil/components/Card';
 import styled from 'styled-components';
 import AuthContext from '../context/auth/authContext';
+import Spinner from '../utils/components/Spinner';
 import axios from 'axios';
 
 const Section = styled.section`
@@ -82,53 +83,75 @@ const FetchNewMessage = () => {
 };
 
 const Profil = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const authContext = useContext(AuthContext);
   const { user } = authContext;
   const [hasNewMessage, setHasNewMessage] = useState(0);
 
   useEffect(() => {
+    setIsLoading(true);
     FetchNewMessage()
       .then((numberUnread) => {
         setHasNewMessage(numberUnread);
       })
-      .catch((err) => console.error(err));
+      .catch(() => setIsLoading(false))
+      .finally(() => setIsLoading(false));
   }, []);
 
+  let naissance;
+  if (user) {
+    naissance = Object.values(user.birthdate || {}).join(' ');
+  }
+
+  const actualDate = new Date().getTime();
+  const birthdateDate = new Date(naissance).getTime();
+  const yearsOld = ((actualDate - birthdateDate) / 31536000000).toFixed(0);
   return (
-    <Section>
-      <Container>
-        <Left>
-          <Title>
-            Mon compte {hasNewMessage !== 0 && `(${hasNewMessage})`}
-          </Title>
-          <UnderTitle>
-            {user && user.firstName}, {user && user.email}
-          </UnderTitle>
-        </Left>
-        <Right>
-          <Link to='/profil/messagerie'>
-            <Card
-              Image={`📬 ${
-                hasNewMessage > 1 ? `→ ${hasNewMessage} messages non lu.` : ''
-              }${
-                hasNewMessage === 1 ? `→ ${hasNewMessage} message non lu.` : ''
-              } `}
-              ImageAlt='Messagerie'
-              Title='Votre messagerie'
-              Description="Accédez à votre boite de réception et votre boîte d'envoi"
-            />
-          </Link>
-          <Link to='/profil/personal-info'>
-            <Card
-              Image='🔐'
-              ImageAlt='Personal informations'
-              Title='Infos personnelles'
-              Description='Fournissez des renseignements personnels'
-            />
-          </Link>
-        </Right>
-      </Container>
-    </Section>
+    <>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <Section>
+          <Container>
+            <Left>
+              <Title>
+                Mon compte {hasNewMessage !== 0 && `(${hasNewMessage})`}
+              </Title>
+              <UnderTitle>
+                {user && user.firstName}, {user && user.email}
+              </UnderTitle>
+              <UnderTitle>{user && yearsOld} ans</UnderTitle>
+            </Left>
+            <Right>
+              <Link to='/profil/messagerie'>
+                <Card
+                  Image={`📬 ${
+                    hasNewMessage > 1
+                      ? `→ ${hasNewMessage} messages non lu.`
+                      : ''
+                  }${
+                    hasNewMessage === 1
+                      ? `→ ${hasNewMessage} message non lu.`
+                      : ''
+                  } `}
+                  ImageAlt='Messagerie'
+                  Title='Votre messagerie'
+                  Description="Accédez à votre boite de réception et votre boîte d'envoi"
+                />
+              </Link>
+              <Link to='/profil/personal-info'>
+                <Card
+                  Image='🔐'
+                  ImageAlt='Personal informations'
+                  Title='Infos personnelles'
+                  Description='Fournissez des renseignements personnels'
+                />
+              </Link>
+            </Right>
+          </Container>
+        </Section>
+      )}
+    </>
   );
 };
 

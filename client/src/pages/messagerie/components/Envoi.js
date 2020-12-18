@@ -137,16 +137,17 @@ const BoiteEnvoi = () => {
   };
 
   const result = mySended.map((message) => {
-    const { recipientFirstName, createdAt, _id, recipient } = message;
+    const { recipientFirstName, createdAt, _id, read, recipiendID } = message;
     const { text } = message.message;
     return (
       <CardEnvoi
         key={_id}
+        recipiendID={recipiendID}
         recipientFirstName={recipientFirstName}
         createdAt={createdAt}
         _id={_id}
         text={text}
-        recipientID={recipient}
+        read={read}
         handleDelete={handleDelete}
       />
     );

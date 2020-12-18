@@ -66,8 +66,7 @@ router.post(
         const userAdmin = await User.find({ isAdmin: { $eq: true } })
           .sort({ createdAt: -1 })
           .select('firstName');
-        console.log('userAdmin: ', userAdmin);
-        console.log('id admin: ', userAdmin[0]._id);
+
         const message = new Message({
           message: {
             text: `${user.firstName}, nous vous souhaitons la bienvenue sur Find & Do.`,
@@ -75,7 +74,6 @@ router.post(
           recipient: user.id,
           sender: userAdmin[0]._id,
         });
-        console.log('message : ', message);
         message.save();
       } catch (error) {
         res.status(500).send('Erreur du message de bienvenue', err);

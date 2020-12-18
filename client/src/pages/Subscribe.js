@@ -151,18 +151,18 @@ const Subscribe = (props) => {
                   onChange={onChange}
                 >
                   <option>Mois</option>
-                  <option>Janvier</option>
-                  <option>Février</option>
-                  <option>Mars</option>
-                  <option>Avril</option>
-                  <option>Mai</option>
-                  <option>Juin</option>
-                  <option>Juillet</option>
-                  <option>Août</option>
-                  <option>Septembre</option>
-                  <option>Octobre</option>
-                  <option>Novembre</option>
-                  <option>Décembre</option>
+                  <option value='January'>Janvier</option>
+                  <option value='February'>Février</option>
+                  <option value='March'>Mars</option>
+                  <option value='April'>Avril</option>
+                  <option value='May'>Mai</option>
+                  <option value='June'>Juin</option>
+                  <option value='July'>Juillet</option>
+                  <option value='August'>Août</option>
+                  <option value='September'>Septembre</option>
+                  <option value='October'>Octobre</option>
+                  <option value='November'>Novembre</option>
+                  <option value='December'>Décembre</option>
                 </SelectMonths>
                 <InputYears
                   id='years'

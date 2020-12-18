@@ -1,11 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 const Flexbox = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  flex-wrap: wrap;
+  align-items: center;
+  flex-wrap: nowrap;
   padding-bottom: 80px;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -50,21 +52,37 @@ const Button = styled.button`
   background-clip: padding-box;
 `;
 
+const ReadOrNot = styled.button`
+  outline: none;
+  border: none;
+  border-radius: 50%;
+  padding: 1rem;
+  color: ${({ theme }) => theme.text};
+`;
 export const CardEnvoi = ({
   recipientFirstName,
   createdAt,
   _id,
   text,
   handleDelete,
+  read,
   recipientID,
 }) => {
   return (
     <Flexbox key={_id}>
+      <ReadOrNot
+        style={{
+          backgroundColor: read ? '#a3fa7b' : '#fa7b7b',
+        }}
+      >
+        {read ? 'LU' : 'NL'}
+      </ReadOrNot>
       <div>
-        A {recipientFirstName} - le {createdAt.slice(0, 10)} :
+        A <Link to={`/profil-user/${recipientID}`}>{recipientFirstName}</Link> -
+        le {createdAt.slice(0, 10)} :
       </div>
       <div>{text}</div>
-      <Button onClick={() => handleDelete(_id)}>Supprimer</Button>
+      <Button onClick={() => handleDelete(_id)}>X</Button>
     </Flexbox>
   );
 };

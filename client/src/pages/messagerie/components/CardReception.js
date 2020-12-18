@@ -11,6 +11,7 @@ const Flexbox = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   flex-wrap: wrap;
   padding-bottom: 80px;
   margin-top: 10px;

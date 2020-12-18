@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
+import Spinner from '../../utils/components/Spinner';
 
 const Section = styled.section`
   width: 90%;
@@ -111,6 +112,7 @@ const FetchUserByID = (userid) => {
 const MyProfil = () => {
   const { id } = useParams();
   const [userInfos, setUserInfos] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     firstName,
@@ -121,41 +123,58 @@ const MyProfil = () => {
   } = userInfos;
 
   useEffect(() => {
-    FetchUserByID(id).then((userData) => setUserInfos(userData[0]));
+    setIsLoading(true);
+    FetchUserByID(id)
+      .then((userData) => {
+        setUserInfos(userData[0]);
+      })
+      .catch(() => setIsLoading(false))
+      .finally(() => setIsLoading(false));
   }, [id]);
-  console.log(userInfos);
+
   const naissance = Object.values(birthdate || {}).join(' ');
 
   const actualDate = new Date().getTime();
   const birthdateDate = new Date(naissance).getTime();
   const yearsOld = ((actualDate - birthdateDate) / 31536000000).toFixed(0);
   return (
-    <Section>
-      <Container>
-        <Left>
-          <Title>{firstName}</Title>
-          <UnderTitle>{lastName}</UnderTitle>
-          <UnderTitle>{yearsOld} ans</UnderTitle>
-          <UnderTitle>
-            Compte crée le {userInfos.createdAt ? createdAt.slice(0, 10) : ''}
-          </UnderTitle>
-        </Left>
-        <Right>
-          <Contenu>Photo de profil</Contenu>
-        </Right>
-        <Center>
-          <div>
-            {experienceCreated ? (
-              <Link to={`/experiences/id/${experienceCreated}`}>
-                Visiter son expérience
-              </Link>
-            ) : (
-              ''
-            )}
-          </div>
-        </Center>
-      </Container>
-    </Section>
+    <>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <>
+          <Section>
+            <Container>
+              <>
+                <Left>
+                  <Title>{firstName}</Title>
+                  <UnderTitle>{lastName}</UnderTitle>
+                  <UnderTitle>{birthdate && yearsOld} ans</UnderTitle>
+                  <UnderTitle>
+                    Compte crée le{' '}
+                    {userInfos.createdAt ? createdAt.slice(0, 10) : ''}
+                  </UnderTitle>
+                </Left>
+                <Right>
+                  <Contenu>Photo de profil</Contenu>
+                </Right>
+                <Center>
+                  <div>
+                    {experienceCreated ? (
+                      <Link to={`/experiences/id/${experienceCreated}`}>
+                        Visiter son expérience
+                      </Link>
+                    ) : (
+                      ''
+                    )}
+                  </div>
+                </Center>
+              </>
+            </Container>
+          </Section>
+        </>
+      )}
+    </>
   );
 };
 
