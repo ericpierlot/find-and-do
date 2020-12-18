@@ -86,7 +86,7 @@ const UnderTitle = styled.h3`
     font-size: 2rem;
   }
 `;
-const Flexbox = styled.div`
+const Flexbox = styled.form`
   width: 100%;
   display: flex;
   flex-direction: row;

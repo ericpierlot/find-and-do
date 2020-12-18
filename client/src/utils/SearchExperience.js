@@ -130,7 +130,7 @@ const SearchExperience = ({ type, name, placeholder }) => {
         });
         citiesList.push(cityWithoutPostalCode[0]);
         const arrayCities = citiesList.join('&lieu=');
-        const request = `/api/experiences/city/${cityWithoutPostalCode[0]}?${arrayCities}?&page=1`;
+        const request = `/api/experiences/city/${cityWithoutPostalCode[0]}?&lieu=${arrayCities}?&page=1`;
 
         //Send to my context
         saveExperiences(request)

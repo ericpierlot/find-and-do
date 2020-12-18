@@ -21,7 +21,7 @@ const Article = styled.article`
   }
 `;
 
-const Flexbox = styled.div`
+const Flexbox = styled.form`
   width: 100%;
   display: flex;
   flex-direction: row;

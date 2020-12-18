@@ -9,6 +9,7 @@ const auth = require('../middlewares/auth');
 const admin = require('../middlewares/admin');
 
 const User = require('../models/User.js');
+const Message = require('../models/Message.js');
 
 // @route     POST api/users
 // @desc      Register a user
@@ -60,6 +61,25 @@ router.post(
           id: user.id,
         },
       };
+
+      try {
+        const userAdmin = await User.find({ isAdmin: { $eq: true } })
+          .sort({ createdAt: -1 })
+          .select('firstName');
+        console.log('userAdmin: ', userAdmin);
+        console.log('id admin: ', userAdmin[0]._id);
+        const message = new Message({
+          message: {
+            text: `${user.firstName}, nous vous souhaitons la bienvenue sur Find & Do.`,
+          },
+          recipient: user.id,
+          sender: userAdmin[0]._id,
+        });
+        console.log('message : ', message);
+        message.save();
+      } catch (error) {
+        res.status(500).send('Erreur du message de bienvenue', err);
+      }
 
       jwt.sign(
         payload,

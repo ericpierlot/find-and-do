@@ -75,6 +75,14 @@ const UnderTitle = styled.h3`
   letter-spacing: 0.125rem;
   font-weight: 600;
   text-shadow: rgba(60, 64, 67, 0.3) 0px 1px 10px;
+  a {
+    text-decoration: none;
+    color: ${({ theme }) => theme.textinvert};
+    font-size: 1rem;
+    letter-spacing: 0.125rem;
+    font-weight: 600;
+    text-shadow: rgba(60, 64, 67, 0.3) 0px 1px 10px;
+  }
   @media (min-width: 840px) {
     margin-bottom: 0;
     font-size: 2rem;
@@ -95,6 +103,10 @@ const DivWrapper = styled.div`
     margin-top: 1rem;
     width: 100%;
   }
+  span {
+    font-size: 0.8rem;
+  }
+
   @media (min-width: 840px) {
     width: 100%;
   }
@@ -146,7 +158,7 @@ const Button = styled.button`
   border: none;
   border-radius: 10px;
   transition: all 0.4s ease-in-out;
-  background-color: #eb9e82;
+  background-color: rgba(255, 255, 255, 0.7);
 
   font-weight: 600;
   :hover {
@@ -287,6 +299,11 @@ const ExperienceById = () => {
               <UnderTitle>
                 Proposée sur <u>{lieu}</u>
               </UnderTitle>
+              <UnderTitle>
+                <Link to={`/profil-user/${author._id}`}>
+                  Par {author.firstName} → Accéder à son profil
+                </Link>
+              </UnderTitle>
             </Right>
             <Wrapper>
               <DivWrapper>
@@ -295,7 +312,7 @@ const ExperienceById = () => {
               </DivWrapper>
             </Wrapper>
             <Wrapper>
-              <DivWrapper style={{ cursor: 'pointer' }}>
+              <DivWrapper>
                 <h2>
                   A propos de {author.firstName} {author.lastName}
                 </h2>

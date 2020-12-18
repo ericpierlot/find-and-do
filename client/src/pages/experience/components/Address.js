@@ -3,25 +3,31 @@ import styled from 'styled-components';
 
 const Wrapper = styled.article`
   width: 100%;
-  margin-top: 10vh;
+
+  @media (min-width: 940px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const Top = styled.div`
-  width: 40%;
-  margin: auto;
   h2 {
     margin-bottom: 2rem;
   }
-  @media (max-width: 920px) {
-    width: 100%;
+  width: 100%;
+  @media (min-width: 940px) {
+    width: 50%;
+    margin: auto;
   }
 `;
 
 const Contenu = styled.div`
-  width: 40%;
-  margin: auto;
-  @media (max-width: 920px) {
-    width: 100%;
+  width: 100%;
+  @media (min-width: 940px) {
+    width: 50%;
+    margin: auto;
   }
 `;
 

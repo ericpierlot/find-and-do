@@ -134,6 +134,34 @@ const Button = styled.button`
   background-clip: padding-box;
 `;
 
+const ButtonNext = styled.button`
+  margin-top: 2rem;
+  width: 220px;
+  text-align: center;
+  padding: 0.3rem 1rem 0.3rem 1rem;
+  font-size: 1.2rem;
+  color: ${({ theme }) => theme.text};
+  cursor: pointer;
+  height: 3rem;
+  text-align: center;
+  border: none;
+  border-radius: 10px;
+  transition: all 0.4s ease-in-out;
+  background-color: #eb9e82;
+
+  font-weight: 600;
+  :hover {
+    border: 3px rgba(255, 255, 255, 0.2) solid;
+    transition: all 0.4s ease-in-out;
+  }
+  :focus {
+    outline: none;
+  }
+  margin-bottom: 1rem;
+  border: 3px transparent solid;
+  background-clip: padding-box;
+`;
+
 const FetchListUsers = (nbpage) => {
   return axios
     .get(`/api/users/admin/all?&page=${nbpage}`)
@@ -212,12 +240,12 @@ const AdminUsers = () => {
               );
             })}
             {page > 1 ? (
-              <button onClick={prevUser}>Page précédente</button>
+              <ButtonNext onClick={prevUser}>Page précédente</ButtonNext>
             ) : (
               ''
             )}
             {totalUsers > 5 && page * 5 < totalUsers ? (
-              <button onClick={nextUser}>Page suivante</button>
+              <ButtonNext onClick={nextUser}>Page suivante</ButtonNext>
             ) : (
               ''
             )}

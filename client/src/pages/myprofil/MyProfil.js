@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 
@@ -126,22 +126,33 @@ const MyProfil = () => {
   console.log(userInfos);
   const naissance = Object.values(birthdate || {}).join(' ');
 
+  const actualDate = new Date().getTime();
+  const birthdateDate = new Date(naissance).getTime();
+  const yearsOld = ((actualDate - birthdateDate) / 31536000000).toFixed(0);
   return (
     <Section>
       <Container>
         <Left>
           <Title>{firstName}</Title>
           <UnderTitle>{lastName}</UnderTitle>
-          <UnderTitle>{naissance}</UnderTitle>
+          <UnderTitle>{yearsOld} ans</UnderTitle>
+          <UnderTitle>
+            Compte crée le {userInfos.createdAt ? createdAt.slice(0, 10) : ''}
+          </UnderTitle>
         </Left>
         <Right>
           <Contenu>Photo de profil</Contenu>
         </Right>
         <Center>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            Compte crée le : {createdAt}.
+          <div>
+            {experienceCreated ? (
+              <Link to={`/experiences/id/${experienceCreated}`}>
+                Visiter son expérience
+              </Link>
+            ) : (
+              ''
+            )}
           </div>
-          <div>Son expérience : {experienceCreated}</div>
         </Center>
       </Container>
     </Section>

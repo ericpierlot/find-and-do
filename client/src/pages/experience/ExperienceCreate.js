@@ -38,6 +38,16 @@ const Container = styled.div`
     flex-wrap: wrap;
   }
 `;
+const Container2 = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+
+  @media (min-width: 840px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+`;
 
 const Left = styled.div`
   text-align: center;
@@ -55,16 +65,39 @@ const Right = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  @media (min-width: 840px) {
+  @media (min-width: 940px) {
     text-align: left;
     width: 40%;
   }
 `;
+
+const Left2 = styled.div`
+  width: 100%;
+  margin: auto;
+  padding-bottom: 2rem;
+  @media (min-width: 840px) {
+    padding-bottom: 0;
+    text-align: left;
+    width: 20%;
+  }
+`;
+const Right2 = styled.div`
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(30px) contrast(120%);
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 30px 0px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  border-radius: 15px;
+  @media (min-width: 840px) {
+    width: 80%;
+  }
+`;
+
 const Title = styled.h1`
   font-size: 4rem;
   color: ${({ theme }) => theme.textinvert};
   text-shadow: rgba(60, 64, 67, 0.3) 0px 1px 10px;
-  @media (min-width: 840px) {
+  @media (min-width: 940px) {
     font-size: 5rem;
   }
 `;
@@ -75,7 +108,7 @@ const UnderTitle = styled.h3`
   letter-spacing: 0.125rem;
   font-weight: 600;
   text-shadow: rgba(60, 64, 67, 0.3) 0px 1px 10px;
-  @media (min-width: 840px) {
+  @media (min-width: 940px) {
     margin-bottom: 0;
     font-size: 2rem;
   }
@@ -154,32 +187,8 @@ const EnterButton = styled.button`
   background-clip: padding-box;
 `;
 
-const ConteneurCreateExperience = styled.div`
-  width: 100vw;
-  margin-top: 90px;
-  padding: 2rem;
-  display: flex;
-  flex-direction: row;
-  @media (max-width: 920px) {
-    flex-direction: column;
-    width: 100vw;
-    border: 0;
-    padding: 1rem;
-  }
-`;
-
 const ContenuCreateExperience = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 80%;
-  background-color: rgba(255, 255, 255, 0.2);
-  border-top-right-radius: 30px;
-  border-bottom-right-radius: 30px;
-  @media (max-width: 920px) {
-    width: 100%;
-    border-bottom-right-radius: 0;
-    border-top-right-radius: 0;
-  }
+  padding: 1rem;
 `;
 
 const ExperienceCreate = () => {
@@ -187,7 +196,7 @@ const ExperienceCreate = () => {
   const { user } = authContext;
   const history = useHistory();
   const [numberOfPage, setNumberOfPage] = useState(
-    user.experienceCreated[0] ? false : 0
+    user.experienceCreated[0] ? false : 1
   );
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
@@ -246,6 +255,10 @@ const ExperienceCreate = () => {
   });
   // Mon envoi à ma BDD
   const validation = async () => {
+    if (experience.title.length < 5) {
+      return setError('Le titre doit faire plus de 5 caractères.');
+    }
+
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -255,8 +268,9 @@ const ExperienceCreate = () => {
       try {
         await axios.post('/api/experiences', experience, config);
         setSuccess(true);
+        setError('');
       } catch (error) {
-        setError(error.response.data);
+        setError('Une erreur est survenue, veuillez réessayer.');
         setSuccess(false);
       }
     };
@@ -270,7 +284,7 @@ const ExperienceCreate = () => {
         <Section>
           <Container>
             <Left>
-              <Title>Bienvenue !</Title>
+              <Title>Bienvenue</Title>
               <UnderTitle>Votre vie de partage commence ici</UnderTitle>
             </Left>
             <Right>
@@ -305,77 +319,83 @@ const ExperienceCreate = () => {
         </Section>
       )}
       {numberOfPage === 1 && (
-        <ConteneurCreateExperience>
-          <NavCreateExperience
-            experience={experience}
-            setLiSelected={setLiSelected}
-          />
-          <ContenuCreateExperience>
-            {liSelected === 0 && (
-              <TypeActivity
+        <Section>
+          <Container2>
+            <Left2>
+              <NavCreateExperience
                 experience={experience}
-                setExperience={setExperience}
                 setLiSelected={setLiSelected}
               />
-            )}
-            {/* PAGE LIEU*/}
-            {liSelected === 1 && experience.type && (
-              <Address
-                experience={experience}
-                render={render}
-                setExperience={setExperience}
-              />
-            )}
-            {/* PAGE THEME */}
-            {liSelected === 2 && (
-              <ThemeChoosen
-                experience={experience}
-                setExperience={setExperience}
-              />
-            )}
-            {liSelected === 3 && (
-              <AuProgramme
-                experience={experience}
-                setExperience={setExperience}
-              />
-            )}
-            {liSelected === 4 && (
-              <AboutYou
-                user={user}
-                experience={experience}
-                setExperience={setExperience}
-              />
-            )}
-            {liSelected === 5 && (
-              <ExactAddress
-                experience={experience}
-                setExperience={setExperience}
-              />
-            )}
-            {liSelected === 6 && (
-              <TitleExperience
-                experience={experience}
-                setExperience={setExperience}
-              />
-            )}
-            {liSelected === 7 && (
-              <PhotosExperience
-                experience={experience}
-                setExperience={setExperience}
-              />
-            )}
-            {liSelected === 8 && (
-              <Recapitulatif
-                error={error}
-                success={success}
-                experience={experience}
-                setExperience={setExperience}
-                setLiSelected={setLiSelected}
-                validation={validation}
-              />
-            )}
-          </ContenuCreateExperience>
-        </ConteneurCreateExperience>
+            </Left2>
+            <Right2>
+              <ContenuCreateExperience>
+                {liSelected === 0 && (
+                  <TypeActivity
+                    experience={experience}
+                    setExperience={setExperience}
+                    setLiSelected={setLiSelected}
+                  />
+                )}
+                {/* PAGE LIEU*/}
+                {liSelected === 1 && experience.type && (
+                  <Address
+                    experience={experience}
+                    render={render}
+                    setExperience={setExperience}
+                  />
+                )}
+                {/* PAGE THEME */}
+                {liSelected === 2 && (
+                  <ThemeChoosen
+                    experience={experience}
+                    setExperience={setExperience}
+                  />
+                )}
+                {liSelected === 3 && (
+                  <AuProgramme
+                    experience={experience}
+                    setExperience={setExperience}
+                  />
+                )}
+                {liSelected === 4 && (
+                  <AboutYou
+                    user={user}
+                    experience={experience}
+                    setExperience={setExperience}
+                  />
+                )}
+                {liSelected === 5 && (
+                  <ExactAddress
+                    experience={experience}
+                    setExperience={setExperience}
+                  />
+                )}
+                {liSelected === 6 && (
+                  <TitleExperience
+                    experience={experience}
+                    setExperience={setExperience}
+                  />
+                )}
+                {liSelected === 7 && (
+                  <PhotosExperience
+                    experience={experience}
+                    setExperience={setExperience}
+                  />
+                )}
+                {liSelected === 8 && (
+                  <Recapitulatif
+                    error={error}
+                    success={success}
+                    experience={experience}
+                    setExperience={setExperience}
+                    setLiSelected={setLiSelected}
+                    validation={validation}
+                  />
+                )}
+              </ContenuCreateExperience>
+            </Right2>
+          </Container2>
+        </Section>
       )}
     </>
   );

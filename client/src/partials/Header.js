@@ -184,7 +184,7 @@ const Header = ({ themeToggler, theme, setTheme }) => {
       menuInvi.current.style.visibility = 'visible';
       menuInvi.current.style.opacity = '1';
       menuInvi.current.style.display = 'flex';
-      menuInvi.current.style.width = '100vw';
+      menuInvi.current.style.width = '100%';
       return setIsOpen(!isOpen);
     }
 

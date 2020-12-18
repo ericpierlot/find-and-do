@@ -84,6 +84,7 @@ const FetchNewMessage = () => {
 const Profil = () => {
   const authContext = useContext(AuthContext);
   const { user } = authContext;
+  const { birthdate } = user;
   const [hasNewMessage, setHasNewMessage] = useState(0);
 
   useEffect(() => {
@@ -94,6 +95,11 @@ const Profil = () => {
       .catch((err) => console.error(err));
   }, []);
 
+  const naissance = Object.values(birthdate || {}).join(' ');
+
+  const actualDate = new Date().getTime();
+  const birthdateDate = new Date(naissance).getTime();
+  const yearsOld = ((actualDate - birthdateDate) / 31536000000).toFixed(0);
   return (
     <Section>
       <Container>
@@ -102,8 +108,9 @@ const Profil = () => {
             Mon compte {hasNewMessage !== 0 && `(${hasNewMessage})`}
           </Title>
           <UnderTitle>
-            {user.firstName}, {user.email}
+            {user && user.firstName}, {user && user.email}
           </UnderTitle>
+          <UnderTitle>{user && yearsOld} ans</UnderTitle>
         </Left>
         <Right>
           <Link to='/profil/messagerie'>

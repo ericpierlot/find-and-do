@@ -3,25 +3,38 @@ import styled from 'styled-components';
 
 const Wrapper = styled.article`
   width: 100%;
+
+  @media (min-width: 940px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
-const CardType = styled.div`
-  width: 50%;
+const CardType = styled.button`
+  width: 100%;
   margin-top: 2rem;
-  border-radius: 10px;
+  margin-right: 2rem;
+  border-radius: 15px;
   outline: none;
-  background-color: rgba(255, 255, 255, 0.4);
-  border: whitesmoke 2px solid;
-  box-shadow: 0px 0.2em 0.5em rgba(0, 0, 0, 0.3);
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 30px 0px;
+  border-radius: 15px;
+  padding: 1rem;
+  border: 1px solid white;
+  background-clip: padding-box;
   cursor: pointer;
   :hover {
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: ${({ theme }) => theme.header};
   }
-  margin-right: 1rem;
-  padding: 1rem;
+  text-align: left;
+  a {
+    text-align: left;
+  }
 `;
 const Top = styled.div`
-  width: 90%;
+  width: 100%;
   margin: auto;
   h2 {
     margin-top: 2rem;
@@ -47,38 +60,31 @@ const ContenuCategory = styled.div`
 `;
 
 const Button = styled.button`
-  width: 20%;
+  margin-top: 2rem;
+  width: 223px;
   text-align: center;
   padding: 0.3rem 1rem 0.3rem 1rem;
   font-size: 1.2rem;
-  color: #fff;
+  color: ${({ theme }) => theme.text};
   cursor: pointer;
   height: 3rem;
   text-align: center;
   border: none;
-  background-size: 300% 100%;
-  border-radius: 50px;
-  transition: all 0.3s ease-in-out;
-  background-image: linear-gradient(
-    to right,
-    #eb3941,
-    #f15e64,
-    #e14e53,
-    #e2373f
-  );
+  border-radius: 10px;
+  transition: all 0.4s ease-in-out;
+  background-color: #eb9e82;
+
   font-weight: 600;
-  box-shadow: 0 5px 15px rgba(242, 97, 103, 0.4);
-  line-height: 0;
   :hover {
-    background-position: 100% 0;
-    transition: all 0.3s ease-in-out;
+    border: 3px rgba(255, 255, 255, 0.2) solid;
+    transition: all 0.4s ease-in-out;
   }
   :focus {
     outline: none;
   }
   margin-bottom: 1rem;
-  margin-top: 2rem;
-  border: 3px rgba(255, 255, 255, 0.3) solid;
+  border: 3px transparent solid;
+  background-clip: padding-box;
 `;
 
 const Recapitulatif = ({

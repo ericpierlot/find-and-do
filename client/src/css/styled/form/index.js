@@ -147,7 +147,6 @@ export const Label = styled.label`
 
 export const InputFirstName = styled.input.attrs((props) => ({
   type: 'text',
-  name: 'firstName',
 }))`
   font-size: 1.2rem;
   width: 70%;

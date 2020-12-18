@@ -2,74 +2,59 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Navigation = styled.nav`
-  display: flex;
-  flex-direction: column;
-  width: 20%;
-  background-color: rgba(255, 255, 255, 0.2);
-  @media (max-width: 920px) {
-    width: 100%;
-    flex-wrap: wrap;
-    background-color: rgba(255, 255, 255, 0.2);
-  }
-  border-top-left-radius: 30px;
-  border-bottom-left-radius: 30px;
-  padding: 2rem;
-  @media (max-width: 920px) {
-    padding: 1rem;
-    border-border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-  }
+  width: 100%;
+
+  padding: 1rem;
   ul {
     list-style-type: none;
     margin-bottom: 2rem;
-    @media (max-width: 920px) {
-      display: flex;
-      flex-direction: row;
-      width: 100%;
-      flex-wrap: wrap;
-    }
   }
   li {
     color: white;
-    @media (max-width: 920px) {
-      color: black;
-      width: 25%;
-    }
+
     margin-top: 1rem;
-    background-color: rgba(255, 255, 255, 0.4);
-    border: 2px solid rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(30px) contrast(120%);
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 30px 0px;
+    border: 3px solid transparent;
+    background-clip: padding-box;
     padding: 1rem;
-    @media (max-width: 920px) {
-      padding: 0.5rem;
-      text-align: center;
-    }
+
     border-radius: 15px;
     transition: background-color 900ms ease;
     :hover {
       cursor: pointer;
       background-color: rgba(255, 255, 255, 0.1);
-      @media (max-width: 920px) {
-        background-color: rgba(0, 0, 0, 0.7);
-      }
     }
     :active {
       background-color: #e03e3e;
     }
+  }
+  @media (max-width: 840px) {
   }
 `;
 
 const NavCreateExperience = ({ setLiSelected, experience }) => {
   return (
     <Navigation>
-      <h2>Votre idée</h2>
       <ul style={{ listStyleType: 'none' }}>
-        <li onClick={() => setLiSelected(0)}>Type d'activité</li>
+        <li
+          onClick={() => {
+            setLiSelected(0);
+            window.scrollTo(0, 0);
+          }}
+        >
+          Type d'activité
+        </li>
         <li
           style={{
             pointerEvents: experience.type ? '' : 'none',
             opacity: experience.type ? '' : '0.2',
           }}
-          onClick={() => setLiSelected(1)}
+          onClick={() => {
+            setLiSelected(1);
+            window.scrollTo(0, 0);
+          }}
         >
           Lieu
         </li>
@@ -78,19 +63,24 @@ const NavCreateExperience = ({ setLiSelected, experience }) => {
             pointerEvents: experience.type && experience.lieu ? '' : 'none',
             opacity: experience.type && experience.lieu ? '' : '0.2',
           }}
-          onClick={() => setLiSelected(2)}
+          onClick={() => {
+            setLiSelected(2);
+            window.scrollTo(0, 0);
+          }}
         >
           Votre thème
         </li>
       </ul>
-      <h2>Page de l'expérience</h2>
       <ul style={{ listStyleType: 'none' }}>
         <li
           style={{
             pointerEvents: experience.theme.precision !== '' ? '' : 'none',
             opacity: experience.theme.precision !== '' ? '' : '0.2',
           }}
-          onClick={() => setLiSelected(3)}
+          onClick={() => {
+            setLiSelected(3);
+            window.scrollTo(0, 0);
+          }}
         >
           Au programme
         </li>
@@ -99,7 +89,10 @@ const NavCreateExperience = ({ setLiSelected, experience }) => {
             pointerEvents: experience.programme ? '' : 'none',
             opacity: experience.programme ? '' : '0.2',
           }}
-          onClick={() => setLiSelected(4)}
+          onClick={() => {
+            setLiSelected(4);
+            window.scrollTo(0, 0);
+          }}
         >
           A propos de vous
         </li>
@@ -108,7 +101,10 @@ const NavCreateExperience = ({ setLiSelected, experience }) => {
             pointerEvents: experience.aboutYou ? '' : 'none',
             opacity: experience.aboutYou ? '' : '0.2',
           }}
-          onClick={() => setLiSelected(5)}
+          onClick={() => {
+            setLiSelected(5);
+            window.scrollTo(0, 0);
+          }}
         >
           Adresse exacte
         </li>
@@ -117,7 +113,10 @@ const NavCreateExperience = ({ setLiSelected, experience }) => {
             pointerEvents: experience.exactAddress ? '' : 'none',
             opacity: experience.exactAddress ? '' : '0.2',
           }}
-          onClick={() => setLiSelected(6)}
+          onClick={() => {
+            setLiSelected(6);
+            window.scrollTo(0, 0);
+          }}
         >
           Titre
         </li>
@@ -126,19 +125,24 @@ const NavCreateExperience = ({ setLiSelected, experience }) => {
             pointerEvents: experience.title ? '' : 'none',
             opacity: experience.title ? '' : '0.2',
           }}
-          onClick={() => setLiSelected(7)}
+          onClick={() => {
+            setLiSelected(7);
+            window.scrollTo(0, 0);
+          }}
         >
           Photos
         </li>
       </ul>
-      <h2>Récapitulatif & Envoi</h2>
       <ul style={{ listStyleType: 'none' }}>
         <li
           style={{
             pointerEvents: experience.title ? '' : 'none',
             opacity: experience.title ? '' : '0.2',
           }}
-          onClick={() => setLiSelected(8)}
+          onClick={() => {
+            setLiSelected(8);
+            window.scrollTo(0, 0);
+          }}
         >
           Récapitulatif
         </li>

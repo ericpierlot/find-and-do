@@ -110,7 +110,7 @@ router.post('/sended', auth, async (req, res) => {
       sender: { $in: id },
     })
       .lean()
-      .sort({ updatedAt: -1 })
+      .sort({ createdAt: -1 })
       .limit(20);
 
     await Promise.all(

@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { FormContactUser } from '../../experience/components/formContactUser/FormContactUser';
 import AlertContext from '../../../context/alert/alertContext';
 import AuthContext from '../../../context/auth/authContext';
@@ -114,7 +115,8 @@ export const CardReception = ({
     <>
       <Flexbox key={_id}>
         <div>
-          De {senderFirstName} - le {createdAt.slice(0, 10)} :
+          De <Link to={`/profil-user/${recipientID}`}>{senderFirstName}</Link> -
+          le {createdAt.slice(0, 10)} :
         </div>
         <div>{text}</div>
         {/* <button onClick={() => handleDelete(_id)}>Supprimer</button> */}

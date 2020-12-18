@@ -3,11 +3,17 @@ import styled from 'styled-components';
 
 const Wrapper = styled.article`
   width: 100%;
+
+  @media (min-width: 940px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const Top = styled.div`
-  width: 40%;
-  margin: auto;
+  width: 100%;
   h2 {
     margin-top: 2rem;
     margin-bottom: 2rem;
@@ -17,6 +23,10 @@ const Top = styled.div`
   }
   p {
     margin-top: 1rem;
+  }
+  @media (min-width: 940px) {
+    width: 50%;
+    margin: auto;
   }
 `;
 

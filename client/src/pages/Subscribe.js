@@ -41,7 +41,7 @@ const Subscribe = (props) => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      props.history.push('/');
+      props.history.push('/profil');
     }
     if (error === 'Email already exists') {
       setAlert('Email déjà existante.', 'red');

@@ -2,41 +2,57 @@ import React from 'react';
 import styled from 'styled-components';
 
 const CardType = styled.button`
-  width: 45%;
+  width: 223px;
   height: 150px;
   margin-top: 2rem;
-  border-radius: 10px;
+  margin-right: 2rem;
+  border-radius: 15px;
   outline: none;
-  background-color: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(5px);
-  border: whitesmoke 2px solid;
-  box-shadow: 0px 0.2em 0.5em rgba(0, 0, 0, 0.3);
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 30px 0px;
+  border-radius: 15px;
+  padding: 1rem;
+  border: 1px solid white;
+  background-clip: padding-box;
+  cursor: pointer;
   :hover {
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: ${({ theme }) => theme.header};
   }
 `;
 
 const Wrapper = styled.article`
   width: 100%;
-  margin-top: 10vh;
+
+  @media (min-width: 940px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const Top = styled.div`
-  width: 40%;
-  margin: auto;
   h2 {
     margin-bottom: 2rem;
   }
-  @media (max-width: 920px) {
-    width: 100%;
+  width: 100%;
+  @media (min-width: 940px) {
+    width: 50%;
+    margin: auto;
   }
 `;
 
 const Contenu = styled.div`
-  width: 40%;
-  margin: auto;
-  @media (max-width: 920px) {
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  @media (min-width: 940px) {
+    width: 50%;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: auto;
   }
 `;
 
