@@ -159,7 +159,7 @@ const ButtonBurger = styled.button`
 //     .catch((err) => console.error(err));
 // };
 
-const Header = ({ themeToggler, theme, setTheme }) => {
+const Header = ({ theme, setTheme }) => {
   const authContext = useContext(AuthContext);
   const experienceContext = useContext(ExperienceContext);
   const { experience } = experienceContext;
@@ -205,12 +205,35 @@ const Header = ({ themeToggler, theme, setTheme }) => {
   }, []);
 
   useEffect(() => {
-    hours >= 17 || hours < 0 ? setTheme('dark') : setTheme('light');
+    const getFavoriteTheme = window.localStorage.getItem('find_and_do_theme');
+    if (getFavoriteTheme === 'light') {
+      return setTheme('light');
+    }
+
+    if (getFavoriteTheme === 'dark') {
+      return setTheme('dark');
+    }
+  }, [theme, setTheme]);
+
+  useEffect(() => {
+    hours >= 17 ||
+      (hours < 0 && window.localStorage.setItem('find_and_do_theme', 'dark'));
     // fetchUserRecipient().then((userData) => {
     //   if (!userData) return setHaveNewMessage(0);
     //   if (userData.length > 0) return setHaveNewMessage(userData.length);
     // });
   }, [hours, setTheme]);
+
+  const themeToggler = () => {
+    if (theme === 'light') {
+      setTheme('dark');
+      return window.localStorage.setItem('find_and_do_theme', 'dark');
+    }
+    if (theme === 'dark') {
+      setTheme('light');
+      return window.localStorage.setItem('find_and_do_theme', 'light');
+    }
+  };
 
   const authLinks = (
     <React.Fragment>

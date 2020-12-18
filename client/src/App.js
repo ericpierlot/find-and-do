@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyles } from './css/GlobalStyles';
@@ -16,29 +16,6 @@ const App = () => {
   const [theme, setTheme] = useState(
     window.localStorage.find_and_do_theme === 'dark' ? 'dark' : 'light'
   );
-
-  const themeToggler = () => {
-    if (theme === 'light') {
-      setTheme('dark');
-      return window.localStorage.setItem('find_and_do_theme', 'dark');
-    }
-    if (theme === 'dark') {
-      setTheme('light');
-      return window.localStorage.setItem('find_and_do_theme', 'light');
-    }
-  };
-
-  useEffect(() => {
-    const getFavoriteTheme = window.localStorage.getItem('find_and_do_theme');
-    if (getFavoriteTheme === 'light') {
-      return setTheme('light');
-    }
-
-    if (getFavoriteTheme === 'dark') {
-      return setTheme('dark');
-    }
-  }, [theme]);
-
   return (
     <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
       <GlobalStyles />
@@ -47,11 +24,7 @@ const App = () => {
           <ExperienceState>
             <BrowserRouter>
               {/*  Header */}
-              <Header
-                themeToggler={themeToggler}
-                theme={theme}
-                setTheme={setTheme}
-              />
+              <Header theme={theme} setTheme={setTheme} />
               {/* ----------- */}
               <Home />
               {/* -------------- */}
