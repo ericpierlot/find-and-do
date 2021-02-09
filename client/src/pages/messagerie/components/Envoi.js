@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import axios from 'axios';
-import { CardEnvoi } from './CardEnvoi';
-import Spinner from '../../../utils/components/Spinner';
+import React, {useEffect, useState} from 'react'
+import {Link} from 'react-router-dom'
+import styled from 'styled-components'
+import axios from 'axios'
+import {CardEnvoi} from './CardEnvoi'
+import Spinner from '../../../utils/components/Spinner'
 
 const Section = styled.section`
   width: 90%;
@@ -15,7 +15,7 @@ const Section = styled.section`
   @media screen and(min-width: 840px) {
     width: 80%;
   }
-`;
+`
 
 const Container = styled.div`
   width: 100%;
@@ -30,7 +30,7 @@ const Container = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
   }
-`;
+`
 
 const Left = styled.div`
   text-align: center;
@@ -41,7 +41,7 @@ const Left = styled.div`
     text-align: left;
     width: 40%;
   }
-`;
+`
 const Right = styled.div`
   margin: auto;
   display: flex;
@@ -53,18 +53,18 @@ const Right = styled.div`
     text-align: left;
     width: 60%;
   }
-`;
+`
 const Title = styled.h1`
   font-size: 4rem;
-  color: ${({ theme }) => theme.textinvert};
+  color: ${({theme}) => theme.textinvert};
   text-shadow: rgba(60, 64, 67, 0.3) 0px 1px 10px;
   @media (min-width: 840px) {
     font-size: 5rem;
   }
-`;
+`
 
 const UnderTitle = styled.h3`
-  color: ${({ theme }) => theme.textinvert};
+  color: ${({theme}) => theme.textinvert};
   font-size: 1rem;
   letter-spacing: 0.125rem;
   font-weight: 600;
@@ -73,7 +73,7 @@ const UnderTitle = styled.h3`
     margin-bottom: 0;
     font-size: 2rem;
   }
-`;
+`
 
 const Flexbox = styled.div`
   width: 100%;
@@ -83,7 +83,7 @@ const Flexbox = styled.div`
   flex-wrap: wrap;
   padding-bottom: 80px;
   margin-top: 10px;
-  background-color: ${({ theme }) => theme.header};
+  background-color: ${({theme}) => theme.header};
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 30px 0px;
   border-radius: 15px;
   padding: 1rem;
@@ -93,56 +93,55 @@ const Flexbox = styled.div`
   @media (max-width: 920px) {
     width: 100%;
   }
-`;
+`
 
 const BoiteEnvoi = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [mySended, setMySended] = useState([]);
+  const [isLoading, setIsLoading] = useState(false)
+  const [mySended, setMySended] = useState([])
 
   const fetchSendedUser = () => {
-    setIsLoading(true);
+    setIsLoading(true)
     return axios
       .post('/api/messages/sended')
-      .then(({ data }) => {
-        setIsLoading(false);
-        return data;
+      .then(({data}) => {
+        setIsLoading(false)
+        return data
       })
-      .catch((err) => {
-        setIsLoading(false);
-        console.error(err);
-      });
-  };
+      .catch(err => {
+        setIsLoading(false)
+        console.error(err)
+      })
+  }
 
   useEffect(() => {
-    fetchSendedUser().then((userData) => setMySended(userData || []));
-  }, []);
+    fetchSendedUser().then(userData => setMySended(userData || []))
+  }, [])
 
-  const handleDelete = async (message_id) => {
+  const handleDelete = async message_id => {
     try {
-      setIsLoading(true);
+      setIsLoading(true)
       await axios
-        .delete('/api/messages/delete', { params: { id: message_id } })
-        .then(({ data }) => {
+        .delete('/api/messages/delete', {params: {id: message_id}})
+        .then(({data}) => {
           if (data === 'success') {
-            setIsLoading(false);
-            setMySended(
-              mySended.filter((element) => element._id !== message_id)
-            );
+            setIsLoading(false)
+            setMySended(mySended.filter(element => element._id !== message_id))
           }
-        });
+        })
     } catch (error) {
-      setIsLoading(false);
-      console.error(error);
+      setIsLoading(false)
+      console.error(error)
     }
-  };
+  }
 
-  const result = mySended.map((message) => {
-    const { recipientFirstName, createdAt, _id, read, recipiendID } = message;
-    const { text } = message.message;
+  const result = mySended.map(message => {
+    const {recipientFirstName, createdAt, _id, read, recipient} = message
+    console.log(recipient)
+    const {text} = message.message
     return (
       <CardEnvoi
         key={_id}
-        recipiendID={recipiendID}
+        recipient={recipient}
         recipientFirstName={recipientFirstName}
         createdAt={createdAt}
         _id={_id}
@@ -150,16 +149,16 @@ const BoiteEnvoi = () => {
         read={read}
         handleDelete={handleDelete}
       />
-    );
-  });
+    )
+  })
 
   return (
     <Section>
       <Container>
         <Left>
           <UnderTitle>
-            <Link to='/profil'>Mon compte</Link> →{' '}
-            <Link to='/profil/messagerie'>Messagerie</Link>
+            <Link to="/profil">Mon compte</Link> →{' '}
+            <Link to="/profil/messagerie">Messagerie</Link>
           </UnderTitle>
           <Title>Envoi</Title>
         </Left>
@@ -191,6 +190,6 @@ const BoiteEnvoi = () => {
         </Right>
       </Container>
     </Section>
-  );
-};
-export default BoiteEnvoi;
+  )
+}
+export default BoiteEnvoi

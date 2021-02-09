@@ -1,19 +1,19 @@
-import React, { useState, useContext, useEffect } from 'react';
-import styled from 'styled-components';
-import axios from 'axios';
-import AuthContext from '../../context/auth/authContext';
-import { useHistory } from 'react-router-dom';
+import React, {useState, useContext, useEffect} from 'react'
+import styled from 'styled-components'
+import axios from 'axios'
+import AuthContext from '../../context/auth/authContext'
+import {useHistory} from 'react-router-dom'
 // My Components
-import NavCreateExperience from './components/NavCreateExperience';
-import Address from './components/Address';
-import TypeActivity from './components/TypeActivity';
-import ThemeChoosen from './components/ThemeChoosen';
-import AboutYou from './components/AboutYou';
-import AuProgramme from './components/AuProgramme';
-import ExactAddress from './components/ExactAddress';
-import TitleExperience from './components/TitleExperience';
-import PhotosExperience from './components/PhotosExperience';
-import Recapitulatif from './components/Recapitulatif';
+import NavCreateExperience from './components/NavCreateExperience'
+import Address from './components/Address'
+import TypeActivity from './components/TypeActivity'
+import ThemeChoosen from './components/ThemeChoosen'
+import AboutYou from './components/AboutYou'
+import AuProgramme from './components/AuProgramme'
+import ExactAddress from './components/ExactAddress'
+import TitleExperience from './components/TitleExperience'
+import PhotosExperience from './components/PhotosExperience'
+import Recapitulatif from './components/Recapitulatif'
 
 const Section = styled.section`
   width: 90%;
@@ -25,7 +25,7 @@ const Section = styled.section`
   @media screen and(min-width: 840px) {
     width: 80%;
   }
-`;
+`
 
 const Container = styled.div`
   width: 100%;
@@ -37,7 +37,7 @@ const Container = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
   }
-`;
+`
 const Container2 = styled.div`
   width: 100%;
   display: flex;
@@ -47,7 +47,7 @@ const Container2 = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
   }
-`;
+`
 
 const Left = styled.div`
   text-align: center;
@@ -58,7 +58,7 @@ const Left = styled.div`
     text-align: left;
     width: 40%;
   }
-`;
+`
 const Right = styled.div`
   margin: auto;
   display: flex;
@@ -69,7 +69,7 @@ const Right = styled.div`
     text-align: left;
     width: 40%;
   }
-`;
+`
 
 const Left2 = styled.div`
   width: 100%;
@@ -80,7 +80,7 @@ const Left2 = styled.div`
     text-align: left;
     width: 20%;
   }
-`;
+`
 const Right2 = styled.div`
   background-color: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(30px) contrast(120%);
@@ -91,19 +91,19 @@ const Right2 = styled.div`
   @media (min-width: 840px) {
     width: 80%;
   }
-`;
+`
 
 const Title = styled.h1`
   font-size: 4rem;
-  color: ${({ theme }) => theme.textinvert};
+  color: ${({theme}) => theme.textinvert};
   text-shadow: rgba(60, 64, 67, 0.3) 0px 1px 10px;
   @media (min-width: 940px) {
     font-size: 5rem;
   }
-`;
+`
 
 const UnderTitle = styled.h3`
-  color: ${({ theme }) => theme.textinvert};
+  color: ${({theme}) => theme.textinvert};
   font-size: 1rem;
   letter-spacing: 0.125rem;
   font-weight: 600;
@@ -112,7 +112,7 @@ const UnderTitle = styled.h3`
     margin-bottom: 0;
     font-size: 2rem;
   }
-`;
+`
 
 const Contenu = styled.div`
   display: flex;
@@ -124,12 +124,12 @@ const Contenu = styled.div`
   background-clip: padding-box;
   a {
     text-decoration: none;
-    color: ${({ theme }) => theme.text};
+    color: ${({theme}) => theme.text};
   }
   @media (max-width: 920px) {
     width: 80%;
   }
-`;
+`
 const ContainState = styled.div`
   width: 100%;
   display: flex;
@@ -147,16 +147,16 @@ const ContainState = styled.div`
   border: 3px solid transparent;
   background-clip: padding-box;
   a {
-    color: ${({ theme }) => theme.text};
+    color: ${({theme}) => theme.text};
   }
   p {
     padding-top: 1rem;
     font-size: 1.2rem;
   }
   :hover {
-    background-color: ${({ theme }) => theme.header};
+    background-color: ${({theme}) => theme.header};
   }
-`;
+`
 
 const EnterButton = styled.button`
   margin: auto;
@@ -165,7 +165,7 @@ const EnterButton = styled.button`
   text-align: center;
   padding: 0.3rem 1rem 0.3rem 1rem;
   font-size: 1.2rem;
-  color: ${({ theme }) => theme.text};
+  color: ${({theme}) => theme.text};
   cursor: pointer;
   height: 3rem;
   text-align: center;
@@ -185,22 +185,20 @@ const EnterButton = styled.button`
   margin-bottom: 1rem;
   border: 3px transparent solid;
   background-clip: padding-box;
-`;
+`
 
 const ContenuCreateExperience = styled.div`
   padding: 1rem;
-`;
+`
 
 const ExperienceCreate = () => {
-  const authContext = useContext(AuthContext);
-  const { user } = authContext;
-  const history = useHistory();
-  const [numberOfPage, setNumberOfPage] = useState(
-    user.experienceCreated[0] ? false : 1
-  );
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState('');
-  const [liSelected, setLiSelected] = useState(0);
+  const authContext = useContext(AuthContext)
+  const {user} = authContext
+  const history = useHistory()
+  const [numberOfPage, setNumberOfPage] = useState(0)
+  const [success, setSuccess] = useState(false)
+  const [error, setError] = useState('')
+  const [liSelected, setLiSelected] = useState(0)
   const [experience, setExperience] = useState({
     type: '',
     lieu: '',
@@ -213,36 +211,36 @@ const ExperienceCreate = () => {
     exactAddress: '',
     title: '',
     photos: 'En développement',
-  });
+  })
 
-  const [citySuggested, setCitySuggested] = useState([]);
+  const [citySuggested, setCitySuggested] = useState([])
   useEffect(() => {
-    if (!user && !numberOfPage) return history.push('/');
-  }, [numberOfPage, user, history]);
+    if (!user && !numberOfPage) return history.push('/')
+  }, [numberOfPage, user, history])
   useEffect(() => {
     if (experience.lieu.length > 0) {
       const config = {
         headers: '',
-      };
+      }
       const FetchCityAPI = async () => {
-        const { data } = await axios.get(
+        const {data} = await axios.get(
           `https://geocode.search.hereapi.com/v1/geocode?q=${experience.lieu}&apiKey=vVtg-sSJWaB1KQ5481hHJq5PmJV27oiCwpdS6p70A38`,
-          config
-        );
+          config,
+        )
         if (data) {
           // console.log('data : ', data);
           // Filter to have only French city
           const dataFiltered = await data.items.filter(
-            (item) => item.address.countryName === 'France'
-          );
+            item => item.address.countryName === 'France',
+          )
 
           //console.log('Data filtré : ', dataFiltered);
-          await setCitySuggested(dataFiltered);
+          await setCitySuggested(dataFiltered)
         }
-      };
-      FetchCityAPI();
+      }
+      FetchCityAPI()
     }
-  }, [experience.lieu]);
+  }, [experience.lieu])
 
   // Render city name & postal code
   const render = citySuggested.map((item, index) => {
@@ -251,32 +249,32 @@ const ExperienceCreate = () => {
         key={index}
         value={`${item.address.city} - ${item.address.postalCode}`}
       />
-    );
-  });
+    )
+  })
   // Mon envoi à ma BDD
   const validation = async () => {
     if (experience.title.length < 5) {
-      return setError('Le titre doit faire plus de 5 caractères.');
+      return setError('Le titre doit faire plus de 5 caractères.')
     }
 
     const config = {
       headers: {
         'Content-Type': 'application/json',
       },
-    };
+    }
     const register = async () => {
       try {
-        await axios.post('/api/experiences', experience, config);
-        setSuccess(true);
-        setError('');
+        await axios.post('/api/experiences', experience, config)
+        setSuccess(true)
+        setError('')
       } catch (error) {
-        setError('Une erreur est survenue, veuillez réessayer.');
-        setSuccess(false);
+        setError('Une erreur est survenue, veuillez réessayer.')
+        setSuccess(false)
       }
-    };
+    }
 
-    register();
-  };
+    register()
+  }
 
   return (
     <>
@@ -307,7 +305,7 @@ const ExperienceCreate = () => {
                   </p>
                   <EnterButton
                     onClick={() =>
-                      setNumberOfPage((numberOfPage) => numberOfPage + 1)
+                      setNumberOfPage(numberOfPage => numberOfPage + 1)
                     }
                   >
                     Commencer
@@ -398,7 +396,7 @@ const ExperienceCreate = () => {
         </Section>
       )}
     </>
-  );
-};
+  )
+}
 
-export default ExperienceCreate;
+export default ExperienceCreate

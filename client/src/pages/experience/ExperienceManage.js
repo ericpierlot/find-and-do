@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useParams, Link } from 'react-router-dom';
-import styled from 'styled-components';
+import React, {useEffect, useState} from 'react'
+import axios from 'axios'
+import {useParams, Link} from 'react-router-dom'
+import styled from 'styled-components'
 
-import Spinner from '../../utils/components/Spinner';
+import Spinner from '../../utils/components/Spinner'
 
 const Section = styled.section`
   width: 90%;
@@ -15,7 +15,7 @@ const Section = styled.section`
   @media screen and(min-width: 840px) {
     width: 80%;
   }
-`;
+`
 
 const Container = styled.div`
   width: 100%;
@@ -30,7 +30,7 @@ const Container = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
   }
-`;
+`
 
 const Left = styled.div`
   text-align: center;
@@ -41,13 +41,13 @@ const Left = styled.div`
     text-align: left;
     width: 40%;
   }
-`;
+`
 
 const Button = styled.button`
   text-align: center;
   padding: 0.3rem 1rem 0.3rem 1rem;
   font-size: 1rem;
-  color: ${({ theme }) => theme.textinvert};
+  color: ${({theme}) => theme.textinvert};
   cursor: pointer;
   text-align: center;
   border: none;
@@ -65,7 +65,7 @@ const Button = styled.button`
   }
   border: 3px transparent solid;
   background-clip: padding-box;
-`;
+`
 
 const Right = styled.div`
   margin: auto;
@@ -78,15 +78,15 @@ const Right = styled.div`
     text-align: left;
     width: 60%;
   }
-`;
+`
 const Title = styled.h1`
   font-size: 4rem;
-  color: ${({ theme }) => theme.textinvert};
+  color: ${({theme}) => theme.textinvert};
   text-shadow: rgba(60, 64, 67, 0.3) 0px 1px 10px;
   @media (min-width: 840px) {
     font-size: 5rem;
   }
-`;
+`
 
 const ContainState = styled.div`
   width: 100%;
@@ -106,18 +106,18 @@ const ContainState = styled.div`
   background-clip: padding-box;
   cursor: pointer;
   a {
-    color: ${({ theme }) => theme.text};
+    color: ${({theme}) => theme.text};
   }
   :hover {
-    background-color: ${({ theme }) => theme.header};
+    background-color: ${({theme}) => theme.header};
   }
   @media (max-width: 920px) {
     width: 100%;
   }
-`;
+`
 
 const UnderTitle = styled.h3`
-  color: ${({ theme }) => theme.textinvert};
+  color: ${({theme}) => theme.textinvert};
   font-size: 1rem;
   letter-spacing: 0.125rem;
   font-weight: 600;
@@ -126,87 +126,89 @@ const UnderTitle = styled.h3`
     margin-bottom: 0;
     font-size: 2rem;
   }
-`;
+`
 
 const ExperienceManage = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [experience, setExperience] = useState('');
-  const { id } = useParams();
+  const [isLoading, setIsLoading] = useState(false)
+  const [isError, setIsError] = useState(false)
+  const [experience, setExperience] = useState('')
+  const {id} = useParams()
 
   useEffect(() => {
-    setIsLoading(true);
+    setIsLoading(true)
 
     const FetchUserExperience = async () => {
       try {
-        const { data } = await axios.get(`/api/experiences/myexperience`, {
-          params: { id },
-        });
-        setExperience(data);
-        setIsLoading(false);
+        const {data} = await axios.get(`/api/experiences/myexperience`, {
+          params: {id},
+        })
+        setExperience(data)
+        setIsLoading(false)
       } catch (error) {
-        console.log('err', error);
-        setIsLoading(false);
+        console.log('err', error)
+        setIsLoading(false)
       }
-    };
+    }
 
-    FetchUserExperience();
-  }, [id]);
+    FetchUserExperience()
+  }, [id])
 
   const handleDelete = async () => {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
-      await axios.delete('/api/experiences/delete');
-      setIsLoading(false);
-      window.location = '/';
+      await axios.delete('/api/experiences/delete')
+      setIsLoading(false)
+      window.location = '/'
     } catch (error) {
-      setIsLoading(false);
+      setIsLoading(false)
 
       const renderError = (
         <>
           <div>Erreur, vous ne possédez pas d'expérience.</div>
         </>
-      );
-      setIsError({ message: renderError });
+      )
+      setIsError({message: renderError})
     }
-  };
-
-  const { title, validated, _id } = experience ? experience[0] : '';
+  }
 
   return (
     <Section>
-      {experience ? (
-        <Container>
-          <Left>
-            <Title>Gestion</Title>
-            <UnderTitle>De votre expérience</UnderTitle>
-          </Left>
-          <Right>
-            <ContainState>
-              <div>
-                <Link to={`/experiences/id/${_id}`}>{title}</Link>
-              </div>
-              <div>
-                {validated ? (
-                  <span style={{ color: 'green' }}>En ligne</span>
-                ) : (
-                  <span style={{ color: 'red' }}>En cours de validation</span>
-                )}
-              </div>
-              {isLoading ? (
-                <Spinner />
-              ) : (
-                <Button onClick={handleDelete}>Supprimer</Button>
-              )}
-            </ContainState>
-            {isError && isError.message}
-          </Right>
-        </Container>
-      ) : (
-        <Spinner />
-      )}
+      <Container>
+        <Left>
+          <Title>Gestion</Title>
+          <UnderTitle>De votre expérience</UnderTitle>
+        </Left>
+        <Right>
+          {experience && experience.length > 0 ? (
+            experience.map(exp => {
+              return (
+                <ContainState key={exp._id}>
+                  <div>
+                    <Link to={`/experiences/id/${exp._id}`}>{exp.title}</Link>
+                  </div>
+                  <div>
+                    {exp.validated ? (
+                      <span style={{color: 'green'}}>En ligne</span>
+                    ) : (
+                      <span style={{color: 'red'}}>En cours de validation</span>
+                    )}
+                  </div>
+                  {isLoading ? (
+                    <Spinner />
+                  ) : (
+                    <Button onClick={handleDelete}>Supprimer</Button>
+                  )}
+                  {isError && isError.message}
+                </ContainState>
+              )
+            })
+          ) : (
+            <Spinner />
+          )}
+        </Right>
+      </Container>
     </Section>
-  );
-};
+  )
+}
 
-export default ExperienceManage;
+export default ExperienceManage

@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import React from 'react'
+import styled from 'styled-components'
+import {Link} from 'react-router-dom'
 const Flexbox = styled.div`
   width: 100%;
   display: flex;
@@ -19,18 +19,18 @@ const Flexbox = styled.div`
   border: 3px solid transparent;
   background-clip: padding-box;
   :hover {
-    background-color: ${({ theme }) => theme.header};
+    background-color: ${({theme}) => theme.header};
   }
   @media (max-width: 920px) {
     width: 100%;
   }
-`;
+`
 
 const Button = styled.button`
   text-align: center;
   padding: 0.3rem 1rem 0.3rem 1rem;
   font-size: 1rem;
-  color: ${({ theme }) => theme.textinvert};
+  color: ${({theme}) => theme.textinvert};
   cursor: pointer;
   text-align: center;
   border: none;
@@ -41,7 +41,7 @@ const Button = styled.button`
   font-weight: 600;
   :hover {
     background-color: #fa5757;
-    color: ${({ theme }) => theme.text};
+    color: ${({theme}) => theme.text};
     border: 3px rgba(255, 255, 255, 0.2) solid;
     transition: all 0.4s ease-in-out;
   }
@@ -50,15 +50,15 @@ const Button = styled.button`
   }
   border: 3px transparent solid;
   background-clip: padding-box;
-`;
+`
 
 const ReadOrNot = styled.button`
   outline: none;
   border: none;
   border-radius: 50%;
   padding: 1rem;
-  color: ${({ theme }) => theme.text};
-`;
+  color: ${({theme}) => theme.text};
+`
 export const CardEnvoi = ({
   recipientFirstName,
   createdAt,
@@ -66,7 +66,7 @@ export const CardEnvoi = ({
   text,
   handleDelete,
   read,
-  recipientID,
+  recipient,
 }) => {
   return (
     <Flexbox key={_id}>
@@ -78,11 +78,11 @@ export const CardEnvoi = ({
         {read ? 'LU' : 'NL'}
       </ReadOrNot>
       <div>
-        A <Link to={`/profil-user/${recipientID}`}>{recipientFirstName}</Link> -
+        A <Link to={`/profil-user/${recipient}`}>{recipientFirstName}</Link> -
         le {createdAt.slice(0, 10)} :
       </div>
       <div>{text}</div>
       <Button onClick={() => handleDelete(_id)}>X</Button>
     </Flexbox>
-  );
-};
+  )
+}
