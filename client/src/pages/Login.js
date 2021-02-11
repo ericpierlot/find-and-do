@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from "react";
 
-import AuthContext from '../context/auth/authContext';
-import AlertContext from '../context/alert/alertContext';
-import Alerts from '../utils/Alerts';
+import AuthContext from "../context/auth/authContext";
+import AlertContext from "../context/alert/alertContext";
+import Alerts from "../utils/Alerts";
 
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import {
   Section,
   Container,
@@ -14,7 +14,7 @@ import {
   InputEmail,
   InputPassword,
   Label,
-} from '../css/styled/form';
+} from "../css/styled/form";
 
 const Login = (props) => {
   // Declare my useContext hooks
@@ -25,8 +25,8 @@ const Login = (props) => {
   // Declare my useState hooks
   const [isFormSended, setIsFormSended] = useState(false);
   const [user, setUser] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
   const { email, password } = user;
 
@@ -34,14 +34,20 @@ const Login = (props) => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      props.history.push('/');
+      props.history.push("/");
     }
-    if (error === 'Email not found') {
-      setAlert('Ces identifiants ne correspondent pas', 'red');
+
+    if (error === "Email not found") {
+      setAlert("Ces identifiants ne correspondent pas", "red");
       clearErrors();
     }
-    if (error === 'Password not match') {
-      setAlert('Ces identifiants ne correspondent pas', 'red');
+    if (error === "Password not match") {
+      setAlert("Ces identifiants ne correspondent pas", "red");
+      clearErrors();
+    }
+
+    if (error === "Banni") {
+      setAlert("L'accès à votre compte à été bloqué.", "red");
       clearErrors();
     }
 
@@ -78,8 +84,8 @@ const Login = (props) => {
           <Label>E-mail :</Label>
 
           <InputEmail
-            id='email'
-            name='email'
+            id="email"
+            name="email"
             value={email}
             onChange={onChange}
             required
@@ -87,21 +93,21 @@ const Login = (props) => {
 
           <Label>Mot de passe :</Label>
           <InputPassword
-            id='password'
-            name='password'
-            minLength='6'
+            id="password"
+            name="password"
+            minLength="6"
             value={password}
             onChange={onChange}
             required
           />
 
-          <Button name='submit' type='submit' onSubmit={onSubmitForm}>
+          <Button name="submit" type="submit" onSubmit={onSubmitForm}>
             Continuer
           </Button>
         </FormContainer>
         <span>
-          Vous n'avez pas de compte ?{' '}
-          <Link to='/subscribe'>Créez un compte</Link>
+          Vous n'avez pas de compte ?{" "}
+          <Link to="/subscribe">Créez un compte</Link>
         </span>
       </Container>
     </Section>

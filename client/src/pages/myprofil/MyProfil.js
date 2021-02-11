@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import styled from 'styled-components';
-import axios from 'axios';
-import Spinner from '../../utils/components/Spinner';
+import React, { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import styled from "styled-components";
+import axios from "axios";
+import Spinner from "../../utils/components/Spinner";
+import { useQuery } from "react-query";
 
 const Section = styled.section`
   width: 90%;
@@ -102,77 +103,72 @@ const Center = styled.div`
   }
 `;
 
-const FetchUserByID = (userid) => {
-  return axios
-    .get(`/api/users/profil/${userid}`)
-    .then(({ data }) => data)
-    .catch((err) => console.log(err));
-};
-
 const MyProfil = () => {
   const { id } = useParams();
   const [userInfos, setUserInfos] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const { data, status, error } = useQuery(`user-${id}`, () =>
+    fetchUserByID(id).then((data) => data[0])
+  );
+  console.log(data);
+  function fetchUserByID(userid) {
+    return axios
+      .get(`/api/users/profil/${userid}`)
+      .then(({ data }) => data)
+      .catch((err) => console.log(err));
+  }
+  function fetchUserExperiences(userid) {
+    return axios
+      .get(`/api/experiences/user-experience/${userid}`)
+      .then(({ data }) => data);
+  }
+  const { data: experiences } = useQuery(`experiences-${id}`, () =>
+    fetchUserExperiences(id).then((data) => data)
+  );
 
-  const {
-    firstName,
-    lastName,
-    birthdate,
-    experienceCreated,
-    createdAt,
-  } = userInfos;
-
-  useEffect(() => {
-    setIsLoading(true);
-    FetchUserByID(id)
-      .then((userData) => {
-        setUserInfos(userData[0]);
-      })
-      .catch(() => setIsLoading(false))
-      .finally(() => setIsLoading(false));
-  }, [id]);
-
-  const naissance = Object.values(birthdate || {}).join(' ');
+  const naissance = Object.values((data && data.birthdate) || {}).join(" ");
 
   const actualDate = new Date().getTime();
   const birthdateDate = new Date(naissance).getTime();
   const yearsOld = ((actualDate - birthdateDate) / 31536000000).toFixed(0);
   return (
     <>
-      {isLoading ? (
-        <Spinner />
-      ) : (
+      {status === "success" ? (
         <>
           <Section>
             <Container>
               <>
                 <Left>
-                  <Title>{firstName}</Title>
-                  <UnderTitle>{lastName}</UnderTitle>
-                  <UnderTitle>{birthdate && yearsOld} ans</UnderTitle>
+                  <Title>{data.firstName}</Title>
+                  <UnderTitle>{data.lastName}</UnderTitle>
+                  <UnderTitle>{data.birthdate && yearsOld} ans</UnderTitle>
                   <UnderTitle>
-                    Compte crée le{' '}
-                    {userInfos.createdAt ? createdAt.slice(0, 10) : ''}
+                    Compte crée le{" "}
+                    {data.createdAt ? data.createdAt.slice(0, 10) : ""}
                   </UnderTitle>
                 </Left>
                 <Right>
                   <Contenu>Photo de profil</Contenu>
                 </Right>
                 <Center>
-                  <div>
-                    {experienceCreated ? (
-                      <Link to={`/experiences/id/${experienceCreated}`}>
-                        Visiter son expérience
-                      </Link>
-                    ) : (
-                      ''
-                    )}
+                  <div style={{ padding: "1rem" }}>
+                    <ul>
+                      {experiences &&
+                        experiences.map((experience) => (
+                          <li key={experience._id}>
+                            <Link to={`/experiences/id/${experience._id}`}>
+                              {experience.title}
+                            </Link>
+                          </li>
+                        ))}
+                    </ul>
                   </div>
                 </Center>
               </>
             </Container>
           </Section>
         </>
+      ) : (
+        <Spinner />
       )}
     </>
   );

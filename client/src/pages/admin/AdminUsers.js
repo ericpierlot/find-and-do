@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import { useQuery } from "react-query";
+import Spinner from "../../utils/components/Spinner";
+
 const Section = styled.section`
   width: 90%;
   margin: auto;
@@ -162,7 +165,7 @@ const ButtonNext = styled.button`
   background-clip: padding-box;
 `;
 
-const FetchListUsers = (nbpage) => {
+const FetchListUsers = (nbpage = 1) => {
   return axios
     .get(`/api/users/admin/all?&page=${nbpage}`)
     .then(({ data }) => data)
@@ -173,15 +176,9 @@ const AdminUsers = () => {
   const [allUsers, setAllUsers] = useState([]);
   const [page, setPage] = useState(1);
   const [totalUsers, setTotalUsers] = useState(0);
-
-  useEffect(() => {
-    FetchListUsers()
-      .then((data) => {
-        setAllUsers(data.users);
-        setTotalUsers(data.totalUsers);
-      })
-      .catch((err) => console.error(err));
-  }, []);
+  const { data, status, error, refetch } = useQuery(["users-list", page], () =>
+    FetchListUsers(page).then((data) => data)
+  );
 
   const handleAccess = async (userID, state) => {
     await axios
@@ -197,23 +194,13 @@ const AdminUsers = () => {
   const nextUser = () => {
     const newPage = page + 1;
     setPage(newPage);
-    FetchListUsers(newPage)
-      .then((data) => {
-        setAllUsers(data.users);
-        setTotalUsers(data.totalUsers);
-      })
-      .catch((err) => console.error(err));
+    refetch(page);
   };
 
   const prevUser = () => {
     const newPage = page - 1;
     setPage(newPage);
-    FetchListUsers(newPage)
-      .then((data) => {
-        setAllUsers(data.users);
-        setTotalUsers(data.totalUsers);
-      })
-      .catch((err) => console.error(err));
+    refetch(page);
   };
 
   return (
@@ -225,33 +212,35 @@ const AdminUsers = () => {
         </Left>
         <Right>
           <Contenu>
-            {allUsers.map((user) => {
-              const { _id, firstName, email, hasAccess } = user;
-              return (
-                <ContainState key={user._id}>
-                  <Link to={`/profil-user/${_id}`}>
-                    <div>{email}</div>
-                    <div>{firstName}</div>
-                  </Link>
-                  <Button onClick={() => handleAccess(_id, hasAccess)}>
-                    {hasAccess ? 'Bloquer' : 'Débloquer'}
-                  </Button>
-                </ContainState>
-              );
-            })}
-            {page > 1 ? (
-              <ButtonNext onClick={prevUser}>Page précédente</ButtonNext>
+            {status === "success" ? (
+              data.users.map((user) => {
+                const { _id, firstName, email, hasAccess } = user;
+                return (
+                  <ContainState key={user._id}>
+                    <Link to={`/profil-user/${_id}`}>
+                      <div>{email}</div>
+                      <div>{firstName}</div>
+                    </Link>
+                    <Button onClick={() => handleAccess(_id, hasAccess)}>
+                      {hasAccess ? "Bloquer" : "Débloquer"}
+                    </Button>
+                  </ContainState>
+                );
+              })
             ) : (
-              ''
-            )}
-            {totalUsers > 5 && page * 5 < totalUsers ? (
-              <ButtonNext onClick={nextUser}>Page suivante</ButtonNext>
-            ) : (
-              ''
+              <Spinner />
             )}
           </Contenu>
         </Right>
       </Container>
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        {data && data.totalUsers > 5 && page * 5 < data.totalUsers ? (
+          <ButtonNext onClick={nextUser}>Page suivante</ButtonNext>
+        ) : null}
+        {page > 1 ? (
+          <ButtonNext onClick={prevUser}>Page précédente</ButtonNext>
+        ) : null}
+      </div>
     </Section>
   );
 };

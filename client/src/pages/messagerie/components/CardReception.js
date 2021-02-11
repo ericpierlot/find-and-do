@@ -1,10 +1,10 @@
-import React, {useState, useContext} from 'react'
-import styled from 'styled-components'
-import {Link} from 'react-router-dom'
-import {FormContactUser} from '../../experience/components/formContactUser/FormContactUser'
-import AlertContext from '../../../context/alert/alertContext'
-import AuthContext from '../../../context/auth/authContext'
-import axios from 'axios'
+import React, { useState, useContext } from "react";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+import { FormContactUser } from "../../experience/components/formContactUser/FormContactUser";
+import AlertContext from "../../../context/alert/alertContext";
+import AuthContext from "../../../context/auth/authContext";
+import axios from "axios";
 
 const Flexbox = styled.div`
   width: 100%;
@@ -24,18 +24,18 @@ const Flexbox = styled.div`
   border: 3px solid transparent;
   background-clip: padding-box;
   :hover {
-    background-color: ${({theme}) => theme.header};
+    background-color: ${({ theme }) => theme.header};
   }
   @media (max-width: 920px) {
     width: 100%;
   }
-`
+`;
 
 const Button = styled.button`
   text-align: center;
   padding: 0.3rem 1rem 0.3rem 1rem;
   font-size: 1rem;
-  color: ${({theme}) => theme.textinvert};
+  color: ${({ theme }) => theme.textinvert};
   cursor: pointer;
   text-align: center;
   border: none;
@@ -55,7 +55,7 @@ const Button = styled.button`
   }
   border: 3px transparent solid;
   background-clip: padding-box;
-`
+`;
 
 export const CardReception = ({
   senderFirstName,
@@ -65,53 +65,53 @@ export const CardReception = ({
   recipientID,
   handleDelete,
 }) => {
-  const alertContext = useContext(AlertContext)
-  const {setAlert} = alertContext
-  const [messageToSend, setMessageToSend] = useState('')
-  const [isOpen, setIsOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const authContext = useContext(AuthContext)
-  const {user} = authContext
+  const alertContext = useContext(AlertContext);
+  const { setAlert } = alertContext;
+  const [messageToSend, setMessageToSend] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const authContext = useContext(AuthContext);
+  const { user } = authContext;
 
-  let sendUserID = null
+  let sendUserID = null;
   if (user) {
-    sendUserID = user._id
+    sendUserID = user._id;
   }
 
-  const handleSendMessage = e => {
-    e.preventDefault()
+  const handleSendMessage = (e) => {
+    e.preventDefault();
 
     const sendMessage = async () => {
-      setIsLoading(true)
+      setIsLoading(true);
       const config = {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-      }
+      };
 
       const dataToSend = {
         messageToSend,
         recipientID,
         sendUserID,
-      }
+      };
 
       try {
-        await axios.post('/api/messages/send', dataToSend, config)
+        await axios.post("/api/messages/send", dataToSend, config);
         setAlert(
-          'Votre message a été envoyé avec succès, vous pouvez avoir accès via votre profil.',
-          'green',
-        )
-        setIsLoading(false)
+          "Votre message a été envoyé avec succès, vous pouvez avoir accès via votre profil.",
+          "green"
+        );
+        setIsLoading(false);
       } catch (error) {
-        setIsLoading(false)
+        setIsLoading(false);
         setAlert(
           "Une erreur est survenue, votre message n'a pas pu être envoyé.",
-          'red',
-        )
+          "red"
+        );
       }
-    }
-    sendMessage()
-  }
+    };
+    sendMessage();
+  };
 
   return (
     <>
@@ -123,14 +123,15 @@ export const CardReception = ({
         <div>{text}</div>
         <button onClick={() => handleDelete(_id)}>Supprimer</button>
         <Button
-          onClick={e => {
-            e.preventDefault()
-            setIsOpen(!isOpen)
+          onClick={(e) => {
+            e.preventDefault();
+            setIsOpen(!isOpen);
           }}
         >
           Répondre
         </Button>
       </Flexbox>
+
       {isOpen ? (
         <FormContactUser
           messageToSend={messageToSend}
@@ -139,8 +140,8 @@ export const CardReception = ({
           isLoading={isLoading}
         />
       ) : (
-        ''
+        ""
       )}
     </>
-  )
-}
+  );
+};

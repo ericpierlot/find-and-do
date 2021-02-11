@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react'
-import {Link} from 'react-router-dom'
-import styled from 'styled-components'
-import axios from 'axios'
-import {CardReception} from './CardReception'
-import Spinner from '../../../utils/components/Spinner'
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import axios from "axios";
+import { CardReception } from "./CardReception";
+import Spinner from "../../../utils/components/Spinner";
+import { useQuery } from "react-query";
 
 const Section = styled.section`
   width: 90%;
@@ -15,7 +16,7 @@ const Section = styled.section`
   @media screen and(min-width: 840px) {
     width: 80%;
   }
-`
+`;
 
 const Container = styled.div`
   width: 100%;
@@ -30,7 +31,7 @@ const Container = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
   }
-`
+`;
 
 const Left = styled.div`
   text-align: center;
@@ -41,7 +42,7 @@ const Left = styled.div`
     text-align: left;
     width: 40%;
   }
-`
+`;
 const Right = styled.div`
   margin: auto;
   display: flex;
@@ -53,18 +54,18 @@ const Right = styled.div`
     text-align: left;
     width: 60%;
   }
-`
+`;
 const Title = styled.h1`
   font-size: 4rem;
-  color: ${({theme}) => theme.textinvert};
+  color: ${({ theme }) => theme.textinvert};
   text-shadow: rgba(60, 64, 67, 0.3) 0px 1px 10px;
   @media (min-width: 840px) {
     font-size: 5rem;
   }
-`
+`;
 
 const UnderTitle = styled.h3`
-  color: ${({theme}) => theme.textinvert};
+  color: ${({ theme }) => theme.textinvert};
   font-size: 1rem;
   letter-spacing: 0.125rem;
   font-weight: 600;
@@ -73,7 +74,7 @@ const UnderTitle = styled.h3`
     margin-bottom: 0;
     font-size: 2rem;
   }
-`
+`;
 
 const Flexbox = styled.div`
   width: 100%;
@@ -83,7 +84,7 @@ const Flexbox = styled.div`
   flex-wrap: wrap;
   padding-bottom: 80px;
   margin-top: 10px;
-  background-color: ${({theme}) => theme.header};
+  background-color: ${({ theme }) => theme.header};
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 30px 0px;
   border-radius: 15px;
   padding: 1rem;
@@ -92,72 +93,66 @@ const Flexbox = styled.div`
   @media (max-width: 920px) {
     width: 100%;
   }
-`
+`;
 
 const BoiteReception = () => {
-  const [myReception, setMyReception] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+  const { data, status, error, refetch } = useQuery("message-receive", () =>
+    fetchUserRecipient().then((data) => data)
+  );
 
-  const fetchUserRecipient = () => {
-    setIsLoading(true)
+  function fetchUserRecipient() {
     return axios
-      .post('/api/messages')
-      .then(({data}) => {
-        setIsLoading(false)
-
-        return data
+      .post("/api/messages")
+      .then(({ data }) => {
+        return data;
       })
-      .catch(err => {
-        setIsLoading(false)
-        console.error(err)
-      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
-  useEffect(() => {
-    fetchUserRecipient().then(userData => setMyReception(userData || []))
-  }, [])
 
-  const handleDelete = async message_id => {
+  const handleDelete = async (message_id) => {
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       await axios
-        .delete('/api/messages/delete', {params: {id: message_id}})
-        .then(({data}) => {
-          if (data === 'success') {
-            setIsLoading(false)
-            setMyReception(
-              myReception.filter(element => element._id !== message_id),
-            )
+        .delete("/api/messages/delete", { params: { id: message_id } })
+        .then(({ data }) => {
+          if (data === "success") {
+            setIsLoading(false);
+            refetch();
           }
-        })
+        });
     } catch (error) {
-      setIsLoading(false)
-      console.error(error)
+      setIsLoading(false);
+      console.error(error);
     }
-  }
-
-  const MessagesRecu = myReception.map(message => {
-    const {senderFirstName, createdAt, _id, sender} = message
-    const {text} = message.message
-    console.log(myReception)
-    return (
-      <CardReception
-        key={_id}
-        senderFirstName={senderFirstName}
-        createdAt={createdAt}
-        _id={_id}
-        text={text}
-        recipientID={sender}
-        handleDelete={handleDelete}
-      />
-    )
-  })
+  };
+  const MessagesRecu =
+    status === "success" && data !== 0
+      ? data.map((message) => {
+          const { senderFirstName, createdAt, _id, sender } = message;
+          const { text } = message.message;
+          return (
+            <CardReception
+              key={_id}
+              senderFirstName={senderFirstName}
+              createdAt={createdAt}
+              _id={_id}
+              text={text}
+              recipientID={sender}
+              handleDelete={handleDelete}
+            />
+          );
+        })
+      : "Vous n'avez aucun message";
 
   return (
     <Section>
       <Container>
         <Left>
           <UnderTitle>
-            <Link to="/profil">Mon compte</Link> →{' '}
+            <Link to="/profil">Mon compte</Link> →{" "}
             <Link to="/profil/messagerie">Messagerie</Link>
           </UnderTitle>
           <Title>Réception</Title>
@@ -166,21 +161,19 @@ const BoiteReception = () => {
           <Flexbox>
             <div
               style={{
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
+                width: "100%",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
               }}
             >
-              <div style={{width: '100%'}}>
-                {isLoading ? <Spinner /> : MessagesRecu}
-              </div>
+              <div style={{ width: "100%" }}>{MessagesRecu}</div>
             </div>
           </Flexbox>
         </Right>
       </Container>
     </Section>
-  )
-}
+  );
+};
 
-export default BoiteReception
+export default BoiteReception;

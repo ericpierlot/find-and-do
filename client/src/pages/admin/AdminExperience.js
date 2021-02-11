@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import axios from "axios";
+import { useQuery } from "react-query";
+import { Link } from "react-router-dom";
 
 const Section = styled.section`
   width: 90%;
@@ -175,68 +177,74 @@ const AdminExperience = () => {
   const [experiences, setExperiences] = useState([]);
   const [page, setPage] = useState(1);
   const [totalExperiences, setTotalExperiences] = useState(0);
+  const { data, status, error, refetch } = useQuery(
+    ["experiences-list", page],
+    () => FetchAllExperiences(page).then((data) => data)
+  );
 
-  useEffect(() => {
-    FetchAllExperiences()
-      .then((data) => {
-        setExperiences(data.allExperiences || []);
-        setTotalExperiences(data.totalExperiences);
-      })
-      .catch((err) => console.error(err));
-  }, []);
+  // useEffect(() => {
+  //   FetchAllExperiences()
+  //     .then((data) => {
+  //       setExperiences(data.allExperiences || []);
+  //       setTotalExperiences(data.totalExperiences);
+  //     })
+  //     .catch((err) => console.error(err));
+  // }, []);
 
   // Delete function
   const handleState = async (experienceID, state) => {
     await axios
       .put(`/api/experiences/admin/validated/${experienceID}`, { state })
-      .then(() =>
-        FetchAllExperiences()
-          .then((data) => setExperiences(data.allExperiences || []))
-          .catch((err) => console.error(err))
-      )
+      .then(() => refetch())
       .catch((err) => console.error(err));
   };
 
-  const listOfExperiences = experiences.map((experience) => {
-    const { _id, title, validated, createdBy } = experience;
+  const listOfExperiences =
+    data &&
+    data.allExperiences.map((experience) => {
+      const { _id, title, validated, createdBy } = experience;
 
-    return (
-      <ContainState key={_id}>
-        <div>{title}</div>
-        <div>{createdBy}</div>
-        <div>{validated}</div>
-        <Button
-          style={{ backgroundColor: validated ? '#ff7373' : '#a3fa7b' }}
-          onClick={() => {
-            handleState(_id, validated);
-          }}
-        >
-          {validated ? 'Désactiver' : 'Activer'}
-        </Button>
-      </ContainState>
-    );
-  });
+      return (
+        <ContainState key={_id}>
+          <div>
+            <Link to={`/experiences/id/${_id}`}>{title}</Link>
+          </div>
+          <div>{createdBy}</div>
+          <div>{validated}</div>
+          <Button
+            style={{ backgroundColor: validated ? "#ff7373" : "#a3fa7b" }}
+            onClick={() => {
+              handleState(_id, validated);
+            }}
+          >
+            {validated ? "Désactiver" : "Activer"}
+          </Button>
+        </ContainState>
+      );
+    });
 
   const nextExperience = () => {
     const newPage = page + 1;
     setPage(newPage);
-    FetchAllExperiences(newPage)
-      .then((data) => {
-        setExperiences(data.allExperiences);
-        setTotalExperiences(data.totalExperiences);
-      })
-      .catch((err) => console.error(err));
+    refetch(page);
+    // FetchAllExperiences(newPage)
+    //   .then((data) => {
+    //     setExperiences(data.allExperiences);
+    //     setTotalExperiences(data.totalExperiences);
+    //   })
+    //   .catch((err) => console.error(err));
   };
 
   const prevExperience = () => {
     const newPage = page - 1;
     setPage(newPage);
-    FetchAllExperiences(newPage)
-      .then((data) => {
-        setExperiences(data.allExperiences);
-        setTotalExperiences(data.totalExperiences);
-      })
-      .catch((err) => console.error(err));
+    refetch(page);
+    // FetchAllExperiences(newPage)
+    //   .then((data) => {
+    //     setExperiences(data.allExperiences);
+    //     setTotalExperiences(data.totalExperiences);
+    //   })
+    //   .catch((err) => console.error(err));
   };
 
   return (
@@ -252,12 +260,14 @@ const AdminExperience = () => {
         {page > 1 ? (
           <ButtonNext onClick={prevExperience}>Page précédente</ButtonNext>
         ) : (
-          ''
+          ""
         )}
-        {totalExperiences > 5 && page * 5 < totalExperiences ? (
+        {data &&
+        data.totalExperiences > 5 &&
+        page * 5 < data.totalExperiences ? (
           <ButtonNext onClick={nextExperience}>Page suivante</ButtonNext>
         ) : (
-          ''
+          ""
         )}
       </Container>
     </Section>
