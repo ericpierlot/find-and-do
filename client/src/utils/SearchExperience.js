@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from "react";
+import { useHistory } from "react-router-dom";
 
-import AlertContext from '../context/alert/alertContext';
-import Alerts from '../utils/Alerts';
-import axios from 'axios';
-import styled from 'styled-components';
-import ExperienceContext from '../context/experience/experienceContext';
-import Spinner from './components/Spinner.js';
+import AlertContext from "../context/alert/alertContext";
+import Alerts from "../utils/Alerts";
+import axios from "axios";
+import styled from "styled-components";
+import ExperienceContext from "../context/experience/experienceContext";
+import Spinner from "./components/Spinner.js";
 
 const Form = styled.form`
   display: inline;
@@ -49,7 +49,7 @@ const SearchExperience = ({ type, name, placeholder }) => {
   const experienceContext = useContext(ExperienceContext);
   const { saveExperiences } = experienceContext;
   const { push } = useHistory();
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
   const [formSend, setFormSend] = useState(false);
   const [inputKm, setInputKm] = useState(5);
   const [isLoading, setIsLoading] = useState(false);
@@ -61,7 +61,7 @@ const SearchExperience = ({ type, name, placeholder }) => {
   useEffect(() => {
     if (value.length > 0) {
       const config = {
-        headers: '',
+        headers: "",
       };
       const FetchCityAPI = async () => {
         return await axios
@@ -71,7 +71,7 @@ const SearchExperience = ({ type, name, placeholder }) => {
           )
           .then(({ data }) =>
             setCitySuggested(
-              data.items.filter((item) => item.address.countryName === 'France')
+              data.items.filter((item) => item.address.countryName === "France")
             )
           )
           .catch((err) => console.error(err));
@@ -95,7 +95,7 @@ const SearchExperience = ({ type, name, placeholder }) => {
       const getCity = async () => {
         setIsLoading(true);
         //remove postal code for the request
-        const cityWithoutPostalCode = value.split(' - ');
+        const cityWithoutPostalCode = value.split(" - ");
         const { data } = await axios.get(
           `https://www.overpass-api.de/api/interpreter?data=[out:json][timeout:25];(node["place"="city"]["name"="${
             cityWithoutPostalCode[0]
@@ -129,19 +129,18 @@ const SearchExperience = ({ type, name, placeholder }) => {
           return element.tags.name;
         });
         citiesList.push(cityWithoutPostalCode[0]);
-        const arrayCities = citiesList.join('&lieu=');
-        const request = `/api/experiences/city/${cityWithoutPostalCode[0]}?&lieu=${arrayCities}?&page=1`;
-
+        const arrayCities = citiesList.join("&lieu=");
+        const request = `/api/experiences/city/${cityWithoutPostalCode[0]}?&lieu=${arrayCities}&lieu=${arrayCities}?&page=1`;
         //Send to my context
         saveExperiences(request)
           .then(() => {
             setIsLoading(false);
-            push('/experiences');
+            push("/experiences");
           })
           .catch(() => {
             setIsLoading(false);
-            setValue('');
-            setAlert('Aucune expérience a été trouvée', 'black');
+            setValue("");
+            setAlert("Aucune expérience a été trouvée", "black");
           });
       }; // Fin getCity()
 
@@ -160,8 +159,8 @@ const SearchExperience = ({ type, name, placeholder }) => {
 
     if (value.length < 2)
       return setAlert(
-        'La ville ne peut pas faire moins de 2 caractères.',
-        'black'
+        "La ville ne peut pas faire moins de 2 caractères.",
+        "black"
       );
 
     // Mettre la première lettre en lettre capital
@@ -181,19 +180,19 @@ const SearchExperience = ({ type, name, placeholder }) => {
     <>
       <label
         style={{
-          display: 'flex',
-          paddingBottom: '1rem',
-          justifyContent: 'center',
-          alignItems: 'center',
+          display: "flex",
+          paddingBottom: "1rem",
+          justifyContent: "center",
+          alignItems: "center",
         }}
-        htmlFor='searchCity'
+        htmlFor="searchCity"
       >
         Choisissez votre Ville et la Distance du rayon de recherche.
       </label>
       <Form onSubmit={onSubmit}>
         <Input
-          list='suggest'
-          id='searchCity'
+          list="suggest"
+          id="searchCity"
           type={type}
           value={value}
           onChange={(e) => {
@@ -204,28 +203,28 @@ const SearchExperience = ({ type, name, placeholder }) => {
           name={name}
           placeholder={placeholder}
         />
-        <datalist id='suggest'>{render}</datalist>
+        <datalist id="suggest">{render}</datalist>
         <SelectKm
-          id='km'
-          type='number'
-          name='km'
+          id="km"
+          type="number"
+          name="km"
           value={inputKm}
           onChange={onChangeKm}
         >
-          <option value='5'>5 km</option>
-          <option value='10'>10 km</option>
-          <option value='15'>15km</option>
-          <option value='20'>20 km</option>
+          <option value="5">5 km</option>
+          <option value="10">10 km</option>
+          <option value="15">15km</option>
+          <option value="20">20 km</option>
         </SelectKm>
-        <Button name='search' id='send'>
-          <svg id='search-icon' viewBox='0 0 24 24'>
-            <path d='M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z' />
-            <path d='M0 0h24v24H0z' fill='none' />
+        <Button name="search" id="send">
+          <svg id="search-icon" viewBox="0 0 24 24">
+            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+            <path d="M0 0h24v24H0z" fill="none" />
           </svg>
         </Button>
       </Form>
       <HandleAction>
-        {isLoading ? <Spinner /> : ''}
+        {isLoading ? <Spinner /> : ""}
         <Alerts />
       </HandleAction>
     </>
