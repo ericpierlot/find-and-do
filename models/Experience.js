@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const ExperienceSchema = mongoose.Schema(
   {
@@ -57,15 +57,15 @@ const ExperienceSchema = mongoose.Schema(
     validated: {
       type: Boolean,
       required: false,
-      default: true,
+      default: false,
     },
     // ID of the Author of this experience to get his name, and appear in it.
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
     },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model('experience', ExperienceSchema);
+module.exports = mongoose.model("experience", ExperienceSchema);

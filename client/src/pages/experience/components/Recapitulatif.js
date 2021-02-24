@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
+import React, { useEffect } from "react";
+import styled from "styled-components";
 
 const Wrapper = styled.article`
   width: 100%;
@@ -94,12 +94,6 @@ const Recapitulatif = ({
   success,
   error,
 }) => {
-  useEffect(() => {
-    if (success) {
-      window.location = '/';
-    }
-  }, [success]);
-
   return (
     <Wrapper>
       <Top>
@@ -135,19 +129,19 @@ const Recapitulatif = ({
             <h3>Adresse exacte : </h3>
             <strong>{experience.exactAddress}</strong>
           </CardType>
-          <CardType style={{ width: '100%' }} onClick={() => setLiSelected(5)}>
+          <CardType style={{ width: "100%" }} onClick={() => setLiSelected(5)}>
             <h3>Au programme : </h3>
             <strong>{experience.programme}</strong>
           </CardType>
-          <CardType style={{ width: '100%' }} onClick={() => setLiSelected(6)}>
+          <CardType style={{ width: "100%" }} onClick={() => setLiSelected(6)}>
             <h3>A propos de vous : </h3>
             <strong>{experience.aboutYou}</strong>
           </CardType>
-          <CardType style={{ width: '100%' }} onClick={() => setLiSelected(7)}>
+          <CardType style={{ width: "100%" }} onClick={() => setLiSelected(7)}>
             <h3>Photos : </h3>
             <strong>{experience.photos}</strong>
           </CardType>
-          {error ? <h2 style={{ color: 'red' }}>{error}</h2> : null}
+          {error ? <h2 style={{ color: "red" }}>{error}</h2> : null}
           {success ? (
             <CardType>
               <h3>
