@@ -1,27 +1,9 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 
-// import MainHome from "../pages/MainHome";
-// import Login from "../pages/Login";
-// import Subscribe from "../pages/Subscribe";
-// import Profil from "../pages/Profil";
-// import Personal from "../pages/profil/Personal";
-// import LoginAndSecurity from "../pages/profil/LoginAndSecurity";
-// import Preferences from "../pages/profil/Preferences";
-// import Experiences from "../pages/Experiences";
 import PrivateRoute from "../utils/PrivateRoute";
 import AdminRoute from "../utils/AdminRoute";
 import Spinner from "../utils/components/Spinner";
-// import ExperienceCreate from "../pages/experience/ExperienceCreate";
-// import ExperienceManage from "../pages/experience/ExperienceManage";
-// import ExperienceById from "../pages/experience/components/ExperienceById";
-//import Messagerie from "../pages/messagerie/Messagerie";
-// import BoiteReception from "../pages/messagerie/components/Reception";
-// import BoiteEnvoi from "../pages/messagerie/components/Envoi";
-// import MyProfil from "../pages/myprofil/MyProfil";
-// import Admin from "../pages/admin";
-// import AdminExperience from "../pages/admin/AdminExperience";
-// import AdminUsers from "../pages/admin/AdminUsers";
 
 const AdminExperience = React.lazy(() =>
   import("../pages/admin/AdminExperience")
@@ -63,7 +45,7 @@ const MainHome = React.lazy(() => import("../pages/MainHome"));
 const Home = () => {
   return (
     <>
-      <React.Suspense fallback={<Spinner />}>
+      <React.Suspense fallback={<Spinner size={true} />}>
         <Switch>
           <Route exact path="/" component={MainHome} />
           <Route exact path="/login" component={Login} />

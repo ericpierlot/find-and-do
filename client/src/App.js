@@ -6,12 +6,12 @@ import { lightTheme, darkTheme } from "./css/Themes";
 import AuthState from "./context/auth/AuthState";
 import AlertState from "./context/alert/AlertState";
 import ExperienceState from "./context/experience/ExperienceState";
-
 import Header from "./partials/Header";
-import Home from "./partials/Home";
 import Footer from "./partials/Footer";
 import { QueryClientProvider, QueryClient } from "react-query";
+import Spinner from "./utils/components/Spinner";
 //import './css/style.css';
+const Home = React.lazy(() => import("./partials/Home"));
 
 const App = () => {
   const [theme, setTheme] = useState(
@@ -30,7 +30,9 @@ const App = () => {
                 {/*  Header */}
                 <Header theme={theme} setTheme={setTheme} />
                 {/* ----------- */}
-                <Home />
+                <React.Suspense fallback={<Spinner size={true} />}>
+                  <Home />
+                </React.Suspense>
                 {/* -------------- */}
                 <Footer />
                 {/* Footer */}
