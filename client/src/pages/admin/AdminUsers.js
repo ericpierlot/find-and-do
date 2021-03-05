@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -173,21 +173,15 @@ const FetchListUsers = (nbpage = 1) => {
 };
 
 const AdminUsers = () => {
-  const [allUsers, setAllUsers] = useState([]);
-  const [page, setPage] = useState(1);
-  const [totalUsers, setTotalUsers] = useState(0);
-  const { data, status, error, refetch } = useQuery(["users-list", page], () =>
+  const [page, setPage] = React.useState(1);
+  const { data, status, refetch } = useQuery(["users-list", page], () =>
     FetchListUsers(page).then((data) => data)
   );
 
   const handleAccess = async (userID, state) => {
     await axios
       .put(`/api/users/admin/ban/${userID}`, { state })
-      .then(() =>
-        FetchListUsers()
-          .then((data) => setAllUsers(data || []))
-          .catch((err) => console.error(err))
-      )
+      .then(() => FetchListUsers().catch((err) => console.error(err)))
       .catch((err) => console.error(err));
   };
 

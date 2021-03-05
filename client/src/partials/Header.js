@@ -1,10 +1,10 @@
-import React, {useState, useEffect, useContext, useRef} from 'react'
-import {Link} from 'react-router-dom'
-import styled from 'styled-components'
-import LogoImg from '../images/Find&Do.png'
-import LogoImgWhite from '../images/Find&Do-white.png'
-import AuthContext from '../context/auth/authContext'
-import ExperienceContext from '../context/experience/experienceContext'
+import React, { useState, useEffect, useContext, useRef } from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import LogoImg from "../images/Find&Do.png";
+import LogoImgWhite from "../images/Find&Do-white.png";
+import AuthContext from "../context/auth/authContext";
+import ExperienceContext from "../context/experience/experienceContext";
 
 const Head = styled.header`
   position: sticky;
@@ -17,10 +17,10 @@ const Head = styled.header`
     transition: background-color 330ms linear;
     backdrop-filter: blur(30px);
     background-clip: padding-box;
-    background-color: ${({theme}) => theme.header};
+    background-color: ${({ theme }) => theme.header};
   }
   z-index: 5;
-`
+`;
 
 const LogoDiv = styled.div`
   margin-left: 3rem;
@@ -30,7 +30,7 @@ const LogoDiv = styled.div`
   width: 120px;
   height: 80px;
   background: url(${LogoImg});
-`
+`;
 
 const LogoDivWhite = styled.div`
   margin-left: 3rem;
@@ -40,7 +40,7 @@ const LogoDivWhite = styled.div`
   width: 120px;
   height: 80px;
   background: url(${LogoImgWhite});
-`
+`;
 
 const Ul = styled.ul`
   display: flex;
@@ -56,7 +56,7 @@ const Ul = styled.ul`
   }
 
   a {
-    color: ${({theme}) => theme.text};
+    color: ${({ theme }) => theme.text};
     text-decoration: none;
     padding: 1rem;
     border-bottom: 2px transparent solid;
@@ -75,11 +75,11 @@ const Ul = styled.ul`
     background-clip: padding-box;
     box-shadow: 0 0 0 2px transparent;
   }
-`
+`;
 
 const Li = styled.li`
   list-style-type: none;
-`
+`;
 
 const MobileDiv = styled.div`
   padding: 1rem;
@@ -88,7 +88,7 @@ const MobileDiv = styled.div`
   justify-content: space-between;
   flex: 1;
   a {
-    color: ${({theme}) => theme.text};
+    color: ${({ theme }) => theme.text};
     background-color: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(30px);
     background-clip: padding-box;
@@ -99,12 +99,12 @@ const MobileDiv = styled.div`
     background-color: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(30px);
     background-clip: padding-box;
-    background-color: ${({theme}) => theme.header};
+    background-color: ${({ theme }) => theme.header};
   }
   a:focus {
     outline: none;
   }
-`
+`;
 
 const MenuBuger = styled.div`
   height: 100px;
@@ -133,7 +133,7 @@ const MenuBuger = styled.div`
     border: transparent 3px solid;
     background-clip: padding-box;
   }
-`
+`;
 const SunMoon = styled.button`
   padding-right: 1rem;
   background-color: transparent;
@@ -141,7 +141,7 @@ const SunMoon = styled.button`
   outline: none;
   border: none;
   cursor: pointer;
-`
+`;
 
 const ButtonBurger = styled.button`
   background-color: transparent;
@@ -149,7 +149,7 @@ const ButtonBurger = styled.button`
   outline: none;
   font-size: 2rem;
   cursor: pointer;
-`
+`;
 // const fetchUserRecipient = () => {
 //   return axios
 //     .post('/api/messages')
@@ -159,16 +159,17 @@ const ButtonBurger = styled.button`
 //     .catch((err) => console.error(err));
 // };
 
-const Header = ({theme, setTheme}) => {
-  const authContext = useContext(AuthContext)
-  const experienceContext = useContext(ExperienceContext)
-  const {experience} = experienceContext
-  const {isAuthenticated, logout, user, loadUser} = authContext
-  const [top, setTop] = useState(true)
-  const Burger = useRef()
-  const menuInvi = useRef()
-  const [isOpen, setIsOpen] = useState(true)
-  const hours = new Date().getHours()
+const Header = ({ theme, setTheme }) => {
+  const authContext = useContext(AuthContext);
+  const experienceContext = useContext(ExperienceContext);
+  const { experience } = experienceContext;
+  const { isAuthenticated, logout, user, loadUser } = authContext;
+  const [top, setTop] = useState(true);
+  const Burger = useRef();
+  const menuInvi = useRef();
+  const [isOpen, setIsOpen] = useState(true);
+  const hours = new Date().getHours();
+  const [hasMounted, setHasMounted] = useState(false);
 
   //const [haveNewMessage, setHaveNewMessage] = useState();
   // A mettre dans le useState si je veux une actualisation directe, mais consomme quelques appels..
@@ -180,70 +181,83 @@ const Header = ({theme, setTheme}) => {
     */
   const handleBurger = () => {
     if (isOpen) {
-      menuInvi.current.style.visibility = 'visible'
-      menuInvi.current.style.opacity = '1'
-      menuInvi.current.style.display = 'flex'
-      menuInvi.current.style.width = '100%'
-      return setIsOpen(!isOpen)
+      menuInvi.current.style.visibility = "visible";
+      menuInvi.current.style.opacity = "1";
+      menuInvi.current.style.display = "flex";
+      menuInvi.current.style.width = "100%";
+      return setIsOpen(!isOpen);
     }
 
-    menuInvi.current.style.width = '0vw'
-    menuInvi.current.style.opacity = '0'
-    menuInvi.current.style.visibility = 'hidden'
-    return setIsOpen(!isOpen)
-  }
+    menuInvi.current.style.width = "0vw";
+    menuInvi.current.style.opacity = "0";
+    menuInvi.current.style.visibility = "hidden";
+    return setIsOpen(!isOpen);
+  };
 
-  const isOnMobile = window.matchMedia('(max-width: 920px)').matches
+  const isOnMobile = window.matchMedia("(max-width: 920px)").matches;
   const onLogout = () => {
-    logout()
-  }
+    logout();
+  };
 
   useEffect(() => {
-    loadUser()
+    loadUser().then(() => setHasMounted(true));
+
     // eslint-disable-next-line
-  }, [])
+  }, []);
 
   useEffect(() => {
-    const getFavoriteTheme = window.localStorage.getItem('find_and_do_theme')
-    if (getFavoriteTheme === 'light') {
-      return setTheme('light')
+    const getFavoriteTheme = window.localStorage.getItem("find_and_do_theme");
+    if (getFavoriteTheme === "light") {
+      return setTheme("light");
     }
 
-    if (getFavoriteTheme === 'dark') {
-      return setTheme('dark')
+    if (getFavoriteTheme === "dark") {
+      return setTheme("dark");
     }
-  }, [theme, setTheme])
+  }, [theme, setTheme]);
 
   useEffect(() => {
     hours >= 17 ||
-      (hours < 0 && window.localStorage.setItem('find_and_do_theme', 'dark'))
+      (hours < 0 && window.localStorage.setItem("find_and_do_theme", "dark"));
     // fetchUserRecipient().then((userData) => {
     //   if (!userData) return setHaveNewMessage(0);
     //   if (userData.length > 0) return setHaveNewMessage(userData.length);
     // });
-  }, [hours, setTheme])
+  }, [hours, setTheme]);
 
   const themeToggler = () => {
-    if (theme === 'light') {
-      setTheme('dark')
-      return window.localStorage.setItem('find_and_do_theme', 'dark')
+    if (theme === "light") {
+      setTheme("dark");
+      return window.localStorage.setItem("find_and_do_theme", "dark");
     }
-    if (theme === 'dark') {
-      setTheme('light')
-      return window.localStorage.setItem('find_and_do_theme', 'light')
+    if (theme === "dark") {
+      setTheme("light");
+      return window.localStorage.setItem("find_and_do_theme", "light");
     }
+  };
+
+  useEffect(() => {
+    const scrollTop = () => {
+      window.pageYOffset > 10 ? setTop(false) : setTop(true);
+    };
+    window.addEventListener("scroll", scrollTop);
+    return () => window.removeEventListener("scroll", scrollTop);
+  }, [top]);
+
+  if (!hasMounted) {
+    return null;
   }
 
   const authLinks = (
     <React.Fragment>
       <h4>
-        {hours >= 17 || hours < 0 ? 'Bonsoir,' : 'Bonjour,'}{' '}
+        {hours >= 17 || hours < 0 ? "Bonsoir," : "Bonjour,"}{" "}
         {user && user.firstName} 👋
       </h4>
       <Ul>
         {user && user.isAdmin && (
           <Link to="/admin">
-            <Li style={{color: '#b62c2c'}}>Panel Admin</Li>
+            <Li style={{ color: "#b62c2c" }}>Panel Admin</Li>
           </Link>
         )}
         {experience.length === 0 ? null : (
@@ -271,14 +285,18 @@ const Header = ({theme, setTheme}) => {
         </Link>
       </Ul>
       <SunMoon onClick={themeToggler}>
-        {theme === 'light' ? '🌞' : '🌚'}
+        {theme === "light" ? "🌞" : "🌚"}
       </SunMoon>
     </React.Fragment>
-  )
+  );
   const authLinksMobile = (
     <React.Fragment>
       <MobileDiv>
-        <ButtonBurger ref={Burger} onClick={handleBurger} style={{zIndex: '5'}}>
+        <ButtonBurger
+          ref={Burger}
+          onClick={handleBurger}
+          style={{ zIndex: "5" }}
+        >
           ☲
         </ButtonBurger>
         <MenuBuger ref={menuInvi}>
@@ -301,16 +319,16 @@ const Header = ({theme, setTheme}) => {
           </Link>
           {user && user.isAdmin && (
             <Link to="/admin" onClick={handleBurger}>
-              <span style={{color: '#b62c2c'}}>Admin</span>
+              <span style={{ color: "#b62c2c" }}>Admin</span>
             </Link>
           )}
         </MenuBuger>
         <SunMoon onClick={themeToggler}>
-          {theme === 'light' ? '🌞' : '🌚'}
+          {theme === "light" ? "🌞" : "🌚"}
         </SunMoon>
       </MobileDiv>
     </React.Fragment>
-  )
+  );
   const guestLinksMobile = (
     <>
       <MobileDiv>
@@ -318,7 +336,7 @@ const Header = ({theme, setTheme}) => {
         <Link to="/login">Connexion</Link>
         <Link to="/subscribe">S'inscrire</Link>
         <SunMoon onClick={themeToggler}>
-          {theme === 'light' ? (
+          {theme === "light" ? (
             <span role="img" aria-label="Light">
               🌞
             </span>
@@ -330,12 +348,12 @@ const Header = ({theme, setTheme}) => {
         </SunMoon>
       </MobileDiv>
     </>
-  )
+  );
 
   const guestLinks = (
     <React.Fragment>
       <h4>
-        {hours >= 17 || hours < 0 ? 'Bonsoir ' : 'Bonjour'}{' '}
+        {hours >= 17 || hours < 0 ? "Bonsoir " : "Bonjour"}{" "}
         <span role="img" aria-label="Hello">
           👋
         </span>
@@ -357,36 +375,36 @@ const Header = ({theme, setTheme}) => {
         </Link>
       </Ul>
       <SunMoon onClick={themeToggler}>
-        {theme === 'light' ? '🌞' : '🌚'}
+        {theme === "light" ? "🌞" : "🌚"}
       </SunMoon>
     </React.Fragment>
-  )
-
-  useEffect(() => {
-    const scrollTop = () => {
-      window.pageYOffset > 10 ? setTop(false) : setTop(true)
-    }
-    window.addEventListener('scroll', scrollTop)
-    return () => window.removeEventListener('scroll', scrollTop)
-  }, [top])
+  );
 
   return (
     <Head
       style={{
-        borderBottom: top ? '' : '3px solid transparent',
-        backgroundColor: top ? 'transparent' : '',
+        borderBottom: top ? "" : "3px solid transparent",
+        backgroundColor: top ? "transparent" : "",
       }}
     >
       <Link to="/">{top ? <LogoDivWhite /> : <LogoDiv />}</Link>
-      {isOnMobile
-        ? isAuthenticated
-          ? authLinksMobile
-          : guestLinksMobile
-        : isAuthenticated
-        ? authLinks
-        : guestLinks}
-    </Head>
-  )
-}
+      {hasMounted
+        ? isOnMobile
+          ? user
+            ? authLinksMobile
+            : guestLinksMobile
+          : null
+        : null}
 
-export default Header
+      {hasMounted
+        ? !isOnMobile
+          ? isAuthenticated
+            ? authLinks
+            : guestLinks
+          : null
+        : null}
+    </Head>
+  );
+};
+
+export default Header;

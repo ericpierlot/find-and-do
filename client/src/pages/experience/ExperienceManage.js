@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import axios from "axios";
 import { useParams, Link } from "react-router-dom";
 import styled from "styled-components";
@@ -130,10 +130,9 @@ const UnderTitle = styled.h3`
 `;
 
 const ExperienceManage = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [experience, setExperience] = useState("");
-  const { data, status, error, refetch } = useQuery("my-experiences", () =>
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [isError, setIsError] = React.useState(false);
+  const { data, status, refetch } = useQuery("my-experiences", () =>
     FetchUserExperience().then((data) => data)
   );
   const { id } = useParams();
@@ -179,7 +178,7 @@ const ExperienceManage = () => {
           <UnderTitle>De votre expérience</UnderTitle>
         </Left>
         <Right>
-          {data && data.length > 0 ? (
+          {status === "success" && data.length > 0 ? (
             data.map((exp) => {
               return (
                 <ContainState key={exp._id}>

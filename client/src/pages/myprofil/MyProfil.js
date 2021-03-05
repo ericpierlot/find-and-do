@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useParams, Link } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
@@ -105,8 +105,7 @@ const Center = styled.div`
 
 const MyProfil = () => {
   const { id } = useParams();
-  const [userInfos, setUserInfos] = useState([]);
-  const { data, status, error } = useQuery(`user-${id}`, () =>
+  const { data, status } = useQuery(`user-${id}`, () =>
     fetchUserByID(id).then((data) => data[0])
   );
   console.log(data);

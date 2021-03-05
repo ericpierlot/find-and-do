@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
@@ -97,8 +97,7 @@ const Flexbox = styled.div`
 `;
 
 const BoiteEnvoi = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const { data, status, error, refetch } = useQuery("message-sended", () =>
+  const { data, status, refetch } = useQuery("message-sended", () =>
     fetchSendedUser().then((data) => data)
   );
 
@@ -115,17 +114,14 @@ const BoiteEnvoi = () => {
 
   const handleDelete = async (message_id) => {
     try {
-      setIsLoading(true);
       await axios
         .delete("/api/messages/delete", { params: { id: message_id } })
         .then(({ data }) => {
           if (data === "success") {
-            setIsLoading(false);
             refetch();
           }
         });
     } catch (error) {
-      setIsLoading(false);
       console.error(error);
     }
   };

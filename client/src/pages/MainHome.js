@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import SearchExperience from '../utils/SearchExperience';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import SearchExperience from "../utils/SearchExperience";
+import axios from "axios";
 
 const Section = styled.section`
   width: 90%;
@@ -99,17 +99,17 @@ const ListVilles = styled.div`
   background-clip: padding-box;
   span:first-child {
     &:before {
-      content: ' ';
+      content: " ";
     }
   }
   span:nth-child(1n) {
     &:after {
-      content: ' - ';
+      content: " - ";
     }
   }
   span:last-child {
     &:after {
-      content: '.';
+      content: ".";
     }
   }
 
@@ -121,7 +121,7 @@ const ListVilles = styled.div`
 `;
 const fetchCityExperiences = () => {
   return axios
-    .get('/api/experiences/allcity')
+    .get("/api/experiences/allcity")
     .then(({ data }) => data || [])
     .catch((err) => console.error(err));
 };
@@ -145,8 +145,8 @@ const MainHome = () => {
         <Right>
           <Contenu>
             <SearchExperience
-              type='search'
-              name='ville'
+              type="search"
+              name="ville"
               placeholder="Entrez le nom d'une Ville..."
             />
           </Contenu>

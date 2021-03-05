@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useQuery } from "react-query";
@@ -174,22 +174,10 @@ const FetchAllExperiences = (nbpage) => {
 };
 
 const AdminExperience = () => {
-  const [experiences, setExperiences] = useState([]);
-  const [page, setPage] = useState(1);
-  const [totalExperiences, setTotalExperiences] = useState(0);
-  const { data, status, error, refetch } = useQuery(
-    ["experiences-list", page],
-    () => FetchAllExperiences(page).then((data) => data)
+  const [page, setPage] = React.useState(1);
+  const { data, refetch } = useQuery(["experiences-list", page], () =>
+    FetchAllExperiences(page).then((data) => data)
   );
-
-  // useEffect(() => {
-  //   FetchAllExperiences()
-  //     .then((data) => {
-  //       setExperiences(data.allExperiences || []);
-  //       setTotalExperiences(data.totalExperiences);
-  //     })
-  //     .catch((err) => console.error(err));
-  // }, []);
 
   // Delete function
   const handleState = async (experienceID, state) => {

@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import Card from "./profil/components/Card";
 import styled from "styled-components";
 import AuthContext from "../context/auth/authContext";
-import Spinner from "../utils/components/Spinner";
 import axios from "axios";
 
 const Section = styled.section`
@@ -83,19 +82,14 @@ const FetchNewMessage = () => {
 };
 
 const Profil = () => {
-  const [isLoading, setIsLoading] = useState(true);
   const authContext = useContext(AuthContext);
   const { user } = authContext;
   const [hasNewMessage, setHasNewMessage] = useState(0);
 
   useEffect(() => {
-    setIsLoading(true);
-    FetchNewMessage()
-      .then((numberUnread) => {
-        setHasNewMessage(numberUnread);
-      })
-      .catch(() => setIsLoading(false))
-      .finally(() => setIsLoading(false));
+    FetchNewMessage().then((numberUnread) => {
+      setHasNewMessage(numberUnread);
+    });
   }, []);
 
   let naissance;

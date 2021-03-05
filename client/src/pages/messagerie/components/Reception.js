@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import { CardReception } from "./CardReception";
-import Spinner from "../../../utils/components/Spinner";
 import { useQuery } from "react-query";
 
 const Section = styled.section`
@@ -96,8 +95,7 @@ const Flexbox = styled.div`
 `;
 
 const BoiteReception = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const { data, status, error, refetch } = useQuery("message-receive", () =>
+  const { data, status, refetch } = useQuery("message-receive", () =>
     fetchUserRecipient().then((data) => data)
   );
 
@@ -114,17 +112,14 @@ const BoiteReception = () => {
 
   const handleDelete = async (message_id) => {
     try {
-      setIsLoading(true);
       await axios
         .delete("/api/messages/delete", { params: { id: message_id } })
         .then(({ data }) => {
           if (data === "success") {
-            setIsLoading(false);
             refetch();
           }
         });
     } catch (error) {
-      setIsLoading(false);
       console.error(error);
     }
   };
