@@ -5,6 +5,9 @@ import LogoImg from "../images/Find&Do.png";
 import LogoImgWhite from "../images/Find&Do-white.png";
 import AuthContext from "../context/auth/authContext";
 import ExperienceContext from "../context/experience/experienceContext";
+import useSound from "use-sound";
+import turnOnSound from "../utils/switch-on.mp3";
+import turnOffSound from "../utils/switch-off.mp3";
 
 const Head = styled.header`
   position: sticky;
@@ -170,6 +173,8 @@ const Header = ({ theme, setTheme }) => {
   const [isOpen, setIsOpen] = useState(true);
   const hours = new Date().getHours();
   const [hasMounted, setHasMounted] = useState(false);
+  const [playTurnOff: play] = useSound(turnOffSound);
+  const [playTurnOn: play] = useSound(turnOnSound);
 
   //const [haveNewMessage, setHaveNewMessage] = useState();
   // A mettre dans le useState si je veux une actualisation directe, mais consomme quelques appels..
@@ -228,10 +233,12 @@ const Header = ({ theme, setTheme }) => {
   const themeToggler = () => {
     if (theme === "light") {
       setTheme("dark");
+      playTurnOff();
       return window.localStorage.setItem("find_and_do_theme", "dark");
     }
     if (theme === "dark") {
       setTheme("light");
+      playTurnOn();
       return window.localStorage.setItem("find_and_do_theme", "light");
     }
   };
